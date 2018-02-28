@@ -1,0 +1,50 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="switch_preference"
+        android:title="@string/setting_filterSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditTextPreference
+        android:capitalize="words"
+        android:enabled="true"
+        android:inputType="textCapWords"
+        android:key="filterPref"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/setting_filterPref"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    ListPreference
+        android:defaultValue="-1"
+        android:entries="@array/classes"
+        android:entryValues="@array/classes_key"
+        android:key="filterPref"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/setting_filterPref" />
+    <SwitchPreference
+        android:clickable="true"
+        android:defaultValue="true"
+        android:enabled="true"
+        android:key="saveOffline"
+        android:title="@string/setting_saveOffline"
+        android:focusable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <SwitchPreference
+        android:clickable="true"
+        android:defaultValue="false"
+        android:enabled="true"
+        android:key="extendetView"
+        android:title="@string/setting_extendetView"
+        android:focusable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</PreferenceScreen>
