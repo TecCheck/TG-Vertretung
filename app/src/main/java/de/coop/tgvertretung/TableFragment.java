@@ -21,16 +21,11 @@ import de.sematre.api.tg.VertretungsTabelle;
 public class TableFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final boolean SYSOUT = false;
     static VertretungsTabelle table = null;
-    private static TextView label = null;
+    private TextView label = null;
     private LinearLayout mainLayout = null;
     private ConstraintLayout mainScroll = null;
-    private boolean wroteNothing = false;
-
-    private static final boolean SYSOUT = false;
-
-    public TableFragment() {
-    }
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -42,7 +37,7 @@ public class TableFragment extends Fragment {
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
 
-        if(SYSOUT)
+        if (SYSOUT)
             System.out.println("sectionNumber: " + sectionNumber);
 
         return fragment;
@@ -50,21 +45,21 @@ public class TableFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
         mainLayout = (LinearLayout) rootView.findViewById(R.id.MainLayout);
+        System.out.println("MainLayoutID: " + R.id.MainLayout);
+        System.out.println("mainLayout: " + mainLayout);
         label = (TextView) rootView.findViewById(R.id.section_label);
         mainScroll = (ConstraintLayout) rootView.findViewById(R.id.MainScroll);
-
         mainScroll.setVerticalScrollBarEnabled(false);
         mainScroll.setHorizontalScrollBarEnabled(false);
 
         int asn = getArguments().getInt(ARG_SECTION_NUMBER);
-
-
         table = Client.tables.get(asn);
 
-        if(SYSOUT)
+        if (SYSOUT)
             System.out.println("=> Neuer Plan! (" + table.getDate() + ")");
 
         label.setText(table.getDate());
@@ -73,43 +68,60 @@ public class TableFragment extends Fragment {
         }
 
         int i = 0;
-        if(asn == 1)
+        if (asn == 1)
             i = 2;
-        else if(asn == 2)
+        else if (asn == 2)
             i = 1;
 
         viewUI(Client.tables.get(i));
 
-
-
-
-
-        super.onCreateView(inflater, container, savedInstanceState);
-
         return rootView;
-
     }
 
     public void viewUI(VertretungsTabelle Vtable) {
 
-
-
         ArrayList<Vertretung> list = Vtable.getVertretungen();
+        ArrayList<Vertretung> filteredList = new ArrayList<>();
+
         if (list.isEmpty()) {
-            if(SYSOUT)
+            if (SYSOUT)
                 System.out.println("Leer!");
 
             addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, Client.instance.NothingRGB, false);
         } else {
-            for (Vertretung vertretung : list) {
+            if (Client.useFilter) {
 
-                if(SYSOUT)
-                    System.out.println(vertretung.toString());
-                addTableItem(vertretung.getStunde(), vertretung.getKlasse(),
-                        vertretung.getVertretungstext(), vertretung.getArt(),
-                        vertretung.getFach(), vertretung.getRaum(),
-                        vertretung.getStattFach(), vertretung.getStattRaum(), Client.extendet);
+                for (Vertretung vertretung : list) {
+                    if (vertretung.getKlasse().toLowerCase().contains(Client.filter.toLowerCase())) {
+                        filteredList.add(vertretung);
+                    }
+                }
+                if (filteredList.isEmpty()) {
+                    if (SYSOUT)
+                        System.out.println("Leer!");
 
+                    addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, Client.instance.NothingRGB, false);
+                } else {
+                    for (Vertretung fvertretung : filteredList) {
+
+                        if (SYSOUT)
+                            System.out.println(fvertretung.toString());
+                        addTableItem(fvertretung.getStunde(), fvertretung.getKlasse(),
+                                fvertretung.getVertretungstext(), fvertretung.getArt(),
+                                fvertretung.getFach(), fvertretung.getRaum(),
+                                fvertretung.getStattFach(), fvertretung.getStattRaum(), Client.extendet);
+                    }
+                }
+            } else {
+                for (Vertretung vertretung : list) {
+
+                    if (SYSOUT)
+                        System.out.println(vertretung.toString());
+                    addTableItem(vertretung.getStunde(), vertretung.getKlasse(),
+                            vertretung.getVertretungstext(), vertretung.getArt(),
+                            vertretung.getFach(), vertretung.getRaum(),
+                            vertretung.getStattFach(), vertretung.getStattRaum(), Client.extendet);
+                }
             }
         }
 
@@ -147,46 +159,37 @@ public class TableFragment extends Fragment {
         String tmp1 = Stunde + ": ";
         String tmp2 = Klasse + ": ";
 
-        //if(MainActivity.filter == -1 || Klasse.toLowerCase().contains(MainActivity.instance.getResources().getStringArray(R.array.classes)[MainActivity.filter]) ) {
-        if (Klasse.toLowerCase().contains(Client.filter.toLowerCase()) || Client.filter == null || !Client.useFilter) {
-            if (extendet) {
+        if (extendet) {
 
-                if (Art.equals("Entfall")) {
-                    tmp = tmp + MainActivity.instance.getString(R.string.noClass);
-                } else if (Fach.equals("---") && Raum.equals("---")) {
-                    tmp = tmp + MainActivity.instance.getString(R.string.noClass);
-                } else {
-                    tmp = tmp + Fach + " in " + Raum + " statt " + StdFach + " in " + StdRaum;
-                    if (Text.equals("")) {
-
-                    } else {
-                        tmp = tmp + " (" + Text + ")";
-                    }
-                }
-
+            if (Art.equals("Entfall")) {
+                tmp = tmp + MainActivity.instance.getString(R.string.noClass);
+            } else if (Fach.equals("---") && Raum.equals("---")) {
+                tmp = tmp + MainActivity.instance.getString(R.string.noClass);
             } else {
+                tmp = tmp + Fach + " in " + Raum + " statt " + StdFach + " in " + StdRaum;
+                if (Text.equals("")) {
 
-                if (Art.equals("Entfall")) {
-                    tmp = tmp + MainActivity.instance.getString(R.string.noClass);
-                } else if (Fach.equals("---") && Raum.equals("---")) {
-                    tmp = tmp + MainActivity.instance.getString(R.string.noClass);
                 } else {
-                    tmp = tmp + Fach + " in " + Raum;
+                    tmp = tmp + " (" + Text + ")";
                 }
-
             }
-            addListItem(tmp, tmp1, tmp2, Client.instance.VertretungSize, Client.instance.VertretungRGB);
+
         } else {
-            if (!wroteNothing) {
-                wroteNothing = true;
-                addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, Client.instance.NothingRGB, false);
+
+            if (Art.equals("Entfall")) {
+                tmp = tmp + MainActivity.instance.getString(R.string.noClass);
+            } else if (Fach.equals("---") && Raum.equals("---")) {
+                tmp = tmp + MainActivity.instance.getString(R.string.noClass);
+            } else {
+                tmp = tmp + Fach + " in " + Raum;
             }
+
         }
-
-
+        addListItem(tmp, tmp1, tmp2, Client.instance.VertretungSize, Client.instance.VertretungRGB);
     }
 
     public void addListItem(String text, Integer textSize, int ARGB, boolean multiText) {
+
         //adds items to the list
         int in = 2;
 
@@ -215,6 +218,7 @@ public class TableFragment extends Fragment {
     }
 
     public void addListItem(String text, String text1, String text2, Integer textSize, int ARGB) {
+
         //adds items to the list
         int in = 2;
 

@@ -39,11 +39,19 @@
             android:layout_gravity="top"
             android:layout_weight="1" />
 
-        <include
-            layout="@layout/content_main"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+        </android.support.v4.view.ViewPager>
+
+        include
+        layout="@layout/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     </LinearLayout>
 

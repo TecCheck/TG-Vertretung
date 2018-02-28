@@ -9,23 +9,6 @@
     tools:showIn="@layout/app_bar_main"
     android:weightSum="1">
 
-    HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="true"
-        android:fillViewport="true"
-        android:scrollIndicators="none"
-        android:scrollbarStyle="outsideInset">
-
-        ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="true"
-            android:fillViewport="true"
-            android:scrollIndicators="none"
-            android:scrollbarStyle="outsideInset"
-            android:scrollbars="horizontal|vertical">
-
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="wrap_content"
