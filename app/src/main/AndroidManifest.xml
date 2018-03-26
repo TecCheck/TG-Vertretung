@@ -23,14 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SettingsActivity"
             android:label="@string/nav_settings"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
-        </activity>
-
+            android:theme="@style/AppTheme"></activity>
         <activity android:name=".InfoActivity" />
 
         <receiver
@@ -41,6 +38,10 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

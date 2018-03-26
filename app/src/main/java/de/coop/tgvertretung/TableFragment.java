@@ -1,6 +1,7 @@
 package de.coop.tgvertretung;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -21,7 +22,6 @@ import de.sematre.api.tg.VertretungsTabelle;
 public class TableFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final boolean SYSOUT = false;
     static VertretungsTabelle table = null;
     private TextView label = null;
     private LinearLayout mainLayout = null;
@@ -37,9 +37,6 @@ public class TableFragment extends Fragment {
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
 
-        if (SYSOUT)
-            System.out.println("sectionNumber: " + sectionNumber);
-
         return fragment;
     }
 
@@ -49,8 +46,8 @@ public class TableFragment extends Fragment {
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
         mainLayout = (LinearLayout) rootView.findViewById(R.id.MainLayout);
-        System.out.println("MainLayoutID: " + R.id.MainLayout);
-        System.out.println("mainLayout: " + mainLayout);
+        Client.print("MainLayoutID: " + R.id.MainLayout);
+        Client.print("mainLayout: " + mainLayout);
         label = (TextView) rootView.findViewById(R.id.section_label);
         mainScroll = (ConstraintLayout) rootView.findViewById(R.id.MainScroll);
         mainScroll.setVerticalScrollBarEnabled(false);
@@ -58,137 +55,102 @@ public class TableFragment extends Fragment {
 
         int asn = getArguments().getInt(ARG_SECTION_NUMBER);
         table = Client.tables.get(asn);
-
-        if (SYSOUT)
-            System.out.println("=> Neuer Plan! (" + table.getDate() + ")");
-
+        Client.print("=> Neuer Plan! (" + table.getDate() + ")");
         label.setText(table.getDate());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setColor(table);
         }
 
-        int i = 0;
         if (asn == 1)
-            i = 2;
+            asn = 2;
         else if (asn == 2)
-            i = 1;
-
-        viewUI(Client.tables.get(i));
-
+            asn = 1;
+        viewUI(Client.tables.get(asn));
         return rootView;
     }
 
     public void viewUI(VertretungsTabelle Vtable) {
 
         ArrayList<Vertretung> list = Vtable.getVertretungen();
-        ArrayList<Vertretung> filteredList = new ArrayList<>();
+        ArrayList<Vertretung> filteredList = list;
 
-        if (list.isEmpty()) {
-            if (SYSOUT)
-                System.out.println("Leer!");
-
-            addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, Client.instance.NothingRGB, false);
-        } else {
-            if (Client.useFilter) {
-
-                for (Vertretung vertretung : list) {
-                    if (vertretung.getKlasse().toLowerCase().contains(Client.filter.toLowerCase())) {
-                        filteredList.add(vertretung);
-                    }
-                }
-                if (filteredList.isEmpty()) {
-                    if (SYSOUT)
-                        System.out.println("Leer!");
-
-                    addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, Client.instance.NothingRGB, false);
-                } else {
-                    for (Vertretung fvertretung : filteredList) {
-
-                        if (SYSOUT)
-                            System.out.println(fvertretung.toString());
-                        addTableItem(fvertretung.getStunde(), fvertretung.getKlasse(),
-                                fvertretung.getVertretungstext(), fvertretung.getArt(),
-                                fvertretung.getFach(), fvertretung.getRaum(),
-                                fvertretung.getStattFach(), fvertretung.getStattRaum(), Client.extendet);
-                    }
-                }
-            } else {
-                for (Vertretung vertretung : list) {
-
-                    if (SYSOUT)
-                        System.out.println(vertretung.toString());
-                    addTableItem(vertretung.getStunde(), vertretung.getKlasse(),
-                            vertretung.getVertretungstext(), vertretung.getArt(),
-                            vertretung.getFach(), vertretung.getRaum(),
-                            vertretung.getStattFach(), vertretung.getStattRaum(), Client.extendet);
+        if (Client.useFilter) {
+            filteredList = new ArrayList<>();
+            Client.print("___________Using Filter!!!_______________");
+            for (Vertretung vertretung : list) {
+                if (vertretung.getKlasse().toLowerCase().contains(Client.filter.toLowerCase())) {
+                    filteredList.add(vertretung);
                 }
             }
         }
+        if (filteredList.isEmpty()) {
+            Client.print("Leer!");
 
-        System.out.println();
-        System.out.println();
+            addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, false);
+        } else {
+            for (Vertretung fvertretung : filteredList) {
+                Client.print(fvertretung.toString());
+                addTableItem(fvertretung, Client.extendet);
+            }
+        }
+        Client.print("");
+        Client.print("");
     }
 
     @SuppressLint("NewApi")
     private void setColor(VertretungsTabelle Vtable) {
+        Drawable base = MainActivity.instance.getDrawable(R.drawable.colorgrade_base);
+        Drawable stroke = MainActivity.instance.getDrawable(R.drawable.colorgrade_stroke);
 
         if (Vtable.getDate().contains("Montag")) {
-            label.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_green_base));
-            mainScroll.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_green_stroke));
+            base.setTint(getResources().getColor(R.color.green));
+            stroke.setTint(getResources().getColor(R.color.green));
         } else if (Vtable.getDate().contains("Dienstag")) {
-            label.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_blue_base));
-            mainScroll.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_blue_stroke));
+            base.setTint(getResources().getColor(R.color.blue));
+            stroke.setTint(getResources().getColor(R.color.blue));
         } else if (Vtable.getDate().contains("Mittwoch")) {
-            label.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_pink_base));
-            mainScroll.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_pink_stroke));
+            base.setTint(getResources().getColor(R.color.pink));
+            stroke.setTint(getResources().getColor(R.color.pink));
         } else if (Vtable.getDate().contains("Donnerstag")) {
-            label.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_orange_base));
-            mainScroll.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_orange_stroke));
+            base.setTint(getResources().getColor(R.color.orange));
+            stroke.setTint(getResources().getColor(R.color.orange));
         } else if (Vtable.getDate().contains("Freitag")) {
-            label.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_yellow_base));
-            mainScroll.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_yellow_stroke));
+            base.setTint(getResources().getColor(R.color.yellow));
+            stroke.setTint(getResources().getColor(R.color.yellow));
         } else {
-            label.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_purple_base));
-            mainScroll.setBackground(MainActivity.instance.getDrawable(R.drawable.colorgrade_purple_stroke));
+            base.setTint(getResources().getColor(R.color.purple));
+            stroke.setTint(getResources().getColor(R.color.purple));
         }
+        label.setBackground(base);
+        mainScroll.setBackground(stroke);
     }
 
-    public void addTableItem(String Stunde, String Klasse, String Text, String Art, String Fach, String Raum, String StdFach, String StdRaum, boolean extendet) {
+    public void addTableItem(Vertretung vt, boolean extendet) {
 
         String tmp = "";
-        String tmp1 = Stunde + ": ";
-        String tmp2 = Klasse + ": ";
+        String tmp1 = vt.getStunde() + ": ";
+        String tmp2 = vt.getKlasse() + ": ";
 
-        if (extendet) {
-
-            if (Art.equals("Entfall")) {
-                tmp = tmp + MainActivity.instance.getString(R.string.noClass);
-            } else if (Fach.equals("---") && Raum.equals("---")) {
-                tmp = tmp + MainActivity.instance.getString(R.string.noClass);
-            } else {
-                tmp = tmp + Fach + " in " + Raum + " statt " + StdFach + " in " + StdRaum;
-                if (Text.equals("")) {
-
-                } else {
-                    tmp = tmp + " (" + Text + ")";
-                }
-            }
-
+        if (vt.getFach().equals("---")) {
+            tmp = tmp + MainActivity.instance.getString(R.string.noClass);
+        } else if (vt.getArt().equals("Entfall") || vt.getRaum().equals("---")) {
+            tmp = tmp + vt.getFach() + " " + MainActivity.instance.getString(R.string.noClass);
         } else {
-
-            if (Art.equals("Entfall")) {
-                tmp = tmp + MainActivity.instance.getString(R.string.noClass);
-            } else if (Fach.equals("---") && Raum.equals("---")) {
-                tmp = tmp + MainActivity.instance.getString(R.string.noClass);
+            if (extendet) {
+                tmp = tmp + vt.getFach() + " in " + vt.getRaum() + " statt " + vt.getStattFach() + " in " + vt.getStattRaum();
             } else {
-                tmp = tmp + Fach + " in " + Raum;
+                tmp = tmp + vt.getFach() + " in " + vt.getRaum();
             }
+        }
+        if (!vt.getVertretungstext().equals("") && extendet) {
+            tmp = tmp + " (" + vt.getVertretungstext() + ")";
+
 
         }
         addListItem(tmp, tmp1, tmp2, Client.instance.VertretungSize, Client.instance.VertretungRGB);
     }
 
-    public void addListItem(String text, Integer textSize, int ARGB, boolean multiText) {
+    public void addListItem(String text, Integer textSize, boolean multiText) {
 
         //adds items to the list
         int in = 2;
@@ -204,7 +166,7 @@ public class TableFragment extends Fragment {
         nameText.setTextSize(textSize);
         //nameText.setTextColor(ARGB);
         nameText.setSingleLine(!multiText);
-        System.out.println("text: " + text);
+        Client.print("text: " + text);
         nameText.setText(text);
 
         LinearLayout.LayoutParams spParams = new LinearLayout.LayoutParams(11 * in, 15 * in);

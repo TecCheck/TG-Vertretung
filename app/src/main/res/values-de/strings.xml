@@ -4,6 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_info">Über</string>
+    <string name="nav_login">Anmelden</string>
     <string name="setting_filterPref">Filter</string>
     <string name="none">Das solltest du nicht sehen :(</string>
     <string name="setting_saveOffline">Vertretungsplan offline speichern</string>
@@ -19,6 +20,8 @@
     <string name="never">nie</string>
     <string name="connected">Verbunden</string>
     <string name="noConnection">Keine Verbindung</string>
+    <string name="exitTitle">Wirklich Beenden?</string>
+    <string name="exitMessage">Willst du die App wirklich beenden?</string>
 
     <string-array name="classes">
         <item>(nichts)</item>
@@ -74,5 +77,13 @@
     <string name="lastServerRefresh">letzte Server Aktualisierung:</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_settings2">Einstellungen</string>
+    <string name="title_activity_login">Anmelden</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Kennung</string>
+    <string name="prompt_password">Passwort</string>
+    <string name="action_sign_in">Anmelden</string>
+    <string name="action_sign_in_short">Anmelden</string>
+    <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
 
 </resources>

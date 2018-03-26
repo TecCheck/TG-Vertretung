@@ -3,40 +3,41 @@ package de.coop.tgvertretung;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.support.v7.app.ActionBar;;
+import android.preference.PreferenceActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.MenuItem;
 
-public class SettingsActivity extends AppCompatPreferenceActivity implements Preference.OnPreferenceChangeListener{
+public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
-    SharedPreferences settings = null;
     public static final String PREFS_NAME = "Settings";
-
     public static final String FILTER_KEY = "filter";
     public static final String SAVE_KEY = "saveOfflineBool";
     public static final String EXTENDET_KEY = "extendet";
     public static final String FILTER_SWITCH_KEY = "filterSwitch";
-
+    SharedPreferences settings = null;
     Preference filter = null;
     Preference saveOffline = null;
     Preference extendetView = null;
     Preference filterSwitch = null;
-
     String filterString = "";
     //int filterInt = -1;
     boolean saveOfflineBool = true;
     boolean extendetViewBool = false;
     boolean filterSwitchBool = false;
+    private AppCompatDelegate mDelegate;
 
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
     private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getDelegate().getSupportActionBar();
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pre
     public boolean onPreferenceChange(Preference preference, Object value) {
         SharedPreferences.Editor settingsEdit = settings.edit();
 
-        if(preference.getKey() == filter.getKey()){
+        if (preference.getKey() == filter.getKey()) {
 
             settingsEdit.putString(FILTER_KEY, (String) value);
             Client.filter = (String) value;
@@ -100,15 +101,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pre
              MainActivity.filter = ara[(int) value];
              filter.setSummary(ar[(int) value]);
              **/
-        }else if(preference.getKey() == saveOffline.getKey()){
+        } else if (preference.getKey() == saveOffline.getKey()) {
             settingsEdit.putBoolean(SAVE_KEY, (Boolean) value);
             Client.saveOfflineBool = (boolean) value;
-        }else if(preference.getKey() == extendetView.getKey()){
+        } else if (preference.getKey() == extendetView.getKey()) {
             settingsEdit.putBoolean(EXTENDET_KEY, (Boolean) value);
             Client.extendet = (boolean) value;
-        }
-
-        else if(preference.getKey() == filterSwitch.getKey()){
+        } else if (preference.getKey() == filterSwitch.getKey()) {
             settingsEdit.putBoolean(FILTER_SWITCH_KEY, (Boolean) value);
             Client.useFilter = (boolean) value;
             filter.setEnabled((boolean) value);
@@ -117,5 +116,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pre
         settingsEdit.apply();
 
         return true;
+    }
+
+    private AppCompatDelegate getDelegate() {
+        if (mDelegate == null) {
+            mDelegate = AppCompatDelegate.create(this, null);
+        }
+        return mDelegate;
     }
 }

@@ -4,68 +4,101 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import de.sematre.api.tg.VertretungsTabelle;
 
 public class AutoStart extends BroadcastReceiver {
 
-    SharedPreferences settings = null;
-    SharedPreferences table = null;
     public static final String PREFS_NAME = "Settings";
     public static final String TAB_NAME = "Table";
+    public static ArrayList<VertretungsTabelle> tables = new ArrayList<>();
+    public static boolean saveOfflineBool = true;
+    public static String lastReloadStr = "";
+    public static String lastserverRefreshStr = "";
+    public static Thread dwdThread = null;
+    public static SharedPreferences settings = null;
+    public static SharedPreferences table = null;
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
+    public static void load() {
 
-        settings = context.getSharedPreferences(PREFS_NAME, 0);
-        table = context.getSharedPreferences(TAB_NAME, 0);
+        if (dwdThread != null && dwdThread.isAlive()) {
 
-        Client.saveOfflineBool = settings.getBoolean("saveOfflineBool", Client.saveOfflineBool);
-        Client.filter = settings.getString("filter", Client.filter);
-        //filter = settings.getInt("filter", filter);
-        Client.extendet = settings.getBoolean("extendet", Client.extendet);
-        Client.useFilter = settings.getBoolean("filterSwitch", Client.useFilter);
+        } else {
+            dwdThread = new Thread(new Download());
+            dwdThread.setName("Download-Thread");
+            dwdThread.start();
+            Download.autoStart = true;
+        }
 
-        load();
     }
 
-    public void load() {
+    public static void loadFinished() {
+
+        Client.print("load Finished");
         //list is loading
+        try {
 
-        new Thread(new Download()).start();
-
-            System.out.println("online: " + Download.online);
+            Client.print("online: " + Download.online);
 
             if (Download.online) {
+                lastReloadStr = CurrentTime(false);
 
-                Client.lastReloadStr = Client.CurrentTime(false);
-
-                if(Client.saveOfflineBool) {
+                if (saveOfflineBool) {
                     SharedPreferences.Editor tableEdit = table.edit();
 
-                    tableEdit.putString("Time", Client.lastReloadStr);
-                    tableEdit.putString("ServerTime", Client.lastserverRefreshStr);
+                    tableEdit.putString("Time", lastReloadStr);
+                    tableEdit.putString("ServerTime", lastserverRefreshStr);
+                    tableEdit.putString("tables", ObjectSerializer.serialize(tables));
 
                     tableEdit.apply();
                 }
             } else {
 
-                if(Client.saveOfflineBool){
+                if (saveOfflineBool) {
+                    lastReloadStr = table.getString("Time", Resources.getSystem().getString(R.string.never));
+                    lastserverRefreshStr = table.getString("ServerTime", MainActivity.instance.getString(R.string.never));
+                    tables = (ArrayList<VertretungsTabelle>) ObjectSerializer.deserialize(table.getString("tables", ObjectSerializer.serialize(tables)));
 
-                    Client.lastReloadStr = MainActivity.instance.table.getString("Time", MainActivity.instance.getString(R.string.never));
-                    Client.lastserverRefreshStr = MainActivity.instance.table.getString("ServerTime", MainActivity.instance.getString(R.string.never));
                 }
             }
 
-        Download.online = true;
-
-
-    }
-
-    public static void sleep(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        Download.online = true;
     }
 
+    public static String CurrentTime(boolean onlyDate) {
+        Calendar calendar = new GregorianCalendar();
+        String str = calendar.get(Calendar.DAY_OF_MONTH) + "." + (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR) + " ";
+        if (!onlyDate) {
+            if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
+                str += "0" + calendar.get(Calendar.HOUR_OF_DAY);
+            } else {
+                str += calendar.get(Calendar.HOUR_OF_DAY);
+            }
+            str += ":";
+
+            if (calendar.get(Calendar.MINUTE) < 10) {
+                str += "0" + calendar.get(Calendar.MINUTE);
+            } else {
+                str += calendar.get(Calendar.MINUTE);
+            }
+        }
+        return str;
+
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        table = context.getSharedPreferences(TAB_NAME, 0);
+        load();
+    }
 }

@@ -7,13 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Set;
 
 import de.sematre.api.tg.VertretungsTabelle;
 
 public class Client {
-    public static final String PREFS_NAME = "Settings";
-    public static final String TAB_NAME = "Table";
+    private static final boolean SYSOUT = true;
     public static Client instance = null;
     public static ArrayList<VertretungsTabelle> tables = new ArrayList<>();
     public static String filter = "";
@@ -21,19 +19,17 @@ public class Client {
     public static boolean saveOfflineBool = true;
     public static boolean extendet = false;
     public static boolean useFilter = false;
-    public static int currentView = 0;
-    public static boolean viewUI = false;
+    public static String password = "";
+    public static String username = "";
+    public static boolean singInConfirmed = false;
     public static String lastReloadStr = "";
     public static String lastserverRefreshStr = "";
-    public static Thread dwdThread = null;
-    public int NothingRGB = 0x000000;
+    public static boolean login = false;
+    private static boolean viewUI = false;
+    private static Thread dwdThread = null;
     public int VertretungRGB = 0xff000000;
-    public int UberschriftRBG = 0xff3e31d3;
     public int NothingSize = 20;
     public int VertretungSize = 15;
-    public int UberschriftSize = 25;
-
-    public static boolean dwdThreadRunning = false;
 
     public Client() {
         if (instance == null) {
@@ -50,8 +46,9 @@ public class Client {
             MainActivity.instance.progBar.setEnabled(true);
         }
 
-        if(!dwdThreadRunning) {
-            dwdThreadRunning = true;
+        if (dwdThread != null && dwdThread.isAlive()) {
+
+        } else {
             dwdThread = new Thread(new Download());
             dwdThread.setName("Download-Thread");
             dwdThread.start();
@@ -61,11 +58,13 @@ public class Client {
 
     public static void loadFinished() {
 
-        System.out.println("load Finished");
+        Client.print("viewUI: " + viewUI);
+
+        Client.print("load Finished");
         //list is loading
         try {
 
-            System.out.println("online: " + Download.online);
+            Client.print("online: " + Download.online);
 
             if (Download.online) {
                 if (viewUI)
@@ -84,8 +83,10 @@ public class Client {
                 }
             } else {
 
-                if (viewUI)
+                if (viewUI) {
                     MainActivity.showSnack(MainActivity.instance.getString(R.string.noConnection));
+                }
+
 
                 if (saveOfflineBool) {
                     lastReloadStr = MainActivity.instance.table.getString("Time", MainActivity.instance.getString(R.string.never));
@@ -97,20 +98,24 @@ public class Client {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            Client.print("Error!!!");
         }
 
         if (viewUI) {
             MainActivity.instance.startPagerView();
+            Client.print("Pager started!");
+            MainActivity.instance.setTable(getView(CurrentTime(true)));
+            System.out.println(getView(CurrentTime(true)));
         }
-        MainActivity.instance.setTable(getView(CurrentTime(true)));
-        System.out.println(getView(CurrentTime(true)));
 
         Download.online = true;
         if (viewUI) {
             MainActivity.instance.loadView.setVisibility(View.GONE);
             MainActivity.instance.progBar.setEnabled(false);
             MainActivity.instance.stdView.setVisibility(View.VISIBLE);
+            Client.print("Pager vissible");
         }
+
     }
 
     public static String CurrentTime(boolean onlyDate) {
@@ -150,21 +155,8 @@ public class Client {
 
     }
 
-    public static int getDownloadThread(Set<Thread> threadSet) {
-
-        int i = 0;
-
-        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-
-        System.out.println(threadSet.size());
-
-        while (i < threadSet.size()) {
-            if (threadArray[i].getName().equals("Download-Thread")) {
-                return i;
-            }
-        }
-
-        return -1;
+    public static void print(String text) {
+        if (SYSOUT)
+            System.out.println(text);
     }
-
 }

@@ -8,43 +8,55 @@ import de.sematre.api.tg.TG;
 public class Download implements Runnable {
 
     public static boolean online = true;
+    public static boolean autoStart = false;
 
     @Override
     public void run() {
-        Client.dwdThreadRunning = true;
         online = true;
 
         try {
 
             Client.tables.clear();
 
-            System.out.println("Download started");
+            Client.print("Download started");
 
-            TG tgv = new TG("226142", "tgrv");
-            tgv.get();
+            //TG tgv = new TG("226142", "tgrv");
+            TG tgv = new TG(Client.username, Client.password);
             tgv.setFilterPrefix("");
+            tgv.get();
 
-            System.out.println("ServerTime: " + tgv.getTimeTable().getDate());
+            Client.print("ServerTime: " + tgv.getTimeTable().getDate());
             Client.lastserverRefreshStr = tgv.getTimeTable().getDate();
             Client.tables = tgv.get();
-            System.out.println("Download finished");
+            Client.print("Download finished");
 
         } catch (Exception e) {
             e.printStackTrace();
             online = false;
         }
-        Client.dwdThreadRunning = false;
+
         Handler mainHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                Client.loadFinished();
-                System.out.println("Runable started");
-            }
-        };
+        Runnable myRunnable;
+        if (autoStart) {
+            myRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    AutoStart.loadFinished();
+                    Client.print("Runable AutoStarted");
+                }
+            };
+        } else {
+            myRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    Client.loadFinished();
+                    Client.print("Runable started");
+                }
+            };
+        }
 
         mainHandler.post(myRunnable);
-        System.out.println("Download Thread closed");
+        Client.print("Download Thread closed");
 
     }
 
