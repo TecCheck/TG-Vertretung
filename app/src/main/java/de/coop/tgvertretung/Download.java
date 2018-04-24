@@ -14,22 +14,35 @@ public class Download implements Runnable {
     public void run() {
         online = true;
 
+        Client.print("autostart: " + autoStart);
+
         try {
 
-            Client.tables.clear();
-
             Client.print("Download started");
-
+            TG tgv;
             //TG tgv = new TG("226142", "tgrv");
-            TG tgv = new TG(Client.username, Client.password);
-            tgv.setFilterPrefix("");
-            tgv.get();
 
-            Client.print("ServerTime: " + tgv.getTimeTable().getDate());
-            Client.lastserverRefreshStr = tgv.getTimeTable().getDate();
-            Client.tables = tgv.get();
-            Client.print("Download finished");
-
+            if(!autoStart) {
+                tgv = new TG(Client.username, Client.password);
+                Client.tables.clear();
+                tgv.setFilterPrefix("");
+                tgv.get();
+                Client.print("ServerTime: " + tgv.getTimeTable().getDate());
+                Client.lastserverRefreshStr = tgv.getTimeTable().getDate();
+                Client.tables = tgv.get();
+                Client.print("Download finished");
+            }
+            else {
+                Client.print("username: " + AutoStart.username + ", password: " + AutoStart.password);
+                tgv = new TG(AutoStart.username, AutoStart.password);
+                AutoStart.tables.clear();
+                tgv.setFilterPrefix("");
+                tgv.get();
+                Client.print("ServerTime: " + tgv.getTimeTable().getDate());
+                AutoStart.lastserverRefreshStr = tgv.getTimeTable().getDate();
+                AutoStart.tables = tgv.get();
+                Client.print("Download finished");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             online = false;
@@ -57,7 +70,5 @@ public class Download implements Runnable {
 
         mainHandler.post(myRunnable);
         Client.print("Download Thread closed");
-
     }
-
 }

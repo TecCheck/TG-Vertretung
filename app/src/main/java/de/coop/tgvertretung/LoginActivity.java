@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,64 +21,45 @@ import java.util.Scanner;
 
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String PREFS_NAME = "Settings";
     private static final Gson gson = new Gson();
     public static SharedPreferences settings = null;
     public static Button btn = null;
     public static EditText pwText = null;
     public static EditText nmText = null;
-    public static String wrongPassword = "";
-    public static String offline = "";
     public static boolean firstTime = true;
     String text = "";
     String url = "";
     boolean fin = false;
-    boolean off = false;
-    boolean wrgpw = false;
-
-    public void onLoadFinish(boolean wrongPw, boolean online) {
-
-        Client.print("off: " + off + " wrgpw: " + wrgpw);
-        Client.print("online: " + online + " wrongPw: " + wrongPw);
-
-        if (wrongPw) {
-            Snackbar.make(btn, wrongPassword, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        } else if (!online) {
-            Snackbar.make(btn, offline, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        } else {
-            SharedPreferences.Editor settingsEdit = settings.edit();
-            settingsEdit.putBoolean("loginConfirmed", true);
-            settingsEdit.putString("password", pwText.getText().toString());
-            settingsEdit.putString("username", nmText.getText().toString());
-            Client.singInConfirmed = true;
-            Client.username = nmText.getText().toString();
-            Client.password = pwText.getText().toString();
-            settingsEdit.commit();
-            Client.login = true;
-            super.onBackPressed();
-        }
-
-    }
+    boolean offline = false;
 
     public void login() {
 
-        wrongPassword = getString(R.string.error_incorrect_password);
-        offline = getString(R.string.noConnection);
-
         try {
             String json = "[" + this.getStringFromURL("https://iphone.dsbcontrol.de/(S(bsiggfwxwakskze5ca4fd4ed))/iPhoneService.svc/DSB/authid/" + nmText.getText().toString() + "/" + pwText.getText().toString()) + "]";
-            JsonArray jArray = (JsonArray) gson.fromJson(json, JsonArray.class);
+            JsonArray jArray = gson.fromJson(json, JsonArray.class);
             String key = jArray.get(0).getAsString();
+
             if (key.equals("00000000-0000-0000-0000-000000000000")) {
-                wrgpw = true;
+                //wrong Password
+                Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             } else {
+                //password is correct and phone is online
+                SharedPreferences.Editor settingsEdit = settings.edit();
+                settingsEdit.putBoolean(getString(R.string.settings_loginconfirmed), true);
+                settingsEdit.putString(getString(R.string.settings_password), pwText.getText().toString());
+                settingsEdit.putString(getString(R.string.settings_username), nmText.getText().toString());
                 Client.singInConfirmed = true;
+                Client.username = nmText.getText().toString();
+                Client.password = pwText.getText().toString();
+                settingsEdit.apply();
+                if(firstTime)
+                    Client.login = true;
+                super.onBackPressed();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            off = true;
+            Snackbar.make(btn, getString(R.string.noConnection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
-        onLoadFinish(wrgpw, !off);
     }
 
     private String getStringFromURL(String url1) {
@@ -92,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
         return text;
     }
 
@@ -100,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         pwText = (EditText) findViewById(R.id.password);
         nmText = (EditText) findViewById(R.id.username);
         btn = (Button) findViewById(R.id.sign_in_button);
@@ -111,14 +88,12 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(getString(R.string.settings_name), 0);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null && firstTime) {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
         Client.print("ActionBar: " + actionBar);
-
-
     }
 
     @Override
@@ -169,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                 scanner.close();
             } catch (IOException var5) {
                 var5.printStackTrace();
-                off = true;
+                offline = true;
             }
             fin = true;
         }

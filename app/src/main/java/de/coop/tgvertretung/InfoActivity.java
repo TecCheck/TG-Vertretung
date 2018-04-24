@@ -1,11 +1,15 @@
 package de.coop.tgvertretung;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class InfoActivity extends AppCompatActivity {
@@ -28,8 +32,17 @@ public class InfoActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        TextView test = (TextView) findViewById(R.id.textView);
-        test.setText(getString(R.string.info_content) + "\n \nVersion: " + version);
+        TextView versionNameTxt = (TextView) findViewById(R.id.versionNameTxt);
+        versionNameTxt.setText(version);
+
+        LinearLayout gitHub = (LinearLayout) findViewById(R.id.Github);
+        gitHub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_url)));
+                startActivity(browserIntent);
+            }
+        });
     }
 
     @Override
@@ -41,4 +54,5 @@ public class InfoActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

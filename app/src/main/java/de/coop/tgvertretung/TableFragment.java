@@ -103,20 +103,20 @@ public class TableFragment extends Fragment {
         Drawable stroke = MainActivity.instance.getDrawable(R.drawable.colorgrade_stroke);
 
         if (Vtable.getDate().contains("Montag")) {
-            base.setTint(getResources().getColor(R.color.green));
-            stroke.setTint(getResources().getColor(R.color.green));
+            base.setTint(getResources().getColor(R.color.yellow));
+            stroke.setTint(getResources().getColor(R.color.yellow));
         } else if (Vtable.getDate().contains("Dienstag")) {
             base.setTint(getResources().getColor(R.color.blue));
             stroke.setTint(getResources().getColor(R.color.blue));
         } else if (Vtable.getDate().contains("Mittwoch")) {
-            base.setTint(getResources().getColor(R.color.pink));
-            stroke.setTint(getResources().getColor(R.color.pink));
-        } else if (Vtable.getDate().contains("Donnerstag")) {
             base.setTint(getResources().getColor(R.color.orange));
             stroke.setTint(getResources().getColor(R.color.orange));
+        } else if (Vtable.getDate().contains("Donnerstag")) {
+            base.setTint(getResources().getColor(R.color.green));
+            stroke.setTint(getResources().getColor(R.color.green));
         } else if (Vtable.getDate().contains("Freitag")) {
-            base.setTint(getResources().getColor(R.color.yellow));
-            stroke.setTint(getResources().getColor(R.color.yellow));
+            base.setTint(getResources().getColor(R.color.pink));
+            stroke.setTint(getResources().getColor(R.color.pink));
         } else {
             base.setTint(getResources().getColor(R.color.purple));
             stroke.setTint(getResources().getColor(R.color.purple));
@@ -144,7 +144,6 @@ public class TableFragment extends Fragment {
         }
         if (!vt.getVertretungstext().equals("") && extendet) {
             tmp = tmp + " (" + vt.getVertretungstext() + ")";
-
 
         }
         addListItem(tmp, tmp1, tmp2, Client.instance.VertretungSize, Client.instance.VertretungRGB);
@@ -178,6 +177,7 @@ public class TableFragment extends Fragment {
         mainLayout.addView(ln);
 
     }
+
 
     public void addListItem(String text, String text1, String text2, Integer textSize, int ARGB) {
 

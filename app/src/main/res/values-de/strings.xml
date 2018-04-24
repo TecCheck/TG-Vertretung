@@ -14,7 +14,7 @@
     <string name="nothing">Keine Vertretungen</string>
     <string name="noClass">Entfall</string>
     <string name="setting_extendetView">Erweiterte Ansicht</string>
-    <string name="loading">Laden...</string>
+    <string name="loading">Laden…</string>
     <string name="setting_filterSwitch">Filter benutzen</string>
     <string name="lastReload">Zul. Aktualisiert:</string>
     <string name="never">nie</string>
@@ -74,10 +74,19 @@
         <item>21</item>
         <item>22</item>
     </array>
-    <string name="lastServerRefresh">letzte Server Aktualisierung:</string>
+    <string name="lastServerRefresh">Letzte Server Aktualisierung:</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_settings2">Einstellungen</string>
     <string name="title_activity_login">Anmelden</string>
+    <string name="version_name">Versionsname</string>
+    <string name="github_name">GitHub</string>
+    <string name="github_txt">Besuche die GitHub site.</string>
+    <string name="devs_name">Entwickler</string>
+    <string name="tobias">Tobias</string>
+    <string name="christoph">Christoph</string>
+    <string name="licenses_name">Lizensen</string>
+    <string name="licenses_txt">Guck dir die Lizensen der Biblioteken an.</string>
+
 
     <!-- Strings related to login -->
     <string name="prompt_username">Kennung</string>

@@ -7,8 +7,8 @@ android {
         applicationId "de.coop.tgvertretung"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 9
-        versionName "Beta 0.9"
+        versionCode 12
+        versionName "Beta 1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true

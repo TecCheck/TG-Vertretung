@@ -10,11 +10,6 @@ import android.view.MenuItem;
 
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
-    public static final String PREFS_NAME = "Settings";
-    public static final String FILTER_KEY = "filter";
-    public static final String SAVE_KEY = "saveOfflineBool";
-    public static final String EXTENDET_KEY = "extendet";
-    public static final String FILTER_SWITCH_KEY = "filterSwitch";
     SharedPreferences settings = null;
     Preference filter = null;
     Preference saveOffline = null;
@@ -25,13 +20,12 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     boolean saveOfflineBool = true;
     boolean extendetViewBool = false;
     boolean filterSwitchBool = false;
-    private AppCompatDelegate mDelegate;
 
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
     private void setupActionBar() {
-        ActionBar actionBar = getDelegate().getSupportActionBar();
+        ActionBar actionBar = AppCompatDelegate.create(this, null).getSupportActionBar();
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -44,34 +38,28 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         setupActionBar();
 
         addPreferencesFromResource(R.xml.activity_settings);
-
         filter = findPreference("filterPref");
         saveOffline = findPreference("saveOffline");
         extendetView = findPreference("extendetView");
         filterSwitch = findPreference("switch_preference");
 
         //settings = PreferenceManager.getDefaultSharedPreferences(this);
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(getString(R.string.settings_name), 0);
 
         filter.setOnPreferenceChangeListener(this);
         saveOffline.setOnPreferenceChangeListener(this);
         extendetView.setOnPreferenceChangeListener(this);
         filterSwitch.setOnPreferenceChangeListener(this);
 
-        filter.setDefaultValue(settings.getString(FILTER_KEY, filterString));
+        filter.setDefaultValue(settings.getString(getString(R.string.settings_filter), filterString));
         //filter.setDefaultValue(settings.getInt(FILTER_KEY, filterInt));
-        saveOffline.setDefaultValue(settings.getBoolean(SAVE_KEY, saveOfflineBool));
-        extendetView.setDefaultValue(settings.getBoolean(EXTENDET_KEY, extendetViewBool));
-        filterSwitch.setDefaultValue(settings.getBoolean(FILTER_SWITCH_KEY, filterSwitchBool));
+        saveOffline.setDefaultValue(settings.getBoolean(getString(R.string.settings_saveofflinebool), saveOfflineBool));
+        extendetView.setDefaultValue(settings.getBoolean(getString(R.string.settings_extendet), extendetViewBool));
+        filterSwitch.setDefaultValue(settings.getBoolean(getString(R.string.settings_filterswitch), filterSwitchBool));
 
-        filter.setSummary(settings.getString(FILTER_KEY, filterString));
+        filter.setSummary(settings.getString(getString(R.string.settings_filter), filterString));
         //filter.setSummary(settings.getInt(FILTER_KEY, filterInt));
-        filter.setEnabled(settings.getBoolean(FILTER_SWITCH_KEY, filterSwitchBool));
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+        filter.setEnabled(settings.getBoolean(getString(R.string.settings_filterswitch), filterSwitchBool));
     }
 
     @Override
@@ -90,7 +78,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
         if (preference.getKey() == filter.getKey()) {
 
-            settingsEdit.putString(FILTER_KEY, (String) value);
+            settingsEdit.putString(getString(R.string.settings_filter), (String) value);
             Client.filter = (String) value;
             filter.setSummary((String) value);
 
@@ -102,26 +90,18 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
              filter.setSummary(ar[(int) value]);
              **/
         } else if (preference.getKey() == saveOffline.getKey()) {
-            settingsEdit.putBoolean(SAVE_KEY, (Boolean) value);
+            settingsEdit.putBoolean(getString(R.string.settings_saveofflinebool), (Boolean) value);
             Client.saveOfflineBool = (boolean) value;
         } else if (preference.getKey() == extendetView.getKey()) {
-            settingsEdit.putBoolean(EXTENDET_KEY, (Boolean) value);
+            settingsEdit.putBoolean(getString(R.string.settings_extendet), (Boolean) value);
             Client.extendet = (boolean) value;
         } else if (preference.getKey() == filterSwitch.getKey()) {
-            settingsEdit.putBoolean(FILTER_SWITCH_KEY, (Boolean) value);
+            settingsEdit.putBoolean(getString(R.string.settings_filterswitch), (Boolean) value);
             Client.useFilter = (boolean) value;
             filter.setEnabled((boolean) value);
         }
 
         settingsEdit.apply();
-
         return true;
-    }
-
-    private AppCompatDelegate getDelegate() {
-        if (mDelegate == null) {
-            mDelegate = AppCompatDelegate.create(this, null);
-        }
-        return mDelegate;
     }
 }

@@ -23,14 +23,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String PREFS_NAME = "Settings";
-    public static final String TAB_NAME = "Table";
     public static final boolean CLOSE_WARNING = false;
     public static MainActivity instance = null;
-    public ViewPager mPager;
+    public static ViewPager mPager;
     public LinearLayout mainLayout = null;
     public FloatingActionButton fab = null;
     public TextView lastReload = null;
@@ -55,10 +52,7 @@ public class MainActivity extends AppCompatActivity
 
     public void startPagerView() {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        Client.print("mPagerAdadpter: " + mPagerAdapter);
-        Client.print("ViewPager: " + mPager);
         mPager = (ViewPager) findViewById(R.id.container);
-        Client.print("ViewPager: " + mPager);
         mPager.setAdapter(mPagerAdapter);
 
         mainLayout = (LinearLayout) findViewById(R.id.MainLayout);
@@ -115,20 +109,19 @@ public class MainActivity extends AppCompatActivity
                 Client.load(true);
             }
         });
-        instance.settings = MainActivity.instance.getSharedPreferences(PREFS_NAME, 0);
-        instance.table = MainActivity.instance.getSharedPreferences(TAB_NAME, 0);
+        settings = MainActivity.instance.getSharedPreferences(getString(R.string.settings_name), 0);
+        table = MainActivity.instance.getSharedPreferences(getString(R.string.tab_name), 0);
 
         new Client();
 
-        Client.saveOfflineBool = instance.settings.getBoolean("saveOfflineBool", Client.saveOfflineBool);
-        Client.filter = instance.settings.getString("filter", Client.filter);
+        Client.saveOfflineBool = instance.settings.getBoolean(getString(R.string.settings_saveofflinebool), Client.saveOfflineBool);
+        Client.filter = instance.settings.getString(getString(R.string.settings_filter), Client.filter);
         //filter = settings.getInt("filter", filter);
-        Client.extendet = instance.settings.getBoolean("extendet", Client.extendet);
-        Client.useFilter = instance.settings.getBoolean("filterSwitch", Client.useFilter);
-        Client.password = instance.settings.getString("password", Client.password);
-        Client.username = instance.settings.getString("username", Client.username);
-        Client.singInConfirmed = settings.getBoolean("loginConfirmed", Client.singInConfirmed);
-
+        Client.extendet = instance.settings.getBoolean(getString(R.string.settings_extendet), Client.extendet);
+        Client.useFilter = instance.settings.getBoolean(getString(R.string.settings_filterswitch), Client.useFilter);
+        Client.password = instance.settings.getString(getString(R.string.settings_password), Client.password);
+        Client.username = instance.settings.getString(getString(R.string.settings_username), Client.username);
+        Client.singInConfirmed = settings.getBoolean(getString(R.string.settings_loginconfirmed), Client.singInConfirmed);
 
         if (Client.singInConfirmed /*&& !Client.password.equals("") && !Client.username.equals("")*/) {
             Client.load(true);
@@ -140,15 +133,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+        Client.print("OnResume-------------------------------------------------------------------------------");
         super.onResume();
-
         navigationView.getMenu().getItem(0).setChecked(true);
-        //Client.load(true);
+
+        Client.print("starting Pager");
+        int i = mPager.getCurrentItem();
         startPagerView();
+        setTable(i);
         if (Client.login) {
             Client.load(true);
+            Client.login = false;
         }
-
     }
 
     @Override
@@ -160,7 +156,6 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Client.print("EXIT-------------------------------------------------------------------------");
-
             if (CLOSE_WARNING) {
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.exitTitle)
@@ -173,7 +168,6 @@ public class MainActivity extends AppCompatActivity
                                 System.exit(1);
                             }
                         }).create().show();
-
             }
             super.onBackPressed();
             System.exit(1);
@@ -193,10 +187,8 @@ public class MainActivity extends AppCompatActivity
             LoginActivity.firstTime = false;
             startActivity(new Intent(this, LoginActivity.class));
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }

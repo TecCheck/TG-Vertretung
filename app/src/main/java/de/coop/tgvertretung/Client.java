@@ -26,6 +26,7 @@ public class Client {
     public static String lastserverRefreshStr = "";
     public static boolean login = false;
     private static boolean viewUI = false;
+    private static  boolean firstTime = true;
     private static Thread dwdThread = null;
     public int VertretungRGB = 0xff000000;
     public int NothingSize = 20;
@@ -75,9 +76,9 @@ public class Client {
                 if (saveOfflineBool) {
                     SharedPreferences.Editor tableEdit = MainActivity.instance.table.edit();
 
-                    tableEdit.putString("Time", lastReloadStr);
-                    tableEdit.putString("ServerTime", lastserverRefreshStr);
-                    tableEdit.putString("tables", ObjectSerializer.serialize(tables));
+                    tableEdit.putString(MainActivity.instance.getString(R.string.tab_time), lastReloadStr);
+                    tableEdit.putString(MainActivity.instance.getString(R.string.tab_servertime), lastserverRefreshStr);
+                    tableEdit.putString(MainActivity.instance.getString(R.string.tab_tables), ObjectSerializer.serialize(tables));
 
                     tableEdit.apply();
                 }
@@ -89,11 +90,13 @@ public class Client {
 
 
                 if (saveOfflineBool) {
-                    lastReloadStr = MainActivity.instance.table.getString("Time", MainActivity.instance.getString(R.string.never));
-                    lastserverRefreshStr = MainActivity.instance.table.getString("ServerTime", MainActivity.instance.getString(R.string.never));
-                    tables = (ArrayList<VertretungsTabelle>) ObjectSerializer.deserialize(MainActivity.instance.table.getString("tables", ObjectSerializer.serialize(tables)));
+                    lastReloadStr = MainActivity.instance.table.getString(MainActivity.instance.getString(R.string.tab_time), MainActivity.instance.getString(R.string.never));
+                    lastserverRefreshStr = MainActivity.instance.table.getString(MainActivity.instance.getString(R.string.tab_servertime), MainActivity.instance.getString(R.string.never));
+                    tables = (ArrayList<VertretungsTabelle>) ObjectSerializer.deserialize(MainActivity.instance.table.getString(MainActivity.instance.getString(R.string.tab_tables), ObjectSerializer.serialize(tables)));
 
                 }
+
+                Client.print("table: " + tables);
             }
 
         } catch (IOException | ClassNotFoundException e) {
@@ -102,9 +105,15 @@ public class Client {
         }
 
         if (viewUI) {
+            int i = MainActivity.mPager.getCurrentItem();
             MainActivity.instance.startPagerView();
             Client.print("Pager started!");
-            MainActivity.instance.setTable(getView(CurrentTime(true)));
+            if(firstTime) {
+                MainActivity.instance.setTable(getView(CurrentTime(true)));
+                firstTime = false;
+            }else
+               MainActivity.instance.setTable(i);
+
             System.out.println(getView(CurrentTime(true)));
         }
 
@@ -120,7 +129,7 @@ public class Client {
 
     public static String CurrentTime(boolean onlyDate) {
         Calendar calendar = new GregorianCalendar();
-        String str = calendar.get(Calendar.DAY_OF_MONTH) + "." + (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR) + " ";
+        String str = calendar.get(Calendar.DAY_OF_MONTH ) + "." + (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR) + " ";
         if (!onlyDate) {
             if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
                 str += "0" + calendar.get(Calendar.HOUR_OF_DAY);

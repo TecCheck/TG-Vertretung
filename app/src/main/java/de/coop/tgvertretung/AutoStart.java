@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,15 +14,16 @@ import de.sematre.api.tg.VertretungsTabelle;
 
 public class AutoStart extends BroadcastReceiver {
 
-    public static final String PREFS_NAME = "Settings";
-    public static final String TAB_NAME = "Table";
     public static ArrayList<VertretungsTabelle> tables = new ArrayList<>();
     public static boolean saveOfflineBool = true;
     public static String lastReloadStr = "";
     public static String lastserverRefreshStr = "";
+    public static String password = "";
+    public static String username = "";
     public static Thread dwdThread = null;
-    public static SharedPreferences settings = null;
     public static SharedPreferences table = null;
+    public static Context con = null;
+
 
     public static void load() {
 
@@ -32,10 +32,10 @@ public class AutoStart extends BroadcastReceiver {
         } else {
             dwdThread = new Thread(new Download());
             dwdThread.setName("Download-Thread");
-            dwdThread.start();
             Download.autoStart = true;
-        }
+            dwdThread.start();
 
+        }
     }
 
     public static void loadFinished() {
@@ -50,20 +50,21 @@ public class AutoStart extends BroadcastReceiver {
                 lastReloadStr = CurrentTime(false);
 
                 if (saveOfflineBool) {
-                    SharedPreferences.Editor tableEdit = table.edit();
+                    if(!tables.isEmpty()) {
+                        SharedPreferences.Editor tableEdit = table.edit();
+                        tableEdit.putString(con.getString(R.string.tab_time), lastReloadStr);
+                        tableEdit.putString(con.getString(R.string.tab_servertime), lastserverRefreshStr);
+                        tableEdit.putString(con.getString(R.string.tab_tables), ObjectSerializer.serialize(tables));
 
-                    tableEdit.putString("Time", lastReloadStr);
-                    tableEdit.putString("ServerTime", lastserverRefreshStr);
-                    tableEdit.putString("tables", ObjectSerializer.serialize(tables));
-
-                    tableEdit.apply();
+                        tableEdit.apply();
+                    }
                 }
             } else {
 
                 if (saveOfflineBool) {
-                    lastReloadStr = table.getString("Time", Resources.getSystem().getString(R.string.never));
-                    lastserverRefreshStr = table.getString("ServerTime", MainActivity.instance.getString(R.string.never));
-                    tables = (ArrayList<VertretungsTabelle>) ObjectSerializer.deserialize(table.getString("tables", ObjectSerializer.serialize(tables)));
+                    lastReloadStr = table.getString(con.getString(R.string.tab_time), con.getString(R.string.never));
+                    lastserverRefreshStr = table.getString(con.getString(R.string.tab_servertime), con.getString(R.string.never));
+                    tables = (ArrayList<VertretungsTabelle>) ObjectSerializer.deserialize(table.getString(con.getString(R.string.tab_tables), ObjectSerializer.serialize(tables)));
 
                 }
             }
@@ -98,7 +99,14 @@ public class AutoStart extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        table = context.getSharedPreferences(TAB_NAME, 0);
+        con = context;
+        table = context.getSharedPreferences(context.getString(R.string.tab_name), 0);
+        SharedPreferences settings = context.getSharedPreferences(context.getString(R.string.settings_name), 0);
+        password = settings.getString(context.getString(R.string.settings_password), password);
+        username = settings.getString(context.getString(R.string.settings_username), username);
+
+        Client.print("prefs username: " + context.getString(R.string.settings_username) + ", prefs password: " + context.getString(R.string.settings_username));
+        Client.print("username: " + AutoStart.username + ", password: " + AutoStart.password);
         load();
     }
 }

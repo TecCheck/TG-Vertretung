@@ -1,7 +1,7 @@
 <resources>
     <string name="none">well that could be an error</string>
     <string name="app_name">TGVertretung</string>
-    <string name="nav_info">Info</string>
+    <string name="nav_info">About</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_login">Log In</string>
     <string name="navigation_drawer_close">Open navigation drawer</string>
@@ -22,6 +22,7 @@
     <string name="noConnection">No Connection</string>
     <string name="exitTitle">Really Exit?</string>
     <string name="exitMessage">Are you sure you want to exit?</string>
+
 
     <string-array name="classes">
         <item>(nothing)</item>
@@ -77,4 +78,13 @@
     <string name="lastServerRefresh">last Server Refresh:</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_settings2">Settings</string>
+    <string name="version_name">Version Name</string>
+    <string name="github_name">GitHub</string>
+    <string name="github_txt">Visit the GitHub site.</string>
+    <string name="devs_name">Developers</string>
+    <string name="tobias">Tobias</string>
+    <string name="christoph">Christoph</string>
+    <string name="licenses_name">Licences</string>
+    <string name="licenses_txt">View the licences of the Libraries.</string>
+
 </resources>

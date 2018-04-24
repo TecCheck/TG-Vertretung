@@ -2,9 +2,9 @@ package de.coop.tgvertretung;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
-public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+public class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
     public ScreenSlidePagerAdapter(FragmentManager fm) {
         super(fm);
     }
