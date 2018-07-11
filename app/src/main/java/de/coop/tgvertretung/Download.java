@@ -24,6 +24,7 @@ public class Download implements Runnable {
 
             if(!autoStart) {
                 tgv = new TG(Client.username, Client.password);
+                tgv.setSummarizeResults(true);
                 Client.tables.clear();
                 tgv.setFilterPrefix("");
                 tgv.get();
@@ -35,6 +36,7 @@ public class Download implements Runnable {
             else {
                 Client.print("username: " + AutoStart.username + ", password: " + AutoStart.password);
                 tgv = new TG(AutoStart.username, AutoStart.password);
+                tgv.setSummarizeResults(true);
                 AutoStart.tables.clear();
                 tgv.setFilterPrefix("");
                 tgv.get();

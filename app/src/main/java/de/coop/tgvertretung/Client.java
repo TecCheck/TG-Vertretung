@@ -129,8 +129,18 @@ public class Client {
 
     public static String CurrentTime(boolean onlyDate) {
         Calendar calendar = new GregorianCalendar();
-        String str = calendar.get(Calendar.DAY_OF_MONTH ) + "." + (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR) + " ";
+        String str = "";
+        if(calendar.get(Calendar.DAY_OF_MONTH) < 10){
+            str = str + "0";
+        }
+        str = str + calendar.get(Calendar.DAY_OF_MONTH) +".";
+        if((calendar.get(Calendar.MONTH) +1) < 10){
+            str = str + "0";
+        }
+        str = str + (calendar.get(Calendar.MONTH) +1) + " " + calendar.get(Calendar.YEAR);
+
         if (!onlyDate) {
+            str = str + " ";
             if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
                 str += "0" + calendar.get(Calendar.HOUR_OF_DAY);
             } else {

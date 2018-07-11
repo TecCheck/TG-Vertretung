@@ -132,9 +132,9 @@ public class TableFragment extends Fragment {
         String tmp2 = vt.getKlasse() + ": ";
 
         if (vt.getFach().equals("---")) {
-            tmp = tmp + MainActivity.instance.getString(R.string.noClass);
+            tmp = tmp + vt.getStattFach() + " " + MainActivity.instance.getString(R.string.noClass);
         } else if (vt.getArt().equals("Entfall") || vt.getRaum().equals("---")) {
-            tmp = tmp + vt.getFach() + " " + MainActivity.instance.getString(R.string.noClass);
+            tmp = tmp + vt.getStattFach() + " " + MainActivity.instance.getString(R.string.noClass);
         } else {
             if (extendet) {
                 tmp = tmp + vt.getFach() + " in " + vt.getRaum() + " statt " + vt.getStattFach() + " in " + vt.getStattRaum();

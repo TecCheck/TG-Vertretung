@@ -74,7 +74,7 @@
         <item>21</item>
         <item>22</item>
     </array>
-    <string name="lastServerRefresh">Letzte Server Aktualisierung:</string>
+    <string name="lastServerRefresh">Letzte Änderung:</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_settings2">Einstellungen</string>
     <string name="title_activity_login">Anmelden</string>

@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private boolean payload = true;
+
     public static final boolean CLOSE_WARNING = false;
     public static MainActivity instance = null;
     public static ViewPager mPager;
@@ -68,21 +70,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Client.print("OnCreate-------------------------------------------------------------------------------");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //the menu in the top left is created
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
-                lastReload = (TextView) findViewById(R.id.lastReload);
+                lastReload = findViewById(R.id.lastReload);
                 lastReload.setText(getString(R.string.lastReload) + " " + Client.lastReloadStr);
 
-                lastServerRefresh = (TextView) findViewById(R.id.lastReload2);
+                lastServerRefresh = findViewById(R.id.lastReload2);
                 if (Client.extendet) {
                     lastServerRefresh.setVisibility(View.VISIBLE);
-                    lastServerRefresh.setText(getString(R.string.lastServerRefresh) + "\n" + Client.lastserverRefreshStr);
+                    lastServerRefresh.setText(getString(R.string.lastServerRefresh) + Client.lastserverRefreshStr);
                 } else {
                     lastServerRefresh.setVisibility(View.GONE);
                 }
