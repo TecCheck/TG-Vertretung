@@ -24,18 +24,19 @@ public class InfoActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        //get the current Version
         String version = "";
-
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
             version = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        TextView versionNameTxt = (TextView) findViewById(R.id.versionNameTxt);
+        TextView versionNameTxt = findViewById(R.id.versionNameTxt);
         versionNameTxt.setText(version);
 
-        LinearLayout gitHub = (LinearLayout) findViewById(R.id.Github);
+        //set Link for GitHub website
+        LinearLayout gitHub = findViewById(R.id.Github);
         gitHub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

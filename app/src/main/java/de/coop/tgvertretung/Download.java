@@ -25,24 +25,22 @@ public class Download implements Runnable {
             if(!autoStart) {
                 tgv = new TG(Client.username, Client.password);
                 tgv.setSummarizeResults(true);
-                Client.tables.clear();
                 tgv.setFilterPrefix("");
-                tgv.get();
-                Client.print("ServerTime: " + tgv.getTimeTable().getDate());
-                Client.lastserverRefreshStr = tgv.getTimeTable().getDate();
+                Client.tables.clear();
                 Client.tables = tgv.get();
+                Client.lastserverRefreshStr = tgv.getTimeTable().getDate();
+                Client.print("ServerTime: " + tgv.getTimeTable().getDate());
                 Client.print("Download finished");
             }
             else {
                 Client.print("username: " + AutoStart.username + ", password: " + AutoStart.password);
                 tgv = new TG(AutoStart.username, AutoStart.password);
                 tgv.setSummarizeResults(true);
-                AutoStart.tables.clear();
                 tgv.setFilterPrefix("");
-                tgv.get();
-                Client.print("ServerTime: " + tgv.getTimeTable().getDate());
-                AutoStart.lastserverRefreshStr = tgv.getTimeTable().getDate();
+                AutoStart.tables.clear();
                 AutoStart.tables = tgv.get();
+                AutoStart.lastserverRefreshStr = tgv.getTimeTable().getDate();
+                Client.print("ServerTime: " + tgv.getTimeTable().getDate());
                 Client.print("Download finished");
             }
         } catch (Exception e) {

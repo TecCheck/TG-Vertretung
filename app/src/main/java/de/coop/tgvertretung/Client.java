@@ -11,7 +11,8 @@ import java.util.GregorianCalendar;
 import de.sematre.api.tg.VertretungsTabelle;
 
 public class Client {
-    private static final boolean SYSOUT = true;
+    private static final boolean SYSOUT = false;
+    private static final boolean METHOD_SYSOUT = false;
     public static Client instance = null;
     public static ArrayList<VertretungsTabelle> tables = new ArrayList<>();
     public static String filter = "";
@@ -39,6 +40,7 @@ public class Client {
     }
 
     public static void load(boolean view) {
+        Client.printMethod("loadFinished");
         viewUI = view;
 
         if (view) {
@@ -58,10 +60,9 @@ public class Client {
     }
 
     public static void loadFinished() {
+        Client.printMethod("loadFinished");
 
         Client.print("viewUI: " + viewUI);
-
-        Client.print("load Finished");
         //list is loading
         try {
 
@@ -105,7 +106,7 @@ public class Client {
         }
 
         if (viewUI) {
-            int i = MainActivity.mPager.getCurrentItem();
+            int i = MainActivity.instance.mPager.getCurrentItem();
             MainActivity.instance.startPagerView();
             Client.print("Pager started!");
             if(firstTime) {
@@ -128,18 +129,20 @@ public class Client {
     }
 
     public static String CurrentTime(boolean onlyDate) {
+        Client.printMethod("CurrentTime");
         Calendar calendar = new GregorianCalendar();
         String str = "";
-        if(calendar.get(Calendar.DAY_OF_MONTH) < 10){
-            str = str + "0";
-        }
-        str = str + calendar.get(Calendar.DAY_OF_MONTH) +".";
-        if((calendar.get(Calendar.MONTH) +1) < 10){
-            str = str + "0";
-        }
-        str = str + (calendar.get(Calendar.MONTH) +1) + " " + calendar.get(Calendar.YEAR);
-
-        if (!onlyDate) {
+        if (onlyDate) {
+            str = str + calendar.get(Calendar.DAY_OF_MONTH) + "."+ (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR);
+        }else {
+            if(calendar.get(Calendar.DAY_OF_MONTH) < 10){
+                str = str + "0";
+            }
+            str = str + calendar.get(Calendar.DAY_OF_MONTH) +".";
+            if((calendar.get(Calendar.MONTH) +1) < 10){
+                str = str + "0";
+            }
+            str = str + (calendar.get(Calendar.MONTH) +1) + " " + calendar.get(Calendar.YEAR);
             str = str + " ";
             if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
                 str += "0" + calendar.get(Calendar.HOUR_OF_DAY);
@@ -159,17 +162,21 @@ public class Client {
     }
 
     public static int getView(String currentTime) {
+        Client.printMethod("getView");
         int i = 0;
-
+        //if(true)return 1;
 
         for (VertretungsTabelle vertretungsTabelle : tables) {
-
-            if (vertretungsTabelle.getDate().contains(currentTime))
+            Client.print(vertretungsTabelle.getDate());
+            Client.print(currentTime);
+            if (vertretungsTabelle.getDate().contains(currentTime)) {
+                Client.print("Date found");
                 return i;
+            }
 
             i++;
         }
-
+        Client.print("Date Not found");
         return 0;
 
     }
@@ -177,5 +184,22 @@ public class Client {
     public static void print(String text) {
         if (SYSOUT)
             System.out.println(text);
+    }
+
+    public static void printMethod(String name, Object[] params) {
+        if (METHOD_SYSOUT){
+            String s = name + "(";
+            for(Object o : params){
+                s = s + params + ",";
+            }
+            s = s + ");";
+            System.out.println(s);
+        }
+    }
+
+    public static void printMethod(String name) {
+        if (METHOD_SYSOUT){
+            System.out.println(name + "();");
+        }
     }
 }

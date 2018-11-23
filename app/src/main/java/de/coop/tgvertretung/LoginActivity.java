@@ -79,9 +79,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        pwText = (EditText) findViewById(R.id.password);
-        nmText = (EditText) findViewById(R.id.username);
-        btn = (Button) findViewById(R.id.sign_in_button);
+        pwText = findViewById(R.id.password);
+        nmText = findViewById(R.id.username);
+        btn = findViewById(R.id.sign_in_button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +137,6 @@ public class LoginActivity extends AppCompatActivity {
                 String line;
                 for (scanner = new Scanner((new URL(url)).openStream()); scanner.hasNextLine(); text = text + line) {
                     for (line = scanner.nextLine(); line.startsWith(" ") || line.startsWith("\t"); line = line.substring(1)) {
-                        ;
                     }
                 }
 

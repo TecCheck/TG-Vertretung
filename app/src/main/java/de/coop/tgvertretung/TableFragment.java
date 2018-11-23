@@ -32,6 +32,7 @@ public class TableFragment extends Fragment {
      * number.
      */
     public static TableFragment newInstance(int sectionNumber) {
+        Client.printMethod("newInstance");
         TableFragment fragment = new TableFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -42,21 +43,23 @@ public class TableFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Client.printMethod("onCreateView");
         super.onCreateView(inflater, container, savedInstanceState);
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
-        mainLayout = (LinearLayout) rootView.findViewById(R.id.MainLayout);
+        mainLayout = rootView.findViewById(R.id.MainLayout);
         Client.print("MainLayoutID: " + R.id.MainLayout);
         Client.print("mainLayout: " + mainLayout);
-        label = (TextView) rootView.findViewById(R.id.section_label);
-        mainScroll = (ConstraintLayout) rootView.findViewById(R.id.MainScroll);
+        label = rootView.findViewById(R.id.section_label);
+        mainScroll = rootView.findViewById(R.id.MainScroll);
         mainScroll.setVerticalScrollBarEnabled(false);
         mainScroll.setHorizontalScrollBarEnabled(false);
 
         int asn = getArguments().getInt(ARG_SECTION_NUMBER);
         table = Client.tables.get(asn);
-        Client.print("=> Neuer Plan! (" + table.getDate() + ")");
         label.setText(table.getDate());
+        Client.print("=> Neuer Plan! (" + table.getDate() + ")");
+        Client.print(table.toString());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setColor(table);
         }
@@ -70,14 +73,14 @@ public class TableFragment extends Fragment {
     }
 
     public void viewUI(VertretungsTabelle Vtable) {
+        Client.printMethod("viewUI");
 
-        ArrayList<Vertretung> list = Vtable.getVertretungen();
-        ArrayList<Vertretung> filteredList = list;
+        ArrayList<Vertretung> filteredList = Vtable.getVertretungen();
 
         if (Client.useFilter) {
             filteredList = new ArrayList<>();
             Client.print("___________Using Filter!!!_______________");
-            for (Vertretung vertretung : list) {
+            for (Vertretung vertretung : Vtable.getVertretungen()) {
                 if (vertretung.getKlasse().toLowerCase().contains(Client.filter.toLowerCase())) {
                     filteredList.add(vertretung);
                 }
@@ -88,9 +91,15 @@ public class TableFragment extends Fragment {
 
             addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, false);
         } else {
+
+            int i = 0;
             for (Vertretung fvertretung : filteredList) {
                 Client.print(fvertretung.toString());
-                addTableItem(fvertretung, Client.extendet);
+                if(addTableItem(fvertretung, Client.extendet))
+                i++;
+            }
+            if( i == filteredList.size()) {
+                addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, false);
             }
         }
         Client.print("");
@@ -99,6 +108,7 @@ public class TableFragment extends Fragment {
 
     @SuppressLint("NewApi")
     private void setColor(VertretungsTabelle Vtable) {
+        Client.printMethod("setColor");
         Drawable base = MainActivity.instance.getDrawable(R.drawable.colorgrade_base);
         Drawable stroke = MainActivity.instance.getDrawable(R.drawable.colorgrade_stroke);
 
@@ -125,31 +135,38 @@ public class TableFragment extends Fragment {
         mainScroll.setBackground(stroke);
     }
 
-    public void addTableItem(Vertretung vt, boolean extendet) {
+    public boolean addTableItem(Vertretung vt, boolean extendet) {
+        Client.printMethod("addTableItem");
 
         String tmp = "";
         String tmp1 = vt.getStunde() + ": ";
         String tmp2 = vt.getKlasse() + ": ";
 
-        if (vt.getFach().equals("---")) {
-            tmp = tmp + vt.getStattFach() + " " + MainActivity.instance.getString(R.string.noClass);
-        } else if (vt.getArt().equals("Entfall") || vt.getRaum().equals("---")) {
-            tmp = tmp + vt.getStattFach() + " " + MainActivity.instance.getString(R.string.noClass);
+        if (vt.getKlasse() == "" || vt.getKlasse() == null) {
+            return true;
         } else {
-            if (extendet) {
-                tmp = tmp + vt.getFach() + " in " + vt.getRaum() + " statt " + vt.getStattFach() + " in " + vt.getStattRaum();
+            if (vt.getFach().equals("---")) {
+                tmp = tmp + vt.getStattFach() + " " + MainActivity.instance.getString(R.string.noClass);
+            } else if (vt.getArt().equals("Entfall") || vt.getRaum().equals("---")) {
+                tmp = tmp + vt.getStattFach() + " " + MainActivity.instance.getString(R.string.noClass);
             } else {
-                tmp = tmp + vt.getFach() + " in " + vt.getRaum();
+                if (extendet) {
+                    tmp = tmp + vt.getFach() + " in " + vt.getRaum() + " statt " + vt.getStattFach() + " in " + vt.getStattRaum();
+                } else {
+                    tmp = tmp + vt.getFach() + " in " + vt.getRaum();
+                }
             }
-        }
-        if (!vt.getVertretungstext().equals("") && extendet) {
-            tmp = tmp + " (" + vt.getVertretungstext() + ")";
+            if (!vt.getVertretungstext().equals("") && extendet) {
+                tmp = tmp + " (" + vt.getVertretungstext() + ")";
 
+            }
+            addListItem(tmp, tmp1, tmp2, Client.instance.VertretungSize, Client.instance.VertretungRGB);
+            return false;
         }
-        addListItem(tmp, tmp1, tmp2, Client.instance.VertretungSize, Client.instance.VertretungRGB);
     }
 
     public void addListItem(String text, Integer textSize, boolean multiText) {
+        Client.printMethod("addListItem");
 
         //adds items to the list
         int in = 2;
@@ -180,6 +197,8 @@ public class TableFragment extends Fragment {
 
 
     public void addListItem(String text, String text1, String text2, Integer textSize, int ARGB) {
+
+        Client.printMethod("addListItem");
 
         //adds items to the list
         int in = 2;

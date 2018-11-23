@@ -25,11 +25,9 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private boolean payload = true;
-
     public static final boolean CLOSE_WARNING = false;
     public static MainActivity instance = null;
-    public static ViewPager mPager;
+    public ViewPager mPager;
     public LinearLayout mainLayout = null;
     public FloatingActionButton fab = null;
     public TextView lastReload = null;
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView = null;
     SharedPreferences settings = null;
     SharedPreferences table = null;
-    private PagerAdapter mPagerAdapter;
+    PagerAdapter mPagerAdapter;
 
     public MainActivity() {
         if (instance == null) {
@@ -54,10 +52,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void startPagerView() {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager = (ViewPager) findViewById(R.id.container);
+        mPager = findViewById(R.id.container);
         mPager.setAdapter(mPagerAdapter);
 
-        mainLayout = (LinearLayout) findViewById(R.id.MainLayout);
+        mainLayout = findViewById(R.id.MainLayout);
     }
 
     public void setTable(int index) {
@@ -95,12 +93,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        loadView = (ConstraintLayout) findViewById(R.id.loadView);
-        stdView = (LinearLayout) findViewById(R.id.stdView);
-        progBar = (ProgressBar) findViewById(R.id.progressBar);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        mPager = (ViewPager) findViewById(R.id.container);
+        navigationView = findViewById(R.id.nav_view);
+        loadView = findViewById(R.id.loadView);
+        stdView = findViewById(R.id.stdView);
+        progBar = findViewById(R.id.progressBar);
+        fab = findViewById(R.id.fab);
+        mPager = findViewById(R.id.container);
         navigationView.setNavigationItemSelectedListener(this);
 
         loadView.setVisibility(View.GONE);
@@ -153,13 +151,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         //wenn der zurück Knopf gedrückt wird
         //if the back button is pressed
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Client.print("EXIT-------------------------------------------------------------------------");
             if (CLOSE_WARNING) {
-                new AlertDialog.Builder(this)
+                AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle(R.string.exitTitle)
                         .setMessage(R.string.exitMessage)
                         .setNegativeButton(android.R.string.no, null)
@@ -169,7 +167,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 MainActivity.super.onBackPressed();
                                 System.exit(1);
                             }
-                        }).create().show();
+                        }).create();
+                dialog.show();
             }
             super.onBackPressed();
             System.exit(1);
@@ -189,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LoginActivity.firstTime = false;
             startActivity(new Intent(this, LoginActivity.class));
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
