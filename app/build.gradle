@@ -6,8 +6,8 @@ android {
         applicationId 'de.coop.tgvertretung'
         minSdkVersion 22
         targetSdkVersion 26
-        versionCode 15
-        versionName "Beta 1.4"
+        versionCode 215
+        versionName "Beta 1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
