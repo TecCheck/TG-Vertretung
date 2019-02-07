@@ -1,33 +1,19 @@
 package de.coop.tgvertretung;
 
-import android.content.SharedPreferences;
 import android.view.View;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
-import de.sematre.api.tg.VertretungsTabelle;
+import de.sematre.tg.Table;
 
 public class Client {
-    private static final boolean SYSOUT = false;
+    private static final boolean SYSOUT = true;
     private static final boolean METHOD_SYSOUT = false;
     public static Client instance = null;
-    public static ArrayList<VertretungsTabelle> tables = new ArrayList<>();
-    public static String filter = "";
-    //public static int filter = -1;
-    public static boolean saveOfflineBool = true;
-    public static boolean extendet = false;
-    public static boolean useFilter = false;
-    public static String password = "";
-    public static String username = "";
-    public static boolean singInConfirmed = false;
-    public static String lastReloadStr = "";
-    public static String lastserverRefreshStr = "";
-    public static boolean login = false;
     private static boolean viewUI = false;
-    private static  boolean firstTime = true;
+    private static boolean firstPagerStart = true;
     private static Thread dwdThread = null;
     public int VertretungRGB = 0xff000000;
     public int NothingSize = 20;
@@ -49,14 +35,11 @@ public class Client {
             MainActivity.instance.progBar.setEnabled(true);
         }
 
-        if (dwdThread != null && dwdThread.isAlive()) {
-
-        } else {
+        if (dwdThread == null || !dwdThread.isAlive()) {
             dwdThread = new Thread(new Download());
             dwdThread.setName("Download-Thread");
             dwdThread.start();
         }
-
     }
 
     public static void loadFinished() {
@@ -64,116 +47,61 @@ public class Client {
 
         Client.print("viewUI: " + viewUI);
         //list is loading
-        try {
+        Client.print("online: " + Download.online);
 
-            Client.print("online: " + Download.online);
+        if (Download.online && viewUI) {
+            MainActivity.showSnack(MainActivity.instance.getString(R.string.connected));
 
-            if (Download.online) {
-                if (viewUI)
-                    MainActivity.showSnack(MainActivity.instance.getString(R.string.connected));
-
-                lastReloadStr = CurrentTime(false);
-
-                if (saveOfflineBool) {
-                    SharedPreferences.Editor tableEdit = MainActivity.instance.table.edit();
-
-                    tableEdit.putString(MainActivity.instance.getString(R.string.tab_time), lastReloadStr);
-                    tableEdit.putString(MainActivity.instance.getString(R.string.tab_servertime), lastserverRefreshStr);
-                    tableEdit.putString(MainActivity.instance.getString(R.string.tab_tables), ObjectSerializer.serialize(tables));
-
-                    tableEdit.apply();
-                }
-            } else {
-
-                if (viewUI) {
-                    MainActivity.showSnack(MainActivity.instance.getString(R.string.noConnection));
-                }
-
-
-                if (saveOfflineBool) {
-                    lastReloadStr = MainActivity.instance.table.getString(MainActivity.instance.getString(R.string.tab_time), MainActivity.instance.getString(R.string.never));
-                    lastserverRefreshStr = MainActivity.instance.table.getString(MainActivity.instance.getString(R.string.tab_servertime), MainActivity.instance.getString(R.string.never));
-                    tables = (ArrayList<VertretungsTabelle>) ObjectSerializer.deserialize(MainActivity.instance.table.getString(MainActivity.instance.getString(R.string.tab_tables), ObjectSerializer.serialize(tables)));
-
-                }
-
-                Client.print("table: " + tables);
-            }
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            Client.print("Error!!!");
+        } else if (viewUI) {
+            MainActivity.showSnack(MainActivity.instance.getString(R.string.noConnection));
         }
 
+        Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         if (viewUI) {
             int i = MainActivity.instance.mPager.getCurrentItem();
             MainActivity.instance.startPagerView();
             Client.print("Pager started!");
-            if(firstTime) {
-                MainActivity.instance.setTable(getView(CurrentTime(true)));
-                firstTime = false;
-            }else
-               MainActivity.instance.setTable(i);
-
-            System.out.println(getView(CurrentTime(true)));
+            if (firstPagerStart) {
+                MainActivity.instance.setTable(getView());
+                firstPagerStart = false;
+            } else
+                MainActivity.instance.setTable(i);
         }
 
-        Download.online = true;
         if (viewUI) {
             MainActivity.instance.loadView.setVisibility(View.GONE);
             MainActivity.instance.progBar.setEnabled(false);
             MainActivity.instance.stdView.setVisibility(View.VISIBLE);
             Client.print("Pager vissible");
         }
-
     }
 
-    public static String CurrentTime(boolean onlyDate) {
-        Client.printMethod("CurrentTime");
-        Calendar calendar = new GregorianCalendar();
-        String str = "";
-        if (onlyDate) {
-            str = str + calendar.get(Calendar.DAY_OF_MONTH) + "."+ (calendar.get(Calendar.MONTH) + 1) + "." + calendar.get(Calendar.YEAR);
-        }else {
-            if(calendar.get(Calendar.DAY_OF_MONTH) < 10){
-                str = str + "0";
-            }
-            str = str + calendar.get(Calendar.DAY_OF_MONTH) +".";
-            if((calendar.get(Calendar.MONTH) +1) < 10){
-                str = str + "0";
-            }
-            str = str + (calendar.get(Calendar.MONTH) +1) + " " + calendar.get(Calendar.YEAR);
-            str = str + " ";
-            if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
-                str += "0" + calendar.get(Calendar.HOUR_OF_DAY);
-            } else {
-                str += calendar.get(Calendar.HOUR_OF_DAY);
-            }
-            str += ":";
-
-            if (calendar.get(Calendar.MINUTE) < 10) {
-                str += "0" + calendar.get(Calendar.MINUTE);
-            } else {
-                str += calendar.get(Calendar.MINUTE);
-            }
+    public static String getFormatedDate(Date date, boolean dayName, boolean useTime){
+        String patern = "dd.MM.yyyy";
+        if(useTime){
+            patern = "dd.MM.yyyy kk:mm";
         }
-        return str;
-
+        String out = "";
+        if(dayName){
+            out = MainActivity.instance.getResources().getStringArray(R.array.days)[date.getDay() - 1] + " ";
+        }
+        SimpleDateFormat format = new SimpleDateFormat(patern);
+        format.setTimeZone(TimeZone.getDefault());
+        out = out + format.format(date);
+        return out;
     }
 
-    public static int getView(String currentTime) {
+    public static int getView() {
         Client.printMethod("getView");
         int i = 0;
-        //if(true)return 1;
 
-        for (VertretungsTabelle vertretungsTabelle : tables) {
-            Client.print(vertretungsTabelle.getDate());
-            Client.print(currentTime);
-            if (vertretungsTabelle.getDate().contains(currentTime)) {
-                Client.print("Date found");
+        for (Table table : Settings.settings.timeTable.getTables()) {
+            Date today = new Date(System.currentTimeMillis());
+            Date tableDate = table.getDate();
+            if (today.getDay() == tableDate.getDay() && today.getMonth() == tableDate.getMonth() && today.getYear() == tableDate.getYear()) {
                 return i;
             }
-
+            Client.print(table.getDate().toString());
             i++;
         }
         Client.print("Date Not found");
@@ -186,19 +114,8 @@ public class Client {
             System.out.println(text);
     }
 
-    public static void printMethod(String name, Object[] params) {
-        if (METHOD_SYSOUT){
-            String s = name + "(";
-            for(Object o : params){
-                s = s + params + ",";
-            }
-            s = s + ");";
-            System.out.println(s);
-        }
-    }
-
     public static void printMethod(String name) {
-        if (METHOD_SYSOUT){
+        if (METHOD_SYSOUT) {
             System.out.println(name + "();");
         }
     }

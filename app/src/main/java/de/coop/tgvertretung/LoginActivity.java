@@ -22,7 +22,6 @@ import java.util.Scanner;
 
 public class LoginActivity extends AppCompatActivity {
     private static final Gson gson = new Gson();
-    public static SharedPreferences settings = null;
     public static Button btn = null;
     public static EditText pwText = null;
     public static EditText nmText = null;
@@ -44,16 +43,10 @@ public class LoginActivity extends AppCompatActivity {
                 Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             } else {
                 //password is correct and phone is online
-                SharedPreferences.Editor settingsEdit = settings.edit();
-                settingsEdit.putBoolean(getString(R.string.settings_loginconfirmed), true);
-                settingsEdit.putString(getString(R.string.settings_password), pwText.getText().toString());
-                settingsEdit.putString(getString(R.string.settings_username), nmText.getText().toString());
-                Client.singInConfirmed = true;
-                Client.username = nmText.getText().toString();
-                Client.password = pwText.getText().toString();
-                settingsEdit.apply();
-                if(firstTime)
-                    Client.login = true;
+                Settings.settings.password = pwText.getText().toString();
+                Settings.settings.username = nmText.getText().toString();
+                Settings.settings.loggedIn = true;
+                Settings.save();
                 super.onBackPressed();
             }
         } catch (Exception e) {
@@ -88,7 +81,6 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-        settings = getSharedPreferences(getString(R.string.settings_name), 0);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null && firstTime) {
             actionBar.setDisplayHomeAsUpEnabled(false);
@@ -100,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (firstTime) {
             Client.print("EXIT-------------------------------------------------------------------------");
+            /*
             new AlertDialog.Builder(this)
                     .setTitle(R.string.exitTitle)
                     .setMessage(R.string.exitMessage)
@@ -110,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                             System.exit(1);
                         }
                     }).create().show();
+                    */
             System.exit(1);
         } else {
             super.onBackPressed();

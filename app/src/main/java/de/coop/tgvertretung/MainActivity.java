@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static final boolean CLOSE_WARNING = false;
     public static MainActivity instance = null;
-    public ViewPager mPager;
+    public ViewPager mPager = null;
     public LinearLayout mainLayout = null;
     public FloatingActionButton fab = null;
     public TextView lastReload = null;
@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public LinearLayout stdView = null;
     public ProgressBar progBar = null;
     NavigationView navigationView = null;
-    SharedPreferences settings = null;
-    SharedPreferences table = null;
     PagerAdapter mPagerAdapter;
 
     public MainActivity() {
@@ -71,22 +69,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Settings.load();
+
         //the menu in the top left is created
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 lastReload = findViewById(R.id.lastReload);
-                lastReload.setText(getString(R.string.lastReload) + " " + Client.lastReloadStr);
-
                 lastServerRefresh = findViewById(R.id.lastReload2);
-                if (Client.extendet) {
+                Settings.print();
+                if(Settings.settings.showClientRefersh){
+                    lastReload.setVisibility(View.VISIBLE);
+                    lastReload.setText(getString(R.string.lastReload) + " " + Client.getFormatedDate(Settings.settings.lastClientRefresh, false, true));
+                }else{
+                    lastReload.setVisibility(View.GONE);
+                }
+                if (Settings.settings.showServerRefresh) {
                     lastServerRefresh.setVisibility(View.VISIBLE);
-                    lastServerRefresh.setText(getString(R.string.lastServerRefresh) + Client.lastserverRefreshStr);
+                    lastServerRefresh.setText(getString(R.string.lastServerRefresh) + Client.getFormatedDate(Settings.settings.timeTable.getDate(), false, true));
                 } else {
                     lastServerRefresh.setVisibility(View.GONE);
                 }
-
                 super.onDrawerOpened(drawerView);
             }
         };
@@ -109,23 +113,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Client.load(true);
             }
         });
-        settings = MainActivity.instance.getSharedPreferences(getString(R.string.settings_name), 0);
-        table = MainActivity.instance.getSharedPreferences(getString(R.string.tab_name), 0);
 
         new Client();
 
-        Client.saveOfflineBool = instance.settings.getBoolean(getString(R.string.settings_saveofflinebool), Client.saveOfflineBool);
-        Client.filter = instance.settings.getString(getString(R.string.settings_filter), Client.filter);
-        //filter = settings.getInt("filter", filter);
-        Client.extendet = instance.settings.getBoolean(getString(R.string.settings_extendet), Client.extendet);
-        Client.useFilter = instance.settings.getBoolean(getString(R.string.settings_filterswitch), Client.useFilter);
-        Client.password = instance.settings.getString(getString(R.string.settings_password), Client.password);
-        Client.username = instance.settings.getString(getString(R.string.settings_username), Client.username);
-        Client.singInConfirmed = settings.getBoolean(getString(R.string.settings_loginconfirmed), Client.singInConfirmed);
-
-        if (Client.singInConfirmed /*&& !Client.password.equals("") && !Client.username.equals("")*/) {
+        if (Settings.settings.loggedIn) {
             Client.load(true);
         } else {
+            LoginActivity.firstTime = true;
             startActivity(new Intent(this, LoginActivity.class));
         }
         Client.print("onCreate finished");
@@ -141,9 +135,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int i = mPager.getCurrentItem();
         startPagerView();
         setTable(i);
-        if (Client.login) {
+        if (Settings.settings.loggedIn) {
             Client.load(true);
-            Client.login = false;
         }
     }
 

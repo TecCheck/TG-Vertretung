@@ -1,90 +1,66 @@
 <resources>
-    <string name="none">well that could be an error</string>
     <string name="app_name">TGVertretung</string>
-    <string name="nav_info">About</string>
-    <string name="nav_settings">Settings</string>
-    <string name="nav_login">Log In</string>
-    <string name="navigation_drawer_close">Open navigation drawer</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="setting_filterPref">Filter</string>
-    <string name="setting_saveOffline">Save table offline?</string>
-    <string name="nav_main">Table</string>
-    <string name="info_content">made by\n-Tobias\n-Christoph\n\nIf you have questions, just ask Christoph.</string>
-    <string name="nothingSaved">There is nothing saved</string>
-    <string name="nothing">Nothing</string>
-    <string name="noClass">go Home</string>
-    <string name="setting_extendetView">Extendet View</string>
-    <string name="loading">Loading...</string>
-    <string name="setting_filterSwitch">FilterSwitch</string>
-    <string name="lastReload">Last Reload</string>
-    <string name="never">never</string>
-    <string name="connected">Connected</string>
-    <string name="noConnection">No Connection</string>
-    <string name="exitTitle">Really Exit?</string>
-    <string name="exitMessage">Are you sure you want to exit?</string>
-
-
-    <string-array name="classes">
-        <item>(nothing)</item>
-        <item>6TG8/1</item>
-        <item>6TG8/2</item>
-        <item>6TG9/1</item>
-        <item>6TG9/2</item>
-        <item>6TG10/1</item>
-        <item>6TG10/2</item>
-        <item>TGM11/1</item>
-        <item>TGTM11/2</item>
-        <item>TGG11/3</item>
-        <item>TGI11/4</item>
-        <item>TGM12/1</item>
-        <item>TG12/2</item>
-        <item>TGG12/3</item>
-        <item>TGI12/4</item>
-        <item>TGTM12/5</item>
-        <item>TGG12/6</item>
-        <item>TGM13/1</item>
-        <item>TGTM13/2</item>
-        <item>TGG13/3</item>
-        <item>TGI13/4</item>
-        <item>TGTM13/5</item>
-        <item>TGG13/6</item>
-    </string-array>
-
-    <array name="classes_key">
-        <item>-1</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-    </array>
-    <string name="lastServerRefresh">last Server Refresh:</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_settings2">Settings</string>
-    <string name="version_name">Version Name</string>
+    <string name="title_activity_login">About</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_main">Table</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_info">About</string>
+    <string name="nav_login">Login</string>
+
+
+    <string name="none">You should not see that :(</string>
+    <string name="nothingSaved">Nothing saved!</string>
+    <string name="nothing">Nothing to show</string>
+    <string name="noClass">No Class</string>
+    <string name="loading">Loading…</string>
+
+    <string name="setting_filterPref">Filter</string>
+    <string name="setting_filterSwitch">Use Filter</string>
+    <string name="setting_extendetView">Extendet View</string>
+    <string name="showText">Show Text</string>
+
+    <string name="connected">Online</string>
+    <string name="noConnection">Offline</string>
+
+    <string name="exitTitle">Really Exit?</string>
+    <string name="exitMessage">Do you really whant to quit?</string>
+
+    <string name="lastServerRefresh">Last Server Change:</string>
+    <string name="lastReload">Last Reload:</string>
+    <string name="never">never</string>
+
+    <string name="info_content">Made by \n-Tobias\n-Christoph\n\nIf you have Questions ask Christoph.</string>
+    <string name="version_name">Bersion Name</string>
     <string name="github_name">GitHub</string>
     <string name="github_txt">Visit the GitHub site.</string>
-    <string name="devs_name">Developers</string>
+    <string name="devs_name">Developer</string>
     <string name="tobias">Tobias</string>
     <string name="christoph">Christoph</string>
-    <string name="licenses_name">Licences</string>
-    <string name="licenses_txt">View the licences of the Libraries.</string>
+
+    <string name="licenses_name">Licenses</string>
+    <string name="licenses_txt">Show the opensource licenses.</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Kennung</string>
+    <string name="prompt_password">Passwort</string>
+    <string name="action_sign_in">Anmelden</string>
+    <string name="action_sign_in_short">Anmelden</string>
+    <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
+
+    <array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </array>
+
 
 </resources>

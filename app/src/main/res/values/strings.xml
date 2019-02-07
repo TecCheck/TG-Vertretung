@@ -1,115 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="none">well that could be an error</string>
     <string name="app_name">TGVertretung</string>
-    <string name="nav_info">About</string>
-    <string name="nav_settings">Settings</string>
-    <string name="nav_login">Log In</string>
-    <string name="navigation_drawer_close">Open navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_main">Tabelle</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_info">Über</string>
+    <string name="nav_login">Anmelden</string>
+
+
+    <string name="none">Das solltest du nicht sehen :(</string>
+    <string name="nothingSaved">Nichts gespeichert!</string>
+    <string name="nothing">Keine Vertretungen</string>
+    <string name="noClass">Entfall</string>
+    <string name="loading">Laden…</string>
+
     <string name="setting_filterPref">Filter</string>
-    <string name="setting_saveOffline">Save table offline?</string>
-    <string name="nav_main">Table</string>
-    <string name="info_content">Nothing to show here</string>
-    <string name="nothingSaved">There is nothing saved</string>
-    <string name="nothing">Nothing</string>
-    <string name="noClass">go Home</string>
-    <string name="setting_extendetView">Extendet View</string>
-    <string name="loading">Loading...</string>
-    <string name="setting_filterSwitch">FilterSwitch</string>
-    <string name="lastReload">Last Reload</string>
-    <string name="never">never</string>
-    <string name="connected">Connected</string>
-    <string name="noConnection">No Connection</string>
-    <string name="exitTitle">Really Exit?</string>
+    <string name="setting_filterSwitch">Filter benutzen</string>
+    <string name="setting_extendetView">Erweiterte Ansicht</string>
+    <string name="showText">Vertetungstext anzeigen</string>
+    <string name="showServerRefresh">Letzte Änderung anzeigen</string>
+    <string name="showClientRefresh">Letzte Aktualisierung anzeigen</string>
+
+    <string name="connected">Online</string>
+    <string name="noConnection">Offline</string>
+
+    <string name="exitTitle">Wirklich Beenden?</string>
     <string name="exitMessage">Willst du die App wirklich beenden?</string>
 
-    <string-array name="classes">
-        <item>nothing</item>
-        <item>6TG8/1</item>
-        <item>6TG8/2</item>
-        <item>6TG9/1</item>
-        <item>6TG9/2</item>
-        <item>6TG10/1</item>
-        <item>6TG10/2</item>
-        <item>TGM11/1</item>
-        <item>TGTM11/2</item>
-        <item>TGG11/3</item>
-        <item>TGI11/4</item>
-        <item>TGM12/1</item>
-        <item>TG12/2</item>
-        <item>TGG12/3</item>
-        <item>TGI12/4</item>
-        <item>TGTM12/5</item>
-        <item>TGG12/6</item>
-        <item>TGM13/1</item>
-        <item>TGTM13/2</item>
-        <item>TGG13/3</item>
-        <item>TGI13/4</item>
-        <item>TGTM13/5</item>
-        <item>TGG13/6</item>
-    </string-array>
+    <string name="lastServerRefresh">Letzte Änderung:</string>
+    <string name="lastReload">Zul. Aktualisiert:</string>
+    <string name="never">nie</string>
 
-    <array name="classes_key">
-        <item>-1</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-    </array>
-    <string name="lastServerRefresh">last Server Refresh</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_settings2">Settings</string>
-    <string name="title_activity_login">Sign in</string>
-    <string name="version_name">Version Name</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_login">Anmelden</string>
+
+    <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
+    <string name="version_name">Versionsname</string>
     <string name="github_name">GitHub</string>
-    <string name="github_txt">Visit the GitHub site.</string>
-    <string name="github_url">https://github.com/TecCheck/TG-Vertretung</string>
-    <string name="devs_name">Developers</string>
+    <string name="github_txt">Besuche die GitHub Site.</string>
+    <string name="github_url">https://github.com/TecCheck/TG-Vertretung/</string>
+    <string name="devs_name">Entwickler</string>
     <string name="tobias">Tobias</string>
     <string name="christoph">Christoph</string>
-    <string name="licenses_name">Licences</string>
-    <string name="licenses_txt">View the licences of the Libraries.</string>
+
+    <string name="licenses_name">Lizensen</string>
+    <string name="licenses_txt">Guck dir die Lizensen der Biblioteken an.</string>
+
 
     <!-- Strings related to login -->
-    <string name="prompt_username">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="prompt_username">Kennung</string>
+    <string name="prompt_password">Passwort</string>
+    <string name="action_sign_in">Anmelden</string>
+    <string name="action_sign_in_short">Anmelden</string>
+    <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
 
-    <!-- Shared Prefs Stuff -->
-    <string name="settings_name">settings</string>
-    <string name="tab_name">table</string>
-
-    <string name="tab_time">time</string>
-    <string name="tab_servertime">servertime</string>
-    <string name="tab_tables">tables</string>
-
-    <string name="settings_filter">filter</string>
-    <string name="settings_password">password</string>
-    <string name="settings_username">username</string>
-    <string name="settings_saveofflinebool">saveofflinebool</string>
-    <string name="settings_extendet">extendet</string>
-    <string name="settings_filterswitch">filterswitch</string>
-    <string name="settings_loginconfirmed">loginconfirmed</string>
+    <array name="days">
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+        <item>Samstag</item>
+        <item>Sonntag</item>
+    </array>
 
 </resources>

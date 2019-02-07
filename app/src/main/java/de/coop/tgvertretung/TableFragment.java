@@ -2,7 +2,6 @@ package de.coop.tgvertretung;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -15,14 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Set;
 
-import de.sematre.api.tg.Vertretung;
-import de.sematre.api.tg.VertretungsTabelle;
+import de.sematre.tg.Table;
+import de.sematre.tg.TableEntry;
 
 public class TableFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    static VertretungsTabelle table = null;
+    static Table table = null;
     private TextView label = null;
     private LinearLayout mainLayout = null;
     private ConstraintLayout mainScroll = null;
@@ -41,6 +42,26 @@ public class TableFragment extends Fragment {
         return fragment;
     }
 
+    public static ArrayList<TableEntry> checkTableEntries(ArrayList<TableEntry> entries) {
+        ArrayList<TableEntry> filtered = new ArrayList<>();
+        for (TableEntry entry : entries) {
+            if (!(entry.getSchoolClass() == "" || entry.getSchoolClass() == null)) {
+                filtered.add(entry);
+            }
+        }
+        return filtered;
+    }
+
+    public static ArrayList<TableEntry> filterTable(ArrayList<TableEntry> entries, String filter) {
+        ArrayList<TableEntry> filtered = new ArrayList<>();
+        for (TableEntry entry : entries) {
+            if (entry.getSchoolClass().toLowerCase().contains(filter.toLowerCase())) {
+                filtered.add(entry);
+            }
+        }
+        return filtered;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Client.printMethod("onCreateView");
@@ -48,58 +69,43 @@ public class TableFragment extends Fragment {
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
         mainLayout = rootView.findViewById(R.id.MainLayout);
-        Client.print("MainLayoutID: " + R.id.MainLayout);
-        Client.print("mainLayout: " + mainLayout);
+        //Client.print("MainLayoutID: " + R.id.MainLayout);
+        //Client.print("mainLayout: " + mainLayout);
         label = rootView.findViewById(R.id.section_label);
         mainScroll = rootView.findViewById(R.id.MainScroll);
         mainScroll.setVerticalScrollBarEnabled(false);
         mainScroll.setHorizontalScrollBarEnabled(false);
 
         int asn = getArguments().getInt(ARG_SECTION_NUMBER);
-        table = Client.tables.get(asn);
-        label.setText(table.getDate());
-        Client.print("=> Neuer Plan! (" + table.getDate() + ")");
-        Client.print(table.toString());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setColor(table);
-        }
+        table = Settings.settings.timeTable.getTables().get(asn);
+        label.setText(Client.getFormatedDate(table.getDate(), true, false) + " " + table.getWeek().getLetter());
+        //Client.print("=> Neuer Plan! (" + table.getDate() + ")");
+        //Client.print(table.toString());
+        setColor(table.getDate());
 
-        if (asn == 1)
-            asn = 2;
-        else if (asn == 2)
-            asn = 1;
-        viewUI(Client.tables.get(asn));
+        viewUI();
         return rootView;
     }
 
-    public void viewUI(VertretungsTabelle Vtable) {
+    public void viewUI() {
         Client.printMethod("viewUI");
 
-        ArrayList<Vertretung> filteredList = Vtable.getVertretungen();
+        ArrayList<TableEntry> tableEntries = table.getTableEntries();
 
-        if (Client.useFilter) {
-            filteredList = new ArrayList<>();
-            Client.print("___________Using Filter!!!_______________");
-            for (Vertretung vertretung : Vtable.getVertretungen()) {
-                if (vertretung.getKlasse().toLowerCase().contains(Client.filter.toLowerCase())) {
-                    filteredList.add(vertretung);
-                }
-            }
+        if (Settings.settings.useFilter) {
+            tableEntries = filterTable(tableEntries, Settings.settings.filter);
         }
-        if (filteredList.isEmpty()) {
+        //tableEntries = checkTableEntries(tableEntries);
+        if (tableEntries.isEmpty()) {
             Client.print("Leer!");
-
             addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, false);
         } else {
-
-            int i = 0;
-            for (Vertretung fvertretung : filteredList) {
-                Client.print(fvertretung.toString());
-                if(addTableItem(fvertretung, Client.extendet))
-                i++;
-            }
-            if( i == filteredList.size()) {
-                addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, false);
+            Client.print("");
+            Client.print("tableEntries for " + label.getText() +": ");
+            Client.print("");
+            for (TableEntry entry : tableEntries) {
+                Client.print(entry.getSchoolClass() + ", " + entry.getTime());
+                addTableItem(entry, Settings.settings.extendet, Settings.settings.showText);
             }
         }
         Client.print("");
@@ -107,24 +113,24 @@ public class TableFragment extends Fragment {
     }
 
     @SuppressLint("NewApi")
-    private void setColor(VertretungsTabelle Vtable) {
+    private void setColor(Date date) {
         Client.printMethod("setColor");
         Drawable base = MainActivity.instance.getDrawable(R.drawable.colorgrade_base);
         Drawable stroke = MainActivity.instance.getDrawable(R.drawable.colorgrade_stroke);
 
-        if (Vtable.getDate().contains("Montag")) {
+        if (date.getDay() == 0) {
             base.setTint(getResources().getColor(R.color.yellow));
             stroke.setTint(getResources().getColor(R.color.yellow));
-        } else if (Vtable.getDate().contains("Dienstag")) {
+        } else if (date.getDay() == 1) {
             base.setTint(getResources().getColor(R.color.blue));
             stroke.setTint(getResources().getColor(R.color.blue));
-        } else if (Vtable.getDate().contains("Mittwoch")) {
-            base.setTint(getResources().getColor(R.color.orange));
-            stroke.setTint(getResources().getColor(R.color.orange));
-        } else if (Vtable.getDate().contains("Donnerstag")) {
+        } else if (date.getDay() == 2) {
             base.setTint(getResources().getColor(R.color.green));
             stroke.setTint(getResources().getColor(R.color.green));
-        } else if (Vtable.getDate().contains("Freitag")) {
+        } else if (date.getDay() == 3) {
+            base.setTint(getResources().getColor(R.color.orange));
+            stroke.setTint(getResources().getColor(R.color.orange));
+        } else if (date.getDay() == 4) {
             base.setTint(getResources().getColor(R.color.pink));
             stroke.setTint(getResources().getColor(R.color.pink));
         } else {
@@ -135,34 +141,26 @@ public class TableFragment extends Fragment {
         mainScroll.setBackground(stroke);
     }
 
-    public boolean addTableItem(Vertretung vt, boolean extendet) {
+    public void addTableItem(TableEntry entry, boolean extendet, boolean showText) {
         Client.printMethod("addTableItem");
 
-        String tmp = "";
-        String tmp1 = vt.getStunde() + ": ";
-        String tmp2 = vt.getKlasse() + ": ";
+        String infoRow = "";
+        String timeRow = entry.getTime() + ": ";
+        String classRow = entry.getSchoolClass() + ": ";
 
-        if (vt.getKlasse() == "" || vt.getKlasse() == null) {
-            return true;
+        if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
+            infoRow = infoRow + entry.getSubject() + " " + MainActivity.instance.getString(R.string.noClass);
         } else {
-            if (vt.getFach().equals("---")) {
-                tmp = tmp + vt.getStattFach() + " " + MainActivity.instance.getString(R.string.noClass);
-            } else if (vt.getArt().equals("Entfall") || vt.getRaum().equals("---")) {
-                tmp = tmp + vt.getStattFach() + " " + MainActivity.instance.getString(R.string.noClass);
+            if (extendet) {
+                infoRow = infoRow + entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + " statt " + entry.getSubject() + " in " + entry.getRoom();
             } else {
-                if (extendet) {
-                    tmp = tmp + vt.getFach() + " in " + vt.getRaum() + " statt " + vt.getStattFach() + " in " + vt.getStattRaum();
-                } else {
-                    tmp = tmp + vt.getFach() + " in " + vt.getRaum();
-                }
+                infoRow = infoRow + entry.getReplacementSubject() + " in " + entry.getReplacementRoom();
             }
-            if (!vt.getVertretungstext().equals("") && extendet) {
-                tmp = tmp + " (" + vt.getVertretungstext() + ")";
-
-            }
-            addListItem(tmp, tmp1, tmp2, Client.instance.VertretungSize, Client.instance.VertretungRGB);
-            return false;
         }
+        if ((!entry.getText().equals("")) && showText) {
+            infoRow = infoRow + " (" + entry.getText() + ")";
+        }
+        addListItem(infoRow, timeRow, classRow, Client.instance.VertretungSize, Client.instance.VertretungRGB);
     }
 
     public void addListItem(String text, Integer textSize, boolean multiText) {
@@ -194,7 +192,6 @@ public class TableFragment extends Fragment {
         mainLayout.addView(ln);
 
     }
-
 
     public void addListItem(String text, String text1, String text2, Integer textSize, int ARGB) {
 

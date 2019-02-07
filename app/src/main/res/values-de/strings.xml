@@ -2,88 +2,47 @@
     <string name="app_name">TGVertretung</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_main">Tabelle</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_info">Über</string>
     <string name="nav_login">Anmelden</string>
-    <string name="setting_filterPref">Filter</string>
+
+
     <string name="none">Das solltest du nicht sehen :(</string>
-    <string name="setting_saveOffline">Vertretungsplan offline speichern</string>
-    <string name="nav_main">Tabelle</string>
-    <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
     <string name="nothingSaved">Nichts gespeichert!</string>
     <string name="nothing">Keine Vertretungen</string>
     <string name="noClass">Entfall</string>
-    <string name="setting_extendetView">Erweiterte Ansicht</string>
     <string name="loading">Laden…</string>
+
+    <string name="setting_filterPref">Filter</string>
     <string name="setting_filterSwitch">Filter benutzen</string>
-    <string name="lastReload">Zul. Aktualisiert:</string>
-    <string name="never">nie</string>
-    <string name="connected">Verbunden</string>
-    <string name="noConnection">Keine Verbindung</string>
+    <string name="setting_extendetView">Erweiterte Ansicht</string>
+    <string name="showText">Vertetungstext anzeigen</string>
+    <string name="showServerRefresh">Letzte Änderung anzeigen</string>
+    <string name="showClientRefresh">Letzte Aktualisierung anzeigen</string>
+
+    <string name="connected">Online</string>
+    <string name="noConnection">Offline</string>
+
     <string name="exitTitle">Wirklich Beenden?</string>
     <string name="exitMessage">Willst du die App wirklich beenden?</string>
 
-    <string-array name="classes">
-        <item>(nichts)</item>
-        <item>6TG8/1</item>
-        <item>6TG8/2</item>
-        <item>6TG9/1</item>
-        <item>6TG9/2</item>
-        <item>6TG10/1</item>
-        <item>6TG10/2</item>
-        <item>TGM11/1</item>
-        <item>TGTM11/2</item>
-        <item>TGG11/3</item>
-        <item>TGI11/4</item>
-        <item>TGM12/1</item>
-        <item>TG12/2</item>
-        <item>TGG12/3</item>
-        <item>TGI12/4</item>
-        <item>TGTM12/5</item>
-        <item>TGG12/6</item>
-        <item>TGM13/1</item>
-        <item>TGTM13/2</item>
-        <item>TGG13/3</item>
-        <item>TGI13/4</item>
-        <item>TGTM13/5</item>
-        <item>TGG13/6</item>
-    </string-array>
-
-    <array name="classes_key">
-        <item>-1</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-    </array>
     <string name="lastServerRefresh">Letzte Änderung:</string>
+    <string name="lastReload">Zul. Aktualisiert:</string>
+    <string name="never">nie</string>
+
     <string name="title_activity_settings">Einstellungen</string>
-    <string name="title_activity_settings2">Einstellungen</string>
     <string name="title_activity_login">Anmelden</string>
+
+    <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
     <string name="version_name">Versionsname</string>
     <string name="github_name">GitHub</string>
-    <string name="github_txt">Besuche die GitHub site.</string>
+    <string name="github_txt">Besuche die GitHub Site.</string>
     <string name="devs_name">Entwickler</string>
     <string name="tobias">Tobias</string>
     <string name="christoph">Christoph</string>
+
     <string name="licenses_name">Lizensen</string>
     <string name="licenses_txt">Guck dir die Lizensen der Biblioteken an.</string>
 
@@ -94,5 +53,15 @@
     <string name="action_sign_in">Anmelden</string>
     <string name="action_sign_in_short">Anmelden</string>
     <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
+
+    <array name="days">
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+        <item>Samstag</item>
+        <item>Sonntag</item>
+    </array>
 
 </resources>

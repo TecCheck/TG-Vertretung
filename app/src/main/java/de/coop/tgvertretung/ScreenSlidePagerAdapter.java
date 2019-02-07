@@ -16,6 +16,6 @@ public class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return Client.tables.size();
+        return Settings.settings.timeTable.getTables().size();
     }
 }
