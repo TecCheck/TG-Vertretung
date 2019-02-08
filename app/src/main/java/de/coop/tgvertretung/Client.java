@@ -55,8 +55,9 @@ public class Client {
         } else if (viewUI) {
             MainActivity.showSnack(MainActivity.instance.getString(R.string.noConnection));
         }
-
-        Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
+        if(Download.online) {
+            Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
+        }
         if (viewUI) {
             int i = MainActivity.instance.mPager.getCurrentItem();
             MainActivity.instance.startPagerView();
