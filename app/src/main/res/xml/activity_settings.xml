@@ -50,5 +50,9 @@
         android:defaultValue="false"
         android:key="showClientRefresh"
         android:title="@string/showClientRefresh" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="showAB"
+        android:title="@string/showAB" />
 
 </PreferenceScreen>

@@ -17,6 +17,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     Preference showText = null;
     Preference showClientRefresh = null;
     Preference showServerRefersh = null;
+    Preference showAB = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showText = findPreference("showText");
         showClientRefresh = findPreference("showClientRefresh");
         showServerRefersh = findPreference("showServerRefresh");
+        showAB = findPreference("showAB");
 
         //settings = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -43,6 +45,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showText.setOnPreferenceChangeListener(this);
         showClientRefresh.setOnPreferenceChangeListener(this);
         showServerRefersh.setOnPreferenceChangeListener(this);
+        showAB.setOnPreferenceChangeListener(this);
 
         filter.setDefaultValue(Settings.settings.filter);
         //filter.setDefaultValue(settings.getInt(FILTER_KEY, filterInt));
@@ -51,6 +54,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showText.setDefaultValue(Settings.settings.showText);
         showClientRefresh.setDefaultValue(Settings.settings.showClientRefersh);
         showServerRefersh.setDefaultValue(Settings.settings.showServerRefresh);
+        showAB.setDefaultValue(Settings.settings.showAB);
 
         filter.setSummary(Settings.settings.filter);
         //filter.setSummary(settings.getInt(FILTER_KEY, filterInt));
@@ -83,6 +87,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.showClientRefersh = (boolean) value;
         }else if(preference.getKey() == showServerRefersh.getKey()){
             Settings.settings.showServerRefresh = (boolean) value;
+        }else if(preference.getKey() == showAB.getKey()){
+            Settings.settings.showAB = (boolean) value;
         }
 
         Settings.save();

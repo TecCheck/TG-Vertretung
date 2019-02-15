@@ -30,6 +30,17 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+            <!--ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|end"
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="pin"
+                app:srcCompat="@drawable/ic_github" /!-->
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

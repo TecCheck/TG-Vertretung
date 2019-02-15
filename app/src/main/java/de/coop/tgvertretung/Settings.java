@@ -30,6 +30,7 @@ public class Settings implements Serializable{
     public boolean loggedIn = false;
     public boolean showClientRefersh = true;
     public boolean showServerRefresh = false;
+    public boolean showAB = false;
 
     public static void load() {
         settings = new Settings();
@@ -69,7 +70,7 @@ public class Settings implements Serializable{
         out = out + ", showText: " + settings.showText;
         out = out + ", showClientRefersh: " + settings.showClientRefersh;
         out = out + ", showServerRefresh: " + settings.showServerRefresh;
-
+        out = out + ", showAB" + settings.showAB;
 
         Client.print(out);
     }

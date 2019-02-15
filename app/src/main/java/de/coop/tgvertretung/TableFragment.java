@@ -78,7 +78,16 @@ public class TableFragment extends Fragment {
 
         int asn = getArguments().getInt(ARG_SECTION_NUMBER);
         table = Settings.settings.timeTable.getTables().get(asn);
-        label.setText(Client.getFormatedDate(table.getDate(), true, false) + " " + table.getWeek().getLetter());
+        String week = MainActivity.instance.getString(R.string.week) + " ";
+        if(Settings.settings.showAB){
+            if(table.getWeek().getLetter().toLowerCase().equals("a") || table.getWeek().getLetter().toLowerCase().equals("c"))
+                week = week + "A";
+            else
+                week = week + "B";
+        }else{
+            week = week + table.getWeek().getLetter();
+        }
+        label.setText(Client.getFormatedDate(table.getDate(), true, false) + " " + week);
         //Client.print("=> Neuer Plan! (" + table.getDate() + ")");
         //Client.print(table.toString());
         setColor(table.getDate());
@@ -118,19 +127,19 @@ public class TableFragment extends Fragment {
         Drawable base = MainActivity.instance.getDrawable(R.drawable.colorgrade_base);
         Drawable stroke = MainActivity.instance.getDrawable(R.drawable.colorgrade_stroke);
 
-        if (date.getDay() == 0) {
+        if (date.getDay() == 1) {
             base.setTint(getResources().getColor(R.color.yellow));
             stroke.setTint(getResources().getColor(R.color.yellow));
-        } else if (date.getDay() == 1) {
+        } else if (date.getDay() == 2) {
             base.setTint(getResources().getColor(R.color.blue));
             stroke.setTint(getResources().getColor(R.color.blue));
-        } else if (date.getDay() == 2) {
+        } else if (date.getDay() == 3) {
             base.setTint(getResources().getColor(R.color.green));
             stroke.setTint(getResources().getColor(R.color.green));
-        } else if (date.getDay() == 3) {
+        } else if (date.getDay() == 4) {
             base.setTint(getResources().getColor(R.color.orange));
             stroke.setTint(getResources().getColor(R.color.orange));
-        } else if (date.getDay() == 4) {
+        } else if (date.getDay() == 5) {
             base.setTint(getResources().getColor(R.color.pink));
             stroke.setTint(getResources().getColor(R.color.pink));
         } else {

@@ -8,12 +8,12 @@
     <string name="nav_info">Über</string>
     <string name="nav_login">Anmelden</string>
 
-
     <string name="none">Das solltest du nicht sehen :(</string>
     <string name="nothingSaved">Nichts gespeichert!</string>
     <string name="nothing">Keine Vertretungen</string>
     <string name="noClass">Entfall</string>
     <string name="loading">Laden…</string>
+    <string name="week">Woche</string>
 
     <string name="setting_filterPref">Filter</string>
     <string name="setting_filterSwitch">Filter benutzen</string>
@@ -21,6 +21,7 @@
     <string name="showText">Vertetungstext anzeigen</string>
     <string name="showServerRefresh">Letzte Änderung anzeigen</string>
     <string name="showClientRefresh">Letzte Aktualisierung anzeigen</string>
+    <string name="showAB">A und B Woche statt  A, B, C, und D Woche anzeigen </string>
 
     <string name="connected">Online</string>
     <string name="noConnection">Offline</string>
@@ -68,6 +69,13 @@
         <item>Jsoup</item>
         <item>TG-API</item>
     </array>
+
+    <array name="licenses_urls">
+        <item>https://github.com/google/gson</item>
+        <item>https://github.com/jhy/jsoup/</item>
+        <item>https://github.com/Sematre/TG-API</item>
+    </array>
+
     <string name="title_activity_license">Opensource-License</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
