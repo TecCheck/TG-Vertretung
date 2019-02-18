@@ -7,8 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.MenuItem;
 
-import java.util.Set;
-
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
     Preference filter = null;
@@ -73,21 +71,21 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
-        if (preference.getKey() == filter.getKey()) {
+        if (preference.getKey().equals(filter.getKey())) {
             Settings.settings.filter = (String) value;
             filter.setSummary((String) value);
-        } else if (preference.getKey() == extendetView.getKey()) {
+        } else if (preference.getKey().equals(extendetView.getKey())) {
             Settings.settings.extendet = (boolean) value;
-        } else if (preference.getKey() == filterSwitch.getKey()) {
+        } else if (preference.getKey().equals(filterSwitch.getKey())) {
             Settings.settings.useFilter = (boolean) value;
             filter.setEnabled((boolean) value);
-        }else if(preference.getKey() == showText.getKey()){
+        }else if(preference.getKey().equals(showText.getKey())){
             Settings.settings.showText = (boolean) value;
-        }else if(preference.getKey() == showClientRefresh.getKey()){
+        }else if(preference.getKey().equals(showClientRefresh.getKey())){
             Settings.settings.showClientRefersh = (boolean) value;
-        }else if(preference.getKey() == showServerRefersh.getKey()){
+        }else if(preference.getKey().equals(showServerRefersh.getKey())){
             Settings.settings.showServerRefresh = (boolean) value;
-        }else if(preference.getKey() == showAB.getKey()){
+        }else if(preference.getKey().equals(showAB.getKey())){
             Settings.settings.showAB = (boolean) value;
         }
 

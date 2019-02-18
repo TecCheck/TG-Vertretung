@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
 
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
@@ -87,7 +86,8 @@ public class TableFragment extends Fragment {
         }else{
             week = week + table.getWeek().getLetter();
         }
-        label.setText(Client.getFormatedDate(table.getDate(), true, false) + " " + week);
+        String s = Client.getFormatedDate(table.getDate(), true, false) + " " + week;
+        label.setText(s);
         //Client.print("=> Neuer Plan! (" + table.getDate() + ")");
         //Client.print(table.toString());
         setColor(table.getDate());

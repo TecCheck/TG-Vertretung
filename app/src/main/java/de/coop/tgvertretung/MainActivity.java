@@ -1,8 +1,6 @@
 package de.coop.tgvertretung;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -81,13 +79,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Settings.print();
                 if(Settings.settings.showClientRefersh){
                     lastReload.setVisibility(View.VISIBLE);
-                    lastReload.setText(getString(R.string.lastReload) + " " + Client.getFormatedDate(Settings.settings.lastClientRefresh, false, true));
+                    String s = getString(R.string.lastReload) + " " + Client.getFormatedDate(Settings.settings.lastClientRefresh, false, true);
+                    lastReload.setText(s);
                 }else{
                     lastReload.setVisibility(View.GONE);
                 }
                 if (Settings.settings.showServerRefresh) {
                     lastServerRefresh.setVisibility(View.VISIBLE);
-                    lastServerRefresh.setText(getString(R.string.lastServerRefresh) + Client.getFormatedDate(Settings.settings.timeTable.getDate(), false, true));
+                    String s = getString(R.string.lastServerRefresh) + Client.getFormatedDate(Settings.settings.timeTable.getDate(), false, true);
+                    lastServerRefresh.setText(s);
                 } else {
                     lastServerRefresh.setVisibility(View.GONE);
                 }
@@ -107,12 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         loadView.setVisibility(View.GONE);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Client.load(true);
-            }
-        });
+        fab.setOnClickListener(view -> Client.load(true));
 
         new Client();
 
@@ -154,12 +149,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setTitle(R.string.exitTitle)
                         .setMessage(R.string.exitMessage)
                         .setNegativeButton(android.R.string.no, null)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                MainActivity.super.onBackPressed();
-                                System.exit(1);
-                            }
+                        .setPositiveButton(android.R.string.yes, (arg0, arg1) -> {
+                            MainActivity.super.onBackPressed();
+                            System.exit(1);
                         }).create();
                 dialog.show();
             }

@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_description_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Christoph" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_icon2" />
+                            <entry key="sourceFile" value="C:\Users\Christoph\Projekte\AndroidStudioProjects\TGVertretung\icon2.psd" />
                           </map>
                         </option>
                       </PersistentState>

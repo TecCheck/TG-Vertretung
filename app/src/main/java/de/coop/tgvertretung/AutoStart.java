@@ -10,11 +10,7 @@ public class AutoStart extends BroadcastReceiver {
 
     public static void load() {
 
-
-
-        if (dwdThread != null && dwdThread.isAlive()) {
-
-        } else {
+        if (dwdThread == null || !dwdThread.isAlive()) {
             dwdThread = new Thread(new Download());
             dwdThread.setName("Download-Thread");
             Download.autoStart = true;

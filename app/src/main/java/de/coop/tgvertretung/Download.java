@@ -21,9 +21,8 @@ public class Download implements Runnable {
             TG tgv;
             //tgv = new TG("226142", "tgrv");
             tgv = new TG(Settings.settings.username, Settings.settings.password);
-            Client.print(tgv.getTimeTable().toString());
             Settings.settings.timeTable = tgv.getTimeTable().summarize();
-            Client.print("ServerTime: " + tgv.getTimeTable().getDate());
+            Client.print("ServerTime: " + Settings.settings.timeTable);
             Client.print("Download finished");
         }catch (Exception e){
             e.printStackTrace();
@@ -31,12 +30,9 @@ public class Download implements Runnable {
         }
         if (!autoStart) {
             Handler mainHandler = new Handler(Looper.getMainLooper());
-            Runnable myRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    Client.loadFinished();
-                    Client.print("Runable started");
-                }
+            Runnable myRunnable = () -> {
+                Client.loadFinished();
+                Client.print("Runable started");
             };
             mainHandler.post(myRunnable);
         }
