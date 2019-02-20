@@ -47,7 +47,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
         filter.setDefaultValue(Settings.settings.filter);
         //filter.setDefaultValue(settings.getInt(FILTER_KEY, filterInt));
-        extendetView.setDefaultValue(Settings.settings.extendet);
+        extendetView.setDefaultValue(Settings.settings.extended);
         filterSwitch.setDefaultValue(Settings.settings.useFilter);
         showText.setDefaultValue(Settings.settings.showText);
         showClientRefresh.setDefaultValue(Settings.settings.showClientRefersh);
@@ -75,7 +75,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.filter = (String) value;
             filter.setSummary((String) value);
         } else if (preference.getKey().equals(extendetView.getKey())) {
-            Settings.settings.extendet = (boolean) value;
+            Settings.settings.extended = (boolean) value;
         } else if (preference.getKey().equals(filterSwitch.getKey())) {
             Settings.settings.useFilter = (boolean) value;
             filter.setEnabled((boolean) value);

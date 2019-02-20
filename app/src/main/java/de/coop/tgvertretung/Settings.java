@@ -25,7 +25,7 @@ public class Settings implements Serializable{
     public String password = "";
     public String filter = "";
     public boolean useFilter = false;
-    public boolean extendet = false;
+    public boolean extended = false;
     public boolean showText = false;
     public boolean loggedIn = false;
     public boolean showClientRefersh = true;
@@ -65,7 +65,7 @@ public class Settings implements Serializable{
         out = out + ", password: " + settings.password;
         out = out + ", filter: " + settings.filter;
         out = out + ", useFilter: " + settings.useFilter;
-        out = out + ", extendet: " + settings.extendet;
+        out = out + ", extended: " + settings.extended;
         out = out + ", loggedIn: " + settings.loggedIn;
         out = out + ", showText: " + settings.showText;
         out = out + ", showClientRefersh: " + settings.showClientRefersh;

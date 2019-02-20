@@ -114,7 +114,7 @@ public class TableFragment extends Fragment {
             Client.print("");
             for (TableEntry entry : tableEntries) {
                 Client.print(entry.getSchoolClass() + ", " + entry.getTime());
-                addTableItem(entry, Settings.settings.extendet, Settings.settings.showText);
+                addTableItem(entry, Settings.settings.extended, Settings.settings.showText);
             }
         }
         Client.print("");

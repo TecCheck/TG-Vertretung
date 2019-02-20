@@ -44,8 +44,8 @@
     <string name="devs_name">Entwickler</string>
     <string name="tobias">Tobias</string>
     <string name="christoph">Christoph</string>
-    <string name="licenses_name">OpenSource-Lizensen</string>
-    <string name="licenses_txt">OpenSource Lizensen anzeigen</string>
+    <string name="licenses_name">OpenSource-Lizenzen</string>
+    <string name="licenses_txt">OpenSource Lizenzen anzeigen</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Kennung</string>
