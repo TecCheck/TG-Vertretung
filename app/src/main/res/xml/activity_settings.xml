@@ -38,6 +38,7 @@
     <SwitchPreference
         android:defaultValue="false"
         android:key="showAB"
+        android:summary="@string/showABSummary"
         android:title="@string/showAB" />
     <SwitchPreference
         android:layout_width="wrap_content"
