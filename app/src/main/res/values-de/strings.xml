@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">TGVertretung</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -17,7 +16,7 @@
 
     <string name="setting_filterPref">Filter</string>
     <string name="setting_filterSwitch">Filter benutzen</string>
-    <string name="setting_extendetView">Erweiterte Ansicht</string>
+    <string name="setting_extendedView">Erweiterte Ansicht</string>
     <string name="showText">Vertetungstext anzeigen</string>
     <string name="showServerRefresh">Letzte Änderung anzeigen</string>
     <string name="showClientRefresh">Letzte Aktualisierung anzeigen</string>
@@ -37,11 +36,8 @@
 
     <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
     <string name="version_name">Versionsname</string>
-    <string name="github_name">GitHub</string>
     <string name="github_txt">Besuche die GitHub Site.</string>
     <string name="devs_name">Entwickler</string>
-    <string name="tobias">Tobias</string>
-    <string name="christoph">Christoph</string>
     <string name="licenses_name">OpenSource-Lizenzen</string>
     <string name="licenses_txt">OpenSource Lizenzen anzeigen</string>
 
@@ -62,5 +58,13 @@
         <item>Samstag</item>
         <item>Sonntag</item>
     </array>
+    <string name="week">Woche</string>
+    <string name="title_activity_license">OpenSource-License</string>
+    <string name="action_settings">Settings</string>
+    <string name="showABSummary">A und B Woche statt A, B, C, und D Woche anzeigen</string>
+    <string name="showAB">Vereinfachte Wochenart</string>
+    <string name="setting_viewTitle">Ansicht</string>
+    <string name="setting_filterTitle">Filter</string>
+    <string name="setting_contextMenuTitle">Kontextmenü</string>
 
 </resources>

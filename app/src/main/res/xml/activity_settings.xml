@@ -2,6 +2,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <PreferenceCategory android:title="@string/setting_filterTitle">
+
+    </PreferenceCategory>
     <SwitchPreference
         android:defaultValue="false"
         android:key="switch_preference"
@@ -29,19 +32,30 @@
         android:positiveButtonText="@null"
         android:title="@string/setting_filterPref" />
     ]]>
+    <PreferenceCategory android:title="@string/setting_viewTitle">
+
+    </PreferenceCategory>
     <SwitchPreference
+        android:defaultValue="false"
+        android:key="showAB"
+        android:summary="@string/showABSummary"
+        android:title="@string/showAB" />
+    <SwitchPreference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:clickable="true"
         android:defaultValue="false"
         android:enabled="true"
-        android:key="extendetView"
-        android:title="@string/setting_extendetView"
         android:focusable="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:key="extendedView"
+        android:title="@string/setting_extendedView" />
     <SwitchPreference
         android:defaultValue="false"
         android:key="showText"
         android:title="@string/showText" />
+    <PreferenceCategory android:title="@string/setting_contextMenuTitle">
+
+    </PreferenceCategory>
     <SwitchPreference
         android:defaultValue="false"
         android:key="showServerRefresh"
@@ -50,9 +64,5 @@
         android:defaultValue="false"
         android:key="showClientRefresh"
         android:title="@string/showClientRefresh" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="showAB"
-        android:title="@string/showAB" />
 
 </PreferenceScreen>

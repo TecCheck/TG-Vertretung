@@ -10,11 +10,11 @@ import android.view.MenuItem;
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
     Preference filter = null;
-    Preference extendetView = null;
+    Preference extendedView = null;
     Preference filterSwitch = null;
     Preference showText = null;
     Preference showClientRefresh = null;
-    Preference showServerRefersh = null;
+    Preference showServerRefresh = null;
     Preference showAB = null;
 
     @Override
@@ -28,30 +28,30 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
         addPreferencesFromResource(R.xml.activity_settings);
         filter = findPreference("filterPref");
-        extendetView = findPreference("extendetView");
+        extendedView = findPreference("extendedView");
         filterSwitch = findPreference("switch_preference");
         showText = findPreference("showText");
         showClientRefresh = findPreference("showClientRefresh");
-        showServerRefersh = findPreference("showServerRefresh");
+        showServerRefresh = findPreference("showServerRefresh");
         showAB = findPreference("showAB");
 
         //settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         filter.setOnPreferenceChangeListener(this);
-        extendetView.setOnPreferenceChangeListener(this);
+        extendedView.setOnPreferenceChangeListener(this);
         filterSwitch.setOnPreferenceChangeListener(this);
         showText.setOnPreferenceChangeListener(this);
         showClientRefresh.setOnPreferenceChangeListener(this);
-        showServerRefersh.setOnPreferenceChangeListener(this);
+        showServerRefresh.setOnPreferenceChangeListener(this);
         showAB.setOnPreferenceChangeListener(this);
 
         filter.setDefaultValue(Settings.settings.filter);
         //filter.setDefaultValue(settings.getInt(FILTER_KEY, filterInt));
-        extendetView.setDefaultValue(Settings.settings.extended);
+        extendedView.setDefaultValue(Settings.settings.extended);
         filterSwitch.setDefaultValue(Settings.settings.useFilter);
         showText.setDefaultValue(Settings.settings.showText);
-        showClientRefresh.setDefaultValue(Settings.settings.showClientRefersh);
-        showServerRefersh.setDefaultValue(Settings.settings.showServerRefresh);
+        showClientRefresh.setDefaultValue(Settings.settings.showClientRefresh);
+        showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
         showAB.setDefaultValue(Settings.settings.showAB);
 
         filter.setSummary(Settings.settings.filter);
@@ -74,7 +74,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         if (preference.getKey().equals(filter.getKey())) {
             Settings.settings.filter = (String) value;
             filter.setSummary((String) value);
-        } else if (preference.getKey().equals(extendetView.getKey())) {
+        } else if (preference.getKey().equals(extendedView.getKey())) {
             Settings.settings.extended = (boolean) value;
         } else if (preference.getKey().equals(filterSwitch.getKey())) {
             Settings.settings.useFilter = (boolean) value;
@@ -82,8 +82,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         }else if(preference.getKey().equals(showText.getKey())){
             Settings.settings.showText = (boolean) value;
         }else if(preference.getKey().equals(showClientRefresh.getKey())){
-            Settings.settings.showClientRefersh = (boolean) value;
-        }else if(preference.getKey().equals(showServerRefersh.getKey())){
+            Settings.settings.showClientRefresh = (boolean) value;
+        }else if(preference.getKey().equals(showServerRefresh.getKey())){
             Settings.settings.showServerRefresh = (boolean) value;
         }else if(preference.getKey().equals(showAB.getKey())){
             Settings.settings.showAB = (boolean) value;

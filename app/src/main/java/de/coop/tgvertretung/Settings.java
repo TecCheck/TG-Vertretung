@@ -28,7 +28,7 @@ public class Settings implements Serializable{
     public boolean extended = false;
     public boolean showText = false;
     public boolean loggedIn = false;
-    public boolean showClientRefersh = true;
+    public boolean showClientRefresh = true;
     public boolean showServerRefresh = false;
     public boolean showAB = false;
 
@@ -59,18 +59,18 @@ public class Settings implements Serializable{
 
     public static void print(){
         String out = "Settings: \n";
-        //out = out + "timeTable: " + settings.timeTable;
-        out = out + ", lastClientRefresh: " + settings.lastClientRefresh;
-        out = out + ", username: " + settings.username;
-        out = out + ", password: " + settings.password;
-        out = out + ", filter: " + settings.filter;
-        out = out + ", useFilter: " + settings.useFilter;
-        out = out + ", extended: " + settings.extended;
-        out = out + ", loggedIn: " + settings.loggedIn;
-        out = out + ", showText: " + settings.showText;
-        out = out + ", showClientRefersh: " + settings.showClientRefersh;
-        out = out + ", showServerRefresh: " + settings.showServerRefresh;
-        out = out + ", showAB" + settings.showAB;
+        //out += "timeTable: " + settings.timeTable;
+        out += ", lastClientRefresh: " + settings.lastClientRefresh;
+        out += ", username: " + settings.username;
+        out += ", password: " + settings.password;
+        out += ", filter: " + settings.filter;
+        out += ", useFilter: " + settings.useFilter;
+        out += ", extended: " + settings.extended;
+        out += ", loggedIn: " + settings.loggedIn;
+        out += ", showText: " + settings.showText;
+        out += ", showClientRefresh: " + settings.showClientRefresh;
+        out += ", showServerRefresh: " + settings.showServerRefresh;
+        out += ", showAB" + settings.showAB;
 
         Client.print(out);
     }

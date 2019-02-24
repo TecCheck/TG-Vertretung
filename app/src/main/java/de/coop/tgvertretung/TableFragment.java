@@ -86,7 +86,7 @@ public class TableFragment extends Fragment {
         }else{
             week = week + table.getWeek().getLetter();
         }
-        String s = Client.getFormatedDate(table.getDate(), true, false) + " " + week;
+        String s = Client.getFormattedDate(table.getDate(), true, false) + " " + week;
         label.setText(s);
         //Client.print("=> Neuer Plan! (" + table.getDate() + ")");
         //Client.print(table.toString());
@@ -150,7 +150,7 @@ public class TableFragment extends Fragment {
         mainScroll.setBackground(stroke);
     }
 
-    public void addTableItem(TableEntry entry, boolean extendet, boolean showText) {
+    public void addTableItem(TableEntry entry, boolean extended, boolean showText) {
         Client.printMethod("addTableItem");
 
         String infoRow = "";
@@ -160,14 +160,14 @@ public class TableFragment extends Fragment {
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
             infoRow = infoRow + entry.getSubject() + " " + MainActivity.instance.getString(R.string.noClass);
         } else {
-            if (extendet) {
+            if (extended) {
                 infoRow = infoRow + entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + " statt " + entry.getSubject() + " in " + entry.getRoom();
             } else {
                 infoRow = infoRow + entry.getReplacementSubject() + " in " + entry.getReplacementRoom();
             }
         }
         if ((!entry.getText().equals("")) && showText) {
-            infoRow = infoRow + " (" + entry.getText() + ")";
+            infoRow += " (" + entry.getText() + ")";
         }
         addListItem(infoRow, timeRow, classRow, Client.instance.VertretungSize, Client.instance.VertretungRGB);
     }
