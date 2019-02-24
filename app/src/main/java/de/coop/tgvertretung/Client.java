@@ -4,6 +4,7 @@ import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import de.sematre.tg.Table;
@@ -55,7 +56,7 @@ public class Client {
         } else if (viewUI) {
             MainActivity.showSnack(MainActivity.instance.getString(R.string.noConnection));
         }
-        if(Download.online) {
+        if (Download.online) {
             Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         }
         if (viewUI) {
@@ -73,23 +74,18 @@ public class Client {
             MainActivity.instance.loadView.setVisibility(View.GONE);
             MainActivity.instance.progBar.setEnabled(false);
             MainActivity.instance.stdView.setVisibility(View.VISIBLE);
-            Client.print("Pager vissible");
+            Client.print("Pager visible");
         }
     }
 
-    public static String getFormatedDate(Date date, boolean dayName, boolean useTime){
-        String patern = "dd.MM.yyyy";
-        if(useTime){
-            patern = "dd.MM.yyyy kk:mm";
-        }
-        String out = "";
-        if(dayName){
-            out = MainActivity.instance.getResources().getStringArray(R.array.days)[date.getDay() - 1] + " ";
-        }
-        SimpleDateFormat format = new SimpleDateFormat(patern);
+    public static String getFormattedDate(Date date, boolean dayName, boolean useTime) {
+        String pattern = "dd.MM.yyyy";
+        if (useTime) pattern += " HH:mm";
+        if(dayName) pattern = "EEEE " + pattern;
+
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
         format.setTimeZone(TimeZone.getDefault());
-        out = out + format.format(date);
-        return out;
+        return format.format(date);
     }
 
     public static int getView() {
@@ -105,7 +101,7 @@ public class Client {
             Client.print(table.getDate().toString());
             i++;
         }
-        Client.print("Date Not found");
+        Client.print("Date not found");
         return 0;
 
     }

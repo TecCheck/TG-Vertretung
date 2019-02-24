@@ -14,13 +14,11 @@ public class Download implements Runnable {
     public void run() {
 
         online = true;
-        Client.print("autostart: " + autoStart);
+        Client.print("AutoStart: " + autoStart);
 
         Client.print("Download started");
         try {
-            TG tgv;
-            //tgv = new TG("226142", "tgrv");
-            tgv = new TG(Settings.settings.username, Settings.settings.password);
+            TG tgv = new TG(Settings.settings.username, Settings.settings.password);
             Settings.settings.timeTable = tgv.getTimeTable().summarize();
             Client.print("ServerTime: " + Settings.settings.timeTable);
             Client.print("Download finished");
@@ -32,7 +30,7 @@ public class Download implements Runnable {
             Handler mainHandler = new Handler(Looper.getMainLooper());
             Runnable myRunnable = () -> {
                 Client.loadFinished();
-                Client.print("Runable started");
+                Client.print("Runnable started");
             };
             mainHandler.post(myRunnable);
         }
