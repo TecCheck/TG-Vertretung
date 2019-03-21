@@ -33,6 +33,13 @@ public class Download implements Runnable {
                 Client.print("Runnable started");
             };
             mainHandler.post(myRunnable);
+        }else{
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            Runnable myRunnable = () -> {
+                AutoStart.loadFinished();
+                Client.print("Runnable started");
+            };
+            mainHandler.post(myRunnable);
         }
         Client.print("Download Thread closed");
     }

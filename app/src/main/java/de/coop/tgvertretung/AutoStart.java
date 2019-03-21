@@ -4,24 +4,27 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.Date;
+
 public class AutoStart extends BroadcastReceiver {
 
     public static Thread dwdThread = null;
 
-    public static void load() {
+    public static void loadFinished() {
+        Client.printMethod("loadFinished");
 
-        if (dwdThread == null || !dwdThread.isAlive()) {
-            dwdThread = new Thread(new Download(), "Download-Thread");
-            Download.autoStart = true;
-            dwdThread.start();
+        if (Download.online) {
+            Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         }
+        Settings.save();
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Settings.prefs = context.getSharedPreferences("preferences", 0);
         Settings.load();
-        load();
-        Settings.save();
+        dwdThread = new Thread(new Download(), "Download-Thread");
+        Download.autoStart = true;
+        dwdThread.start();
     }
 }
