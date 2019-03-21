@@ -6,8 +6,8 @@ android {
         applicationId 'de.coop.tgvertretung'
         minSdkVersion 22
         targetSdkVersion 26
-        versionCode 219
-        versionName "Beta 1.8"
+        versionCode 220
+        versionName "Beta 1.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
