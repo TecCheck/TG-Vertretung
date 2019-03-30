@@ -53,6 +53,11 @@
         android:defaultValue="false"
         android:key="showText"
         android:title="@string/showText" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="oldLayout"
+        android:summary="@string/requires_restart"
+        android:title="@string/useOldLayout" />
     <PreferenceCategory android:title="@string/setting_contextMenuTitle">
 
     </PreferenceCategory>
@@ -64,5 +69,12 @@
         android:defaultValue="false"
         android:key="showClientRefresh"
         android:title="@string/showClientRefresh" />
+    <PreferenceCategory android:title="@string/setting_unnecessaryMenuTitle">
+
+    </PreferenceCategory>
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="rainbow"
+        android:title="@string/rainbow" />
 
 </PreferenceScreen>

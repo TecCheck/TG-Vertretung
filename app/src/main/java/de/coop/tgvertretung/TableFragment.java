@@ -70,7 +70,7 @@ public class TableFragment extends Fragment {
         mainLayout = rootView.findViewById(R.id.MainLayout);
         //Client.print("MainLayoutID: " + R.id.MainLayout);
         //Client.print("mainLayout: " + mainLayout);
-        label = rootView.findViewById(R.id.section_label);
+        label = rootView.findViewById(R.id.label);
         mainScroll = rootView.findViewById(R.id.MainScroll);
         mainScroll.setVerticalScrollBarEnabled(false);
         mainScroll.setHorizontalScrollBarEnabled(false);

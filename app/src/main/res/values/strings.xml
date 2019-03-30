@@ -24,8 +24,12 @@
     <string name="showABSummary">A und B Woche statt  A, B, C, und D Woche anzeigen </string>
     <string name="showText">Vertetungstext anzeigen</string>
     <string name="setting_contextMenuTitle">Kontextmenü</string>
+    <string name="setting_unnecessaryMenuTitle">Unnötig</string>
     <string name="showServerRefresh">Letzte Änderung anzeigen</string>
     <string name="showClientRefresh">Letzte Aktualisierung anzeigen</string>
+    <string name="useOldLayout">Altes Layout benutzen</string>
+    <string name="requires_restart">Neustart der App erforderlich</string>
+    <string name="rainbow">RAINBOW!</string>
 
     <string name="connected">Online</string>
     <string name="noConnection">Offline</string>

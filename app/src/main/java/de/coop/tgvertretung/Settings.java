@@ -31,6 +31,8 @@ public class Settings implements Serializable{
     public boolean showClientRefresh = true;
     public boolean showServerRefresh = false;
     public boolean showAB = false;
+    public boolean useOldLayout = false;
+    public boolean rainbow = false;
 
     public static void load() {
         settings = new Settings();

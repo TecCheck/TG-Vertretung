@@ -16,6 +16,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     Preference showClientRefresh = null;
     Preference showServerRefresh = null;
     Preference showAB = null;
+    Preference useOldLayout = null;
+    Preference rainbow = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showClientRefresh = findPreference("showClientRefresh");
         showServerRefresh = findPreference("showServerRefresh");
         showAB = findPreference("showAB");
+        useOldLayout = findPreference("oldLayout");
+        rainbow = findPreference("rainbow");
 
         //settings = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -44,6 +48,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showClientRefresh.setOnPreferenceChangeListener(this);
         showServerRefresh.setOnPreferenceChangeListener(this);
         showAB.setOnPreferenceChangeListener(this);
+        useOldLayout.setOnPreferenceChangeListener(this);
+        rainbow.setOnPreferenceChangeListener(this);
 
         filter.setDefaultValue(Settings.settings.filter);
         //filter.setDefaultValue(settings.getInt(FILTER_KEY, filterInt));
@@ -53,6 +59,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showClientRefresh.setDefaultValue(Settings.settings.showClientRefresh);
         showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
         showAB.setDefaultValue(Settings.settings.showAB);
+        useOldLayout.setDefaultValue(Settings.settings.useOldLayout);
+        rainbow.setDefaultValue(Settings.settings.rainbow);
 
         filter.setSummary(Settings.settings.filter);
         //filter.setSummary(settings.getInt(FILTER_KEY, filterInt));
@@ -71,6 +79,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
+
         if (preference.getKey().equals(filter.getKey())) {
             Settings.settings.filter = (String) value;
             filter.setSummary((String) value);
@@ -87,6 +96,10 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.showServerRefresh = (boolean) value;
         }else if(preference.getKey().equals(showAB.getKey())){
             Settings.settings.showAB = (boolean) value;
+        }else if(preference.getKey().equals(useOldLayout.getKey())){
+            Settings.settings.useOldLayout = (boolean) value;
+        }else if(preference.getKey().equals(rainbow.getKey())){
+            Settings.settings.rainbow = (boolean) value;
         }
 
         Settings.save();
