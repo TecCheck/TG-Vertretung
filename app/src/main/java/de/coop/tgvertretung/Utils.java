@@ -19,17 +19,17 @@ public class Utils {
 
         switch (date.getDay()){
             case 1:
-                return MainActivity.instance.getResources().getColor(R.color.yellow);
+                return Statics.mainActivity.getResources().getColor(R.color.yellow);
             case 2:
-                return MainActivity.instance.getResources().getColor(R.color.blue);
+                return Statics.mainActivity.getResources().getColor(R.color.blue);
             case 3:
-                return MainActivity.instance.getResources().getColor(R.color.green);
+                return Statics.mainActivity.getResources().getColor(R.color.green);
             case 4:
-                return MainActivity.instance.getResources().getColor(R.color.orange);
+                return Statics.mainActivity.getResources().getColor(R.color.orange);
             case 5:
-                return MainActivity.instance.getResources().getColor(R.color.pink);
+                return Statics.mainActivity.getResources().getColor(R.color.pink);
             default:
-                return MainActivity.instance.getResources().getColor(R.color.purple);
+                return Statics.mainActivity.getResources().getColor(R.color.purple);
         }
     }
 

@@ -37,7 +37,7 @@ public class Settings implements Serializable{
     public static void load() {
         settings = new Settings();
         if (prefs == null)
-            prefs = MainActivity.instance.getSharedPreferences("preferences", 0);
+            prefs = Statics.mainActivity.getSharedPreferences("preferences", 0);
         try {
             String s = ObjectSerializer.serialize(settings);
             s = prefs.getString(PREFS_KEY, s);

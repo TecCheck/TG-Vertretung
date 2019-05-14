@@ -13,7 +13,7 @@ public class AutoStart extends BroadcastReceiver {
     public static void loadFinished() {
         Client.printMethod("loadFinished");
 
-        if (Download.online) {
+        if (Download.status == 0) {
             Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         }
         Settings.save();

@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,6 +40,12 @@ public class TableFragment2 extends Fragment {
         TextView label = rootView.findViewById(R.id.label);
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
+        SwipeRefreshLayout swipeRefreshLayout = rootView.findViewById(R.id.swipe_container);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            Client.refreshLayout = swipeRefreshLayout;
+            Client.load(true);
+        });
         int index = getArguments().getInt(INDEX);
 
         //Filer the table if needed
@@ -64,7 +71,7 @@ public class TableFragment2 extends Fragment {
             recyclerView.setVisibility(View.GONE);
         }else {
             nothing.setVisibility(View.GONE);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.instance.getApplicationContext());
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Statics.mainActivity.getApplicationContext());
             RecyclerView.Adapter adapter = new TableEntryAdapter(table);
             recyclerView.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(layoutManager);
@@ -86,7 +93,7 @@ public class TableFragment2 extends Fragment {
     }
 
     private String getLabelText(){
-        String week = MainActivity.instance.getString(R.string.week) + " ";
+        String week = Statics.mainActivity.getString(R.string.week) + " ";
         if(Settings.settings.showAB){
             if(table.getWeek().getLetter().toLowerCase().equals("a") || table.getWeek().getLetter().toLowerCase().equals("c"))
                 week = week + "A";

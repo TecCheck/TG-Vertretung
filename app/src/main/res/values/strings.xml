@@ -33,6 +33,7 @@
 
     <string name="connected">Online</string>
     <string name="noConnection">Offline</string>
+    <string name="nothingNew">Nichts neues gefunden</string>
 
     <string name="exitTitle">Wirklich Beenden?</string>
     <string name="exitMessage">Willst du die App wirklich beenden?</string>

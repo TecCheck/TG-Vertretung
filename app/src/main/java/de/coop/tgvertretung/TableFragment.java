@@ -77,7 +77,7 @@ public class TableFragment extends Fragment {
 
         int asn = getArguments().getInt(ARG_SECTION_NUMBER);
         table = Settings.settings.timeTable.getTables().get(asn);
-        String week = MainActivity.instance.getString(R.string.week) + " ";
+        String week = Statics.mainActivity.getString(R.string.week) + " ";
         if(Settings.settings.showAB){
             if(table.getWeek().getLetter().toLowerCase().equals("a") || table.getWeek().getLetter().toLowerCase().equals("c"))
                 week = week + "A";
@@ -107,7 +107,7 @@ public class TableFragment extends Fragment {
         //tableEntries = checkTableEntries(tableEntries);
         if (tableEntries.isEmpty()) {
             Client.print("Leer!");
-            addListItem(MainActivity.instance.getString(R.string.nothing), Client.instance.NothingSize, false);
+            addListItem(Statics.mainActivity.getString(R.string.nothing), Client.instance.NothingSize, false);
         } else {
             Client.print("");
             Client.print("tableEntries for " + label.getText() +": ");
@@ -124,8 +124,8 @@ public class TableFragment extends Fragment {
     @SuppressLint("NewApi")
     private void setColor(Date date) {
         Client.printMethod("setColor");
-        Drawable base = MainActivity.instance.getDrawable(R.drawable.colorgrade_base);
-        Drawable stroke = MainActivity.instance.getDrawable(R.drawable.colorgrade_stroke);
+        Drawable base = Statics.mainActivity.getDrawable(R.drawable.colorgrade_base);
+        Drawable stroke = Statics.mainActivity.getDrawable(R.drawable.colorgrade_stroke);
 
         if (date.getDay() == 1) {
             base.setTint(getResources().getColor(R.color.yellow));
@@ -158,7 +158,7 @@ public class TableFragment extends Fragment {
         String classRow = entry.getSchoolClass() + ": ";
 
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            infoRow = infoRow + entry.getSubject() + " " + MainActivity.instance.getString(R.string.noClass);
+            infoRow = infoRow + entry.getSubject() + " " + Statics.mainActivity.getString(R.string.noClass);
         } else {
             if (extended) {
                 infoRow = infoRow + entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + " statt " + entry.getSubject() + " in " + entry.getRoom();
@@ -178,9 +178,9 @@ public class TableFragment extends Fragment {
         //adds items to the list
         int in = 2;
 
-        TextView nameText = new TextView(MainActivity.instance);
-        Space sp = new Space(MainActivity.instance);
-        LinearLayout ln = new LinearLayout(MainActivity.instance);
+        TextView nameText = new TextView(Statics.mainActivity);
+        Space sp = new Space(Statics.mainActivity);
+        LinearLayout ln = new LinearLayout(Statics.mainActivity);
 
         LinearLayout.LayoutParams nameTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         nameTextParams.gravity = Gravity.START;
@@ -209,11 +209,11 @@ public class TableFragment extends Fragment {
         //adds items to the list
         int in = 2;
 
-        TextView nameText = new TextView(MainActivity.instance);
-        TextView nameText1 = new TextView(MainActivity.instance);
-        TextView nameText2 = new TextView(MainActivity.instance);
-        Space sp = new Space(MainActivity.instance);
-        LinearLayout ln = new LinearLayout(MainActivity.instance);
+        TextView nameText = new TextView(Statics.mainActivity);
+        TextView nameText1 = new TextView(Statics.mainActivity);
+        TextView nameText2 = new TextView(Statics.mainActivity);
+        Space sp = new Space(Statics.mainActivity);
+        LinearLayout ln = new LinearLayout(Statics.mainActivity);
 
         LinearLayout.LayoutParams nameTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         nameTextParams.gravity = Gravity.START;

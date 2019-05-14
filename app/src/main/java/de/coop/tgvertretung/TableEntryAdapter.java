@@ -67,7 +67,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         String out = "";
 
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            out += entry.getSubject() + " " + MainActivity.instance.getString(R.string.noClass);
+            out += entry.getSubject() + " " + Statics.mainActivity.getString(R.string.noClass);
         } else {
             out += entry.getReplacementSubject() + " in " + entry.getReplacementRoom();
             if(extended){

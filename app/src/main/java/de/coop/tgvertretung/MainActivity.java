@@ -24,10 +24,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final boolean CLOSE_WARNING = false;
-    public static MainActivity instance = null;
     public ViewPager mPager = null;
     public LinearLayout mainLayout = null;
-    public FloatingActionButton fab = null;
     public TextView lastReload = null;
     public TextView lastServerRefresh = null;
     public ConstraintLayout loadView = null;
@@ -36,14 +34,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView = null;
     PagerAdapter mPagerAdapter;
 
-    public MainActivity() {
-        if (instance == null) {
-            instance = this;
-        }
-    }
-
     public static void showSnack(String text) {
-        Snackbar.make(instance.fab, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        Snackbar.make(Statics.mainActivity.mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     public void startPagerView() {
@@ -61,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Statics.mainActivity = this;
         Client.print("OnCreate-------------------------------------------------------------------------------");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -101,17 +94,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadView = findViewById(R.id.loadView);
         stdView = findViewById(R.id.stdView);
         progBar = findViewById(R.id.progressBar);
-        fab = findViewById(R.id.fab);
         mPager = findViewById(R.id.container);
         navigationView.setNavigationItemSelectedListener(this);
 
         loadView.setVisibility(View.GONE);
 
-        fab.setOnClickListener(view -> Client.load(true));
-
         new Client();
 
         if (Settings.settings.loggedIn) {
+            startPagerView();
             Client.load(true);
         } else {
             LoginActivity.firstTime = true;

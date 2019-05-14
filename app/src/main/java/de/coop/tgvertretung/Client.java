@@ -1,5 +1,6 @@
 package de.coop.tgvertretung;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import java.text.SimpleDateFormat;
@@ -19,6 +20,7 @@ public class Client {
     public int VertretungRGB = 0xff000000;
     public int NothingSize = 20;
     public int VertretungSize = 15;
+    public static SwipeRefreshLayout refreshLayout = null;
 
     public Client() {
         if (instance == null) {
@@ -30,10 +32,10 @@ public class Client {
         Client.printMethod("loadFinished");
         viewUI = view;
 
-        if (view) {
-            MainActivity.instance.stdView.setVisibility(View.INVISIBLE);
-            MainActivity.instance.loadView.setVisibility(View.VISIBLE);
-            MainActivity.instance.progBar.setEnabled(true);
+        if (view && false) {
+            Statics.mainActivity.stdView.setVisibility(View.INVISIBLE);
+            Statics.mainActivity.loadView.setVisibility(View.VISIBLE);
+            Statics.mainActivity.progBar.setEnabled(true);
         }
 
         if (dwdThread == null || !dwdThread.isAlive()) {
@@ -46,34 +48,38 @@ public class Client {
     public static void loadFinished() {
         Client.printMethod("loadFinished");
 
-        Client.print("viewUI: " + viewUI);
-        //list is loading
-        Client.print("online: " + Download.online);
-
-        if (Download.online && viewUI) {
-            MainActivity.showSnack(MainActivity.instance.getString(R.string.connected));
-
-        } else if (viewUI) {
-            MainActivity.showSnack(MainActivity.instance.getString(R.string.noConnection));
+        if(refreshLayout != null){
+            refreshLayout.setRefreshing(false);
+            refreshLayout = null;
         }
-        if (Download.online) {
+
+        if(viewUI){
+            if (Download.status == 0 && viewUI) {
+                MainActivity.showSnack(Statics.mainActivity.getString(R.string.connected));
+            } else if (Download.status == 1 && viewUI) {
+                MainActivity.showSnack(Statics.mainActivity.getString(R.string.noConnection));
+            }else if(Download.status == 2 && viewUI){
+                MainActivity.showSnack(Statics.mainActivity.getString(R.string.nothingNew));
+            }
+        }
+        if (Download.status == 0) {
             Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         }
         if (viewUI) {
-            int i = MainActivity.instance.mPager.getCurrentItem();
-            MainActivity.instance.startPagerView();
+            int i = Statics.mainActivity.mPager.getCurrentItem();
+            Statics.mainActivity.startPagerView();
             Client.print("Pager started!");
             if (firstPagerStart) {
-                MainActivity.instance.setTable(getView());
+                Statics.mainActivity.setTable(getView());
                 firstPagerStart = false;
             } else
-                MainActivity.instance.setTable(i);
+                Statics.mainActivity.setTable(i);
         }
 
         if (viewUI) {
-            MainActivity.instance.loadView.setVisibility(View.GONE);
-            MainActivity.instance.progBar.setEnabled(false);
-            MainActivity.instance.stdView.setVisibility(View.VISIBLE);
+            Statics.mainActivity.loadView.setVisibility(View.GONE);
+            Statics.mainActivity.progBar.setEnabled(false);
+            Statics.mainActivity.stdView.setVisibility(View.VISIBLE);
             Client.print("Pager visible");
         }
     }
