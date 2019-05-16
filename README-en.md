@@ -1,3 +1,3 @@
-English | [German](README.md)
+[German](README.md) | English
 # TG-Vertretung
 Coming soon ...
