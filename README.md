@@ -13,7 +13,7 @@ Die moderne Umsetzung einer Vertretungsplan App.
 * Geringer Speicherplatzverbrauch
 
 ## Versionen
-| Name | Beschreibung | Build status |
+| Branch | Beschreibung | Build status |
 |:-:|:-:|:-:|
 | [Master](https://github.com/TecCheck/TG-Vertretung/tree/master) | Stabile und fehlerarme Version. | [![MasterBuildStatus](https://img.shields.io/travis/TecCheck/TG-Vertretung/master.svg?style=flat-square)](https://travis-ci.com/TecCheck/TG-Vertretung/branches) |
 | [Entwicklung](https://github.com/TecCheck/TG-Vertretung/tree/development) | Immer auf dem neusten Stand der Entwicklung sein. | [![DevelopmentBuildStatus](https://img.shields.io/travis/TecCheck/TG-Vertretung/development.svg?style=flat-square)](https://travis-ci.com/TecCheck/TG-Vertretung/branches) |
@@ -25,4 +25,5 @@ Die moderne Umsetzung einer Vertretungsplan App.
 
 ## Info
 © TecCheck 2019
+
 Veröffentlicht unter der **??? Lizenz**. ``LICENSE`` für mehr Informationen.
