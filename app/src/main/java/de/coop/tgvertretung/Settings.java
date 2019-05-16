@@ -33,6 +33,7 @@ public class Settings implements Serializable{
     public boolean showAB = false;
     public boolean useOldLayout = false;
     public boolean rainbow = false;
+    public boolean twoLineLabel = false;
 
     public static void load() {
         settings = new Settings();

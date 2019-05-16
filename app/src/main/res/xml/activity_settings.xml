@@ -58,6 +58,10 @@
         android:key="oldLayout"
         android:summary="@string/requires_restart"
         android:title="@string/useOldLayout" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="two_line_label"
+        android:title="@string/twoLineLabel" />
     <PreferenceCategory android:title="@string/setting_contextMenuTitle">
 
     </PreferenceCategory>

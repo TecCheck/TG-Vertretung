@@ -28,6 +28,7 @@
     <string name="showServerRefresh">Letzte Änderung anzeigen</string>
     <string name="showClientRefresh">Letzte Aktualisierung anzeigen</string>
     <string name="useOldLayout">Altes Layout benutzen</string>
+    <string name="twoLineLabel">Label in zwei Zeilen aufteilen</string>
     <string name="requires_restart">Neustart der App erforderlich</string>
     <string name="rainbow">RAINBOW!</string>
 

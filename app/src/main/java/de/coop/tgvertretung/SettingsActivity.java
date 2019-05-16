@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.MenuItem;
 
+import java.util.Set;
+
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
     Preference filter = null;
@@ -17,6 +19,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     Preference showServerRefresh = null;
     Preference showAB = null;
     Preference useOldLayout = null;
+    Preference twoLineLabel = null;
     Preference rainbow = null;
 
     @Override
@@ -37,6 +40,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh = findPreference("showServerRefresh");
         showAB = findPreference("showAB");
         useOldLayout = findPreference("oldLayout");
+        twoLineLabel = findPreference("two_line_label");
         rainbow = findPreference("rainbow");
 
         //settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -49,6 +53,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh.setOnPreferenceChangeListener(this);
         showAB.setOnPreferenceChangeListener(this);
         useOldLayout.setOnPreferenceChangeListener(this);
+        twoLineLabel.setOnPreferenceChangeListener(this);
         rainbow.setOnPreferenceChangeListener(this);
 
         filter.setDefaultValue(Settings.settings.filter);
@@ -60,6 +65,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
         showAB.setDefaultValue(Settings.settings.showAB);
         useOldLayout.setDefaultValue(Settings.settings.useOldLayout);
+        twoLineLabel.setDefaultValue(Settings.settings.twoLineLabel);
         rainbow.setDefaultValue(Settings.settings.rainbow);
 
         filter.setSummary(Settings.settings.filter);
@@ -100,6 +106,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.useOldLayout = (boolean) value;
         }else if(preference.getKey().equals(rainbow.getKey())){
             Settings.settings.rainbow = (boolean) value;
+        }else if(preference.getKey().equals(twoLineLabel.getKey())){
+            Settings.settings.twoLineLabel = (boolean) value;
         }
 
         Settings.save();
