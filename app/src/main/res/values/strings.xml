@@ -32,8 +32,8 @@
     <string name="requires_restart">Neustart der App erforderlich</string>
     <string name="rainbow">RAINBOW!</string>
 
-    <string name="connected">Online</string>
-    <string name="noConnection">Offline</string>
+    <string name="connected">Daten aktualisiert</string>
+    <string name="noConnection">Keine Verbindung!</string>
     <string name="nothingNew">Nichts neues gefunden</string>
 
     <string name="exitTitle">Wirklich Beenden?</string>

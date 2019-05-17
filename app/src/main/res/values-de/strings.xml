@@ -21,8 +21,8 @@
     <string name="showServerRefresh">Letzte Änderung anzeigen</string>
     <string name="showClientRefresh">Letzte Aktualisierung anzeigen</string>
 
-    <string name="connected">Online</string>
-    <string name="noConnection">Offline</string>
+    <string name="connected">Daten aktualisiert</string>
+    <string name="noConnection">Keine Verbindung!</string>
     <string name="nothingNew">Nichts neues gefunden</string>
 
     <string name="exitTitle">Wirklich Beenden?</string>
@@ -67,5 +67,10 @@
     <string name="setting_viewTitle">Ansicht</string>
     <string name="setting_filterTitle">Filter</string>
     <string name="setting_contextMenuTitle">Kontextmenü</string>
+    <string name="setting_unnecessaryMenuTitle">Unnötig</string>
+    <string name="rainbow">RAINBOW!</string>
+    <string name="requires_restart">Neustart der App erforderlich</string>
+    <string name="useOldLayout">Altes Layout benutzen</string>
+    <string name="twoLineLabel">Label in zwei Zeilen aufteilen</string>
 
 </resources>

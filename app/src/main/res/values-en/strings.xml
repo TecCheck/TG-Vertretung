@@ -22,8 +22,8 @@
     <string name="setting_extendedView">Extended view</string>
     <string name="showText">Show text</string>
 
-    <string name="connected">Online</string>
-    <string name="noConnection">Offline</string>
+    <string name="connected">Updated data</string>
+    <string name="noConnection">No connection!</string>
 
     <string name="exitTitle">Really Exit?</string>
     <string name="exitMessage">Do you really want to quit?</string>
@@ -33,7 +33,7 @@
     <string name="never">never</string>
 
     <string name="info_content">Made by \n-Tobias\n-Christoph\n\nIf you have Questions ask Christoph.</string>
-    <string name="version_name">Bersion name</string>
+    <string name="version_name">Version name</string>
     <string name="github_txt">Visit the GitHub site.</string>
     <string name="devs_name">Developer</string>
 
@@ -42,10 +42,10 @@
 
 
     <!-- Strings related to login -->
-    <string name="prompt_username">Kennung</string>
+    <string name="prompt_username">Identifier</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Anmelden</string>
-    <string name="action_sign_in_short">Anmelden</string>
+    <string name="action_sign_in">Login</string>
+    <string name="action_sign_in_short">Login</string>
     <string name="error_incorrect_password">Wrong password or identifier</string>
 
     <array name="days">
@@ -62,11 +62,17 @@
     <string name="showClientRefresh">Show last update</string>
     <string name="title_activity_license">Open-source license</string>
     <string name="action_settings">Settings</string>
-    <string name="showABSummary">Show A and instad of A, B, C and D</string>
+    <string name="showABSummary">Show A and B instead of A, B, C and D</string>
     <string name="showAB">Simplified type of week</string>
     <string name="setting_viewTitle">Context menu</string>
     <string name="setting_filterTitle">Filter</string>
     <string name="setting_contextMenuTitle">Context menu</string>
+    <string name="nothingNew">Already up-to-date</string>
+    <string name="rainbow">RAINBOW!</string>
+    <string name="requires_restart">App restart required</string>
+    <string name="setting_unnecessaryMenuTitle">Unnecessary</string>
+    <string name="useOldLayout">Use old layout</string>
+    <string name="twoLineLabel">Split label in two lines</string>
 
 
 </resources>
