@@ -8,7 +8,6 @@ import java.util.Date;
 
 import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.Settings;
-import de.coop.tgvertretung.utils.Download;
 
 public class AutoStart extends BroadcastReceiver {
 
@@ -20,6 +19,7 @@ public class AutoStart extends BroadcastReceiver {
         if (Download.status == 0) {
             Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         }
+
         Settings.save();
     }
 
@@ -27,8 +27,9 @@ public class AutoStart extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Settings.prefs = context.getSharedPreferences("preferences", 0);
         Settings.load();
-        dwdThread = new Thread(new Download(), "Download-Thread");
+
         Download.autoStart = true;
+        dwdThread = new Thread(new Download(), "Download-Thread");
         dwdThread.start();
     }
 }

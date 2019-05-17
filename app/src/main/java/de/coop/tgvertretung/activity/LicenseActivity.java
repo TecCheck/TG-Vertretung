@@ -20,53 +20,56 @@ import de.coop.tgvertretung.R;
 public class LicenseActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static int toShow = 0;
-    TextView text = null;
 
-    String url = "";
+    private TextView text = null;
+    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_license);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getStringArray(R.array.licenses)[toShow]);
         toolbar.addView(getButton());
 
-        text = findViewById(R.id.license_content_text);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        text = findViewById(R.id.license_content_text);
 
         String fileName = "";
         url = getResources().getStringArray(R.array.licenses_urls)[toShow];
 
-        if(toShow == 0)
-            fileName = "gson_license";
-        else if(toShow == 1)
-            fileName = "jsoup_license";
-        else if(toShow == 2)
-            fileName = "tg_api_license";
+        if(toShow == 0) fileName = "gson_license";
+        else if(toShow == 1) fileName = "jsoup_license";
+        else if(toShow == 2) fileName = "tg_api_license";
 
-        InputStream ins = getResources().openRawResource(getResources().getIdentifier(fileName, "raw", getPackageName()));
-        Scanner scan = new Scanner(ins);
+        InputStream stream = getResources().openRawResource(getResources().getIdentifier(fileName, "raw", getPackageName()));
+        Scanner scanner = new Scanner(stream);
 
         Client.print("File:");
-        Client.print(scan.toString());
+        Client.print(scanner.toString());
 
-        String file = "";
-        while (scan.hasNext()){
-            file = file + "\n" + scan.nextLine();
+        StringBuilder content = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            content.append(scanner.nextLine()).append('\n');
         }
-        text.setText(file);
+
+        scanner.close();
+        text.setText(content.toString());
     }
 
-    ImageButton getButton(){
+    private ImageButton getButton(){
         ImageButton button = new ImageButton(getApplicationContext());
         button.setImageDrawable(getResources().getDrawable(R.drawable.ic_github));
         button.setElevation(0.3f);
         button.setBackgroundColor(0x00000000);
+
         Toolbar.LayoutParams params = new Toolbar.LayoutParams(100, 100,Gravity.END | Gravity.BOTTOM);
         button.setLayoutParams(params);
         button.setOnClickListener(this);
+
         return button;
     }
 
@@ -77,6 +80,7 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
             super.onBackPressed();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

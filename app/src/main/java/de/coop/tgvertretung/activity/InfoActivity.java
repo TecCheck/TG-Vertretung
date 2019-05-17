@@ -2,7 +2,6 @@ package de.coop.tgvertretung.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.activity.LicenseActivity;
 
 public class InfoActivity extends AppCompatActivity implements DialogInterface.OnClickListener{
 
@@ -22,22 +20,16 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
         ActionBar actionBar = getDelegate().getSupportActionBar();
         if (actionBar != null) {
-            // Show the Up button in the action bar.
+            // show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        //get the current Version
-        String version = "";
-        try {
-            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
-            version = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        // current version
         TextView versionNameTxt = findViewById(R.id.versionNameTxt);
-        versionNameTxt.setText(version);
+        versionNameTxt.setText(getVersion());
 
         //set Link for GitHub website
         LinearLayout gitHub = findViewById(R.id.Github);
@@ -64,6 +56,7 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
             super.onBackPressed();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -71,5 +64,14 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
     public void onClick(DialogInterface dialogInterface, int i) {
         LicenseActivity.toShow = i;
         startActivity(new Intent(this, LicenseActivity.class));
+    }
+
+    private String getVersion() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

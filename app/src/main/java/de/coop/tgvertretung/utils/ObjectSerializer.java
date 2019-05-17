@@ -29,5 +29,4 @@ public class ObjectSerializer {
         inputStream.close();
         return obj;
     }
-
 }

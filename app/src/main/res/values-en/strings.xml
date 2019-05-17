@@ -48,15 +48,6 @@
     <string name="action_sign_in_short">Login</string>
     <string name="error_incorrect_password">Wrong password or identifier</string>
 
-    <array name="days">
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
-        <item>Sunday</item>
-    </array>
     <string name="week">Week</string>
     <string name="showServerRefresh">Show last change</string>
     <string name="showClientRefresh">Show last update</string>

@@ -19,9 +19,7 @@ public class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if(Settings.settings.useOldLayout){
-            return TableFragment.newInstance(position);
-        }
+        if(Settings.settings.useOldLayout) return TableFragment.newInstance(position);
         return TableFragment2.newInstance(position);
     }
 
@@ -32,9 +30,7 @@ public class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        if(reset){
-            return PagerAdapter.POSITION_NONE;
-        }
+        if(reset) return PagerAdapter.POSITION_NONE;
         return super.getItemPosition(object);
     }
 }

@@ -50,15 +50,6 @@
     <string name="action_sign_in_short">Anmelden</string>
     <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
 
-    <array name="days">
-        <item>Montag</item>
-        <item>Dienstag</item>
-        <item>Mittwoch</item>
-        <item>Donnerstag</item>
-        <item>Freitag</item>
-        <item>Samstag</item>
-        <item>Sonntag</item>
-    </array>
     <string name="week">Woche</string>
     <string name="title_activity_license">OpenSource-License</string>
     <string name="action_settings">Settings</string>

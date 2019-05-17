@@ -14,7 +14,7 @@ import de.sematre.tg.TimeTable;
 
 public class Settings implements Serializable{
 
-    public static final String PREFS_KEY = "settings";
+    private static final String PREFS_KEY = "settings";
     private static final long serialVersionUID = -6062123032432580842L;
 
     public static Settings settings = new Settings();
@@ -23,28 +23,32 @@ public class Settings implements Serializable{
 
     public TimeTable timeTable = new TimeTable(new Date(System.currentTimeMillis()), new ArrayList<Table>());
     public Date lastClientRefresh = null;
+
     public String username = "";
     public String password = "";
-    public String filter = "";
+
+    public boolean loggedIn = false;
     public boolean useFilter = false;
+    public String filter = "";
+
     public boolean extended = false;
     public boolean showText = false;
-    public boolean loggedIn = false;
+    public boolean showAB = false;
     public boolean showClientRefresh = false;
     public boolean showServerRefresh = false;
-    public boolean showAB = false;
+
     public boolean useOldLayout = false;
     public boolean rainbow = false;
     public boolean twoLineLabel = false;
 
     public static void load() {
         settings = new Settings();
-        if (prefs == null)
-            prefs = Statics.mainActivity.getSharedPreferences("preferences", 0);
+        if (prefs == null) prefs = Statics.mainActivity.getSharedPreferences("preferences", 0);
+
         try {
-            String s = ObjectSerializer.serialize(settings);
-            s = prefs.getString(PREFS_KEY, s);
-            settings = (Settings) ObjectSerializer.deserialize(s);
+            String settingsString = prefs.getString(PREFS_KEY, ObjectSerializer.serialize(settings));
+            settings = (Settings) ObjectSerializer.deserialize(settingsString);
+
             print();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -54,8 +58,8 @@ public class Settings implements Serializable{
     public static void save() {
         try {
             editor = prefs.edit();
-            String s = ObjectSerializer.serialize(settings);
-            editor.putString(PREFS_KEY, s);
+
+            editor.putString(PREFS_KEY, ObjectSerializer.serialize(settings));
             editor.apply();
         } catch (IOException e) {
             e.printStackTrace();

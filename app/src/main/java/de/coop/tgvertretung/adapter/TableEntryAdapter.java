@@ -49,36 +49,30 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         schoolClass.setText(entry.getSchoolClass());
         hour.setText(entry.getTime());
         entryText.setText(getEntryText(entry, Settings.settings.extended));
-        if(Settings.settings.showText && !entry.getText().equals("")){
+        if (Settings.settings.showText && !entry.getText().equals("")) {
             info.setVisibility(View.VISIBLE);
             info.setText(entry.getText());
-        }else {
+        } else {
             info.setVisibility(View.GONE);
             info.setText("");
         }
 
-        if(Settings.settings.rainbow){
+        if (Settings.settings.rainbow) {
             Utils.addRainbow(schoolClass);
             Utils.addRainbow(hour);
-        }else {
+        } else {
             int color = Utils.getColor(table.getDate());
             schoolClass.setTextColor(color);
             hour.setTextColor(color);
         }
     }
 
-    private String getEntryText(TableEntry entry, boolean extended){
-        String out = "";
-
+    private String getEntryText(TableEntry entry, boolean extended) {
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            out += entry.getSubject() + " " + Statics.mainActivity.getString(R.string.noClass);
-        } else {
-            out += entry.getReplacementSubject() + " in " + entry.getReplacementRoom();
-            if(extended){
-                out += " statt " + entry.getSubject() + " in " + entry.getRoom();
-            }
+            return entry.getSubject() + " " + Statics.mainActivity.getString(R.string.noClass);
         }
-        return out;
+
+        return entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + (extended ? (" statt " + entry.getSubject() + " in " + entry.getRoom()) : "");
     }
 
     @Override

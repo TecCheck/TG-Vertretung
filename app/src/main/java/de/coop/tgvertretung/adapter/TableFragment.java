@@ -26,33 +26,24 @@ import de.sematre.tg.TableEntry;
 public class TableFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    static Table table = null;
+    private static Table table = null;
+
     private TextView label = null;
     private LinearLayout mainLayout = null;
     private ConstraintLayout mainScroll = null;
 
     /**
-     * Returns a new instance of this fragment for the given section
-     * number.
+     * Returns a new instance of this fragment for the given section number.
      */
     public static TableFragment newInstance(int sectionNumber) {
         Client.printMethod("newInstance");
-        TableFragment fragment = new TableFragment();
+
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+
+        TableFragment fragment = new TableFragment();
         fragment.setArguments(args);
-
         return fragment;
-    }
-
-    public static ArrayList<TableEntry> checkTableEntries(ArrayList<TableEntry> entries) {
-        ArrayList<TableEntry> filtered = new ArrayList<>();
-        for (TableEntry entry : entries) {
-            if (!(entry.getSchoolClass() == "" || entry.getSchoolClass() == null)) {
-                filtered.add(entry);
-            }
-        }
-        return filtered;
     }
 
     public static ArrayList<TableEntry> filterTable(ArrayList<TableEntry> entries, String filter) {
@@ -111,7 +102,7 @@ public class TableFragment extends Fragment {
         //tableEntries = checkTableEntries(tableEntries);
         if (tableEntries.isEmpty()) {
             Client.print("Leer!");
-            addListItem(Statics.mainActivity.getString(R.string.nothing), Client.instance.NothingSize, false);
+            addListItem(Statics.mainActivity.getString(R.string.nothing), Client.instance.nothingSize, false);
         } else {
             Client.print("");
             Client.print("tableEntries for " + label.getText() +": ");
@@ -173,7 +164,7 @@ public class TableFragment extends Fragment {
         if ((!entry.getText().equals("")) && showText) {
             infoRow += " (" + entry.getText() + ")";
         }
-        addListItem(infoRow, timeRow, classRow, Client.instance.VertretungSize, Client.instance.VertretungRGB);
+        addListItem(infoRow, timeRow, classRow, Client.instance.vertretungSize, Client.instance.vertretungRGB);
     }
 
     public void addListItem(String text, Integer textSize, boolean multiText) {

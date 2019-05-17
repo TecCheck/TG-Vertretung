@@ -28,6 +28,7 @@ import de.coop.tgvertretung.utils.Statics;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final boolean CLOSE_WARNING = false;
+
     public ViewPager mPager = null;
     public LinearLayout mainLayout = null;
     public TextView lastReload = null;
@@ -35,8 +36,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public ConstraintLayout loadView = null;
     public LinearLayout stdView = null;
     public ProgressBar progBar = null;
-    NavigationView navigationView = null;
-    PagerAdapter mPagerAdapter;
+
+    private NavigationView navigationView = null;
+    private PagerAdapter mPagerAdapter = null;
 
     public static void showSnack(String text) {
         Snackbar.make(Statics.mainActivity.mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -51,36 +53,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setTable(int index) {
-        if (index >= 0)
-            mPager.setCurrentItem(index);
+        if (index >= 0) mPager.setCurrentItem(index);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Statics.mainActivity = this;
         Client.print("OnCreate-------------------------------------------------------------------------------");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Settings.load();
 
-        //the menu in the top left is created
+        // the menu in the top left is created
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
             @Override
             public void onDrawerOpened(View drawerView) {
                 lastReload = findViewById(R.id.lastReload);
                 lastServerRefresh = findViewById(R.id.lastReload2);
+
                 Settings.print();
-                if(Settings.settings.showClientRefresh){
+                if (Settings.settings.showClientRefresh){
                     lastReload.setVisibility(View.VISIBLE);
                     String s = getString(R.string.lastReload) + " " + Client.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
                     lastReload.setText(s);
-                }else{
+                } else {
                     lastReload.setVisibility(View.GONE);
                 }
+
                 if (Settings.settings.showServerRefresh) {
                     lastServerRefresh.setVisibility(View.VISIBLE);
                     String s = getString(R.string.lastServerRefresh) + Client.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
@@ -88,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     lastServerRefresh.setVisibility(View.GONE);
                 }
+
                 super.onDrawerOpened(drawerView);
             }
         };
@@ -104,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadView.setVisibility(View.GONE);
 
         new Client();
-
         if (Settings.settings.loggedIn) {
             startPagerView();
             Client.load(true);
@@ -112,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LoginActivity.firstTime = true;
             startActivity(new Intent(this, LoginActivity.class));
         }
+
         Client.print("onCreate finished");
     }
 
@@ -149,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }).create();
                 dialog.show();
             }
+
             super.onBackPressed();
             System.exit(1);
         }
@@ -158,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_info) {
             startActivity(new Intent(this, InfoActivity.class));
         } else if (id == R.id.nav_settings) {
@@ -167,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LoginActivity.firstTime = false;
             startActivity(new Intent(this, LoginActivity.class));
         }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

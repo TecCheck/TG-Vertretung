@@ -14,16 +14,18 @@ import de.coop.tgvertretung.Settings;
 
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
-    Preference filter = null;
-    Preference extendedView = null;
-    Preference filterSwitch = null;
-    Preference showText = null;
-    Preference showClientRefresh = null;
-    Preference showServerRefresh = null;
-    Preference showAB = null;
-    Preference useOldLayout = null;
-    Preference twoLineLabel = null;
-    Preference rainbow = null;
+    private Preference filterSwitch = null;
+    private Preference filter = null;
+
+    private Preference extendedView = null;
+    private Preference showText = null;
+    private Preference showAB = null;
+    private Preference showClientRefresh = null;
+    private Preference showServerRefresh = null;
+
+    private Preference useOldLayout = null;
+    private Preference twoLineLabel = null;
+    private Preference rainbow = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,38 +37,43 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         }
 
         addPreferencesFromResource(R.xml.activity_settings);
-        filter = findPreference("filterPref");
-        extendedView = findPreference("extendedView");
         filterSwitch = findPreference("switch_preference");
+        filter = findPreference("filterPref");
+
+        extendedView = findPreference("extendedView");
         showText = findPreference("showText");
+        showAB = findPreference("showAB");
         showClientRefresh = findPreference("showClientRefresh");
         showServerRefresh = findPreference("showServerRefresh");
-        showAB = findPreference("showAB");
+
         useOldLayout = findPreference("oldLayout");
         twoLineLabel = findPreference("two_line_label");
         rainbow = findPreference("rainbow");
 
         //settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-        filter.setOnPreferenceChangeListener(this);
-        extendedView.setOnPreferenceChangeListener(this);
         filterSwitch.setOnPreferenceChangeListener(this);
+        filter.setOnPreferenceChangeListener(this);
+
+        extendedView.setOnPreferenceChangeListener(this);
         showText.setOnPreferenceChangeListener(this);
+        showAB.setOnPreferenceChangeListener(this);
         showClientRefresh.setOnPreferenceChangeListener(this);
         showServerRefresh.setOnPreferenceChangeListener(this);
-        showAB.setOnPreferenceChangeListener(this);
+
         useOldLayout.setOnPreferenceChangeListener(this);
         twoLineLabel.setOnPreferenceChangeListener(this);
         rainbow.setOnPreferenceChangeListener(this);
 
+        filterSwitch.setDefaultValue(Settings.settings.useFilter);
         filter.setDefaultValue(Settings.settings.filter);
         //filter.setDefaultValue(settings.getInt(FILTER_KEY, filterInt));
         extendedView.setDefaultValue(Settings.settings.extended);
-        filterSwitch.setDefaultValue(Settings.settings.useFilter);
         showText.setDefaultValue(Settings.settings.showText);
+        showAB.setDefaultValue(Settings.settings.showAB);
         showClientRefresh.setDefaultValue(Settings.settings.showClientRefresh);
         showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
-        showAB.setDefaultValue(Settings.settings.showAB);
+
         useOldLayout.setDefaultValue(Settings.settings.useOldLayout);
         twoLineLabel.setDefaultValue(Settings.settings.twoLineLabel);
         rainbow.setDefaultValue(Settings.settings.rainbow);
@@ -83,12 +90,12 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             super.onBackPressed();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
-
         if (preference.getKey().equals(filter.getKey())) {
             Settings.settings.filter = (String) value;
             filter.setSummary((String) value);
@@ -97,19 +104,19 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         } else if (preference.getKey().equals(filterSwitch.getKey())) {
             Settings.settings.useFilter = (boolean) value;
             filter.setEnabled((boolean) value);
-        }else if(preference.getKey().equals(showText.getKey())){
+        } else if (preference.getKey().equals(showText.getKey())) {
             Settings.settings.showText = (boolean) value;
-        }else if(preference.getKey().equals(showClientRefresh.getKey())){
+        } else if (preference.getKey().equals(showClientRefresh.getKey())) {
             Settings.settings.showClientRefresh = (boolean) value;
-        }else if(preference.getKey().equals(showServerRefresh.getKey())){
+        } else if (preference.getKey().equals(showServerRefresh.getKey())) {
             Settings.settings.showServerRefresh = (boolean) value;
-        }else if(preference.getKey().equals(showAB.getKey())){
+        } else if (preference.getKey().equals(showAB.getKey())) {
             Settings.settings.showAB = (boolean) value;
-        }else if(preference.getKey().equals(useOldLayout.getKey())){
+        } else if (preference.getKey().equals(useOldLayout.getKey())) {
             Settings.settings.useOldLayout = (boolean) value;
-        }else if(preference.getKey().equals(rainbow.getKey())){
+        } else if (preference.getKey().equals(rainbow.getKey())) {
             Settings.settings.rainbow = (boolean) value;
-        }else if(preference.getKey().equals(twoLineLabel.getKey())){
+        } else if (preference.getKey().equals(twoLineLabel.getKey())) {
             Settings.settings.twoLineLabel = (boolean) value;
         }
 
