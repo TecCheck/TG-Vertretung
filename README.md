@@ -9,7 +9,7 @@ Die moderne Umsetzung einer Vertretungsplan App.
 ## Features
 * Einfache und übersichtliche Benutzeroberfläche
 * Unterwegs nutzbar, dank offline speicherung
-* Alle Informationen auf einen Blick erhalten, durch die einstellbare Filter
+* Alle Informationen auf einen Blick erhalten, durch einstellbare Filter
 * Geringer Speicherplatzverbrauch
 
 ## Versionen
@@ -26,4 +26,4 @@ Die moderne Umsetzung einer Vertretungsplan App.
 ## Info
 © TecCheck 2019
 
-Veröffentlicht unter der **??? Lizenz**. ``LICENSE`` für mehr Informationen.
+Veröffentlicht unter der **GPL-3.0 Lizenz**. ``LICENSE`` für mehr Informationen.
