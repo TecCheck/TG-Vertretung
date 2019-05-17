@@ -1,4 +1,4 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.adapter;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
@@ -16,6 +16,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.coop.tgvertretung.Client;
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Statics;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 

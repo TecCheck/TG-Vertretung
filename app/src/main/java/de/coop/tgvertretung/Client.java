@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import de.coop.tgvertretung.activity.MainActivity;
+import de.coop.tgvertretung.utils.Download;
+import de.coop.tgvertretung.utils.Statics;
 import de.sematre.tg.Table;
 
 public class Client {

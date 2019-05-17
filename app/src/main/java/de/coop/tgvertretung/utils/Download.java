@@ -1,10 +1,12 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.utils;
 
 import android.os.Handler;
 import android.os.Looper;
 
 import java.util.Date;
 
+import de.coop.tgvertretung.Client;
+import de.coop.tgvertretung.Settings;
 import de.sematre.tg.TG;
 
 public class Download implements Runnable {

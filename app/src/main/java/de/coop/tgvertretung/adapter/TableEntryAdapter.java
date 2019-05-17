@@ -1,4 +1,4 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.adapter;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Statics;
+import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 

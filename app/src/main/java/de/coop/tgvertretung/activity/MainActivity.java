@@ -1,10 +1,9 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +19,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import de.coop.tgvertretung.Client;
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Statics;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

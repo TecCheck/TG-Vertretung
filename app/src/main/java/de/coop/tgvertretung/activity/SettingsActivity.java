@@ -1,4 +1,4 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.activity;
 
 import android.os.Bundle;
 import android.preference.Preference;
@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.MenuItem;
 
 import java.util.Set;
+
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.Settings;
 
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 

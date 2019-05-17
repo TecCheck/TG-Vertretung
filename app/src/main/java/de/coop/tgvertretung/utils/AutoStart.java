@@ -1,10 +1,14 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import java.util.Date;
+
+import de.coop.tgvertretung.Client;
+import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Download;
 
 public class AutoStart extends BroadcastReceiver {
 

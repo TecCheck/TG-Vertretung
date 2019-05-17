@@ -1,4 +1,4 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import java.io.InputStream;
 import java.util.Scanner;
+
+import de.coop.tgvertretung.Client;
+import de.coop.tgvertretung.R;
 
 public class LicenseActivity extends AppCompatActivity implements View.OnClickListener{
 

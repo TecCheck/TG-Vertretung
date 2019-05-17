@@ -1,4 +1,4 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.activity.LicenseActivity;
 
 public class InfoActivity extends AppCompatActivity implements DialogInterface.OnClickListener{
 

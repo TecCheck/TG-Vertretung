@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.coop.tgvertretung.utils.ObjectSerializer;
+import de.coop.tgvertretung.utils.Statics;
 import de.sematre.tg.Table;
 import de.sematre.tg.TimeTable;
 

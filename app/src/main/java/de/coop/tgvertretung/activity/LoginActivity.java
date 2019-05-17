@@ -1,4 +1,4 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.activity;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -18,6 +18,10 @@ import com.google.gson.JsonArray;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
+
+import de.coop.tgvertretung.Client;
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.Settings;
 
 
 public class LoginActivity extends AppCompatActivity {

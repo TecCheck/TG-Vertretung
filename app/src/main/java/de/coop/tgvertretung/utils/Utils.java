@@ -1,4 +1,4 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.utils;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -7,6 +7,9 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.coop.tgvertretung.Client;
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.adapter.TableFragment2;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 

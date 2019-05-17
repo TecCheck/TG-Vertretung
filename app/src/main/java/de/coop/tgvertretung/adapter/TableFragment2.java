@@ -1,8 +1,7 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.adapter;
 
 import android.animation.ArgbEvaluator;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +16,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import de.coop.tgvertretung.Client;
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Statics;
+import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 
 public class TableFragment2 extends Fragment {
