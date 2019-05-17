@@ -1,23 +1,12 @@
 package de.coop.tgvertretung.activity;
 
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Scanner;
 
 import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
@@ -33,22 +22,40 @@ public class LoginActivity extends AppCompatActivity {
     public static boolean firstTime = true;
 
     public void login() {
-        try {
-            new DSBMobile(nmText.getText().toString(), pwText.getText().toString());
+        Boolean[] success = { false };
+        Thread loginThread = new Thread(() -> {
+            try {
+                new DSBMobile(nmText.getText().toString(), pwText.getText().toString());
+                success[0] = true;
+            } catch (IllegalArgumentException e) {
+                success[0] = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                success[0] = null;
+            }
+        }, "Login-Thread");
 
+        try {
+            loginThread.start();
+            loginThread.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        if(success[0] == null) {
+            // phone is offline
+            Snackbar.make(btn, getString(R.string.noConnection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        } else if(success[0]) {
             // credentials are correct
             Settings.settings.password = pwText.getText().toString();
             Settings.settings.username = nmText.getText().toString();
             Settings.settings.loggedIn = true;
             Settings.save();
             super.onBackPressed();
-        } catch (IllegalArgumentException e) {
+        } else {
             // credentials are incorrect
             Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        } catch (Exception e) {
-            // phone is offline
-            e.printStackTrace();
-            Snackbar.make(btn, getString(R.string.noConnection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
