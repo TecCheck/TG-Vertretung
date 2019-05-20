@@ -2,7 +2,7 @@ German | [English](README-en.md)
 # TG-Vertretung
 ![AndroidVersion](https://img.shields.io/badge/android-5.1%2B-brightgreen.svg?style=flat-square)
 [![Releases](https://img.shields.io/github/release-pre/TecCheck/TG-Vertretung.svg?style=flat-square)](https://github.com/TecCheck/TG-Vertretung/releases)
-[![Licence](https://img.shields.io/github/license/TecCheck/TG-Vertretung.svg?style=flat-square)](https://github.com/TecCheck/TG-Vertretung/LICENCE)
+[![Licence](https://img.shields.io/badge/license-GPL--3.0-orange.svg?style=flat-square)](https://github.com/TecCheck/TG-Vertretung/LICENCE)
 
 Die moderne Umsetzung einer Vertretungsplan App.
 
