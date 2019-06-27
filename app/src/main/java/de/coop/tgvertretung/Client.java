@@ -19,7 +19,6 @@ public class Client {
     private static final boolean METHOD_SYSOUT = false;
 
     public static Client instance = null;
-    public static SwipeRefreshLayout refreshLayout = null;
 
     private static boolean viewUI = false;
     private static boolean firstPagerStart = true;
@@ -34,40 +33,52 @@ public class Client {
     }
 
     public static void load(boolean view) {
-        Client.printMethod("loadFinished");
+        Client.printMethod("load");
 
         viewUI = view;
-        if (view && false) {
-            Statics.mainActivity.stdView.setVisibility(View.INVISIBLE);
-            Statics.mainActivity.loadView.setVisibility(View.VISIBLE);
-            Statics.mainActivity.progBar.setEnabled(true);
-        }
 
         if (dwdThread == null || !dwdThread.isAlive()) {
             dwdThread = new Thread(new Download(), "Download-Thread");
             dwdThread.start();
+
+            if (view) {
+                if (Settings.settings.useOldLayout) {
+                    Statics.mainActivity.stdView.setVisibility(View.INVISIBLE);
+                    Statics.mainActivity.loadView.setVisibility(View.VISIBLE);
+                    Statics.mainActivity.progBar.setEnabled(true);
+                } else {
+                    Client.print("SwipeRefreshLayout");
+                    for (SwipeRefreshLayout swipeRefreshLayout : Statics.swipeRefreshLayouts) {
+                        if (swipeRefreshLayout != null){
+                            swipeRefreshLayout.setRefreshing(true);
+                            Client.print(swipeRefreshLayout.toString());
+                        }
+                    }
+                }
+
+            }
         }
     }
 
     public static void loadFinished() {
         Client.printMethod("loadFinished");
 
-        if (refreshLayout != null){
-            refreshLayout.setRefreshing(false);
-            refreshLayout = null;
+        for (SwipeRefreshLayout swipeRefreshLayout : Statics.swipeRefreshLayouts) {
+            if (swipeRefreshLayout != null)
+                swipeRefreshLayout.setRefreshing(false);
         }
 
-        if(viewUI){
+        if (viewUI) {
             if (Download.status == 0 && viewUI) {
                 MainActivity.showSnack(Statics.mainActivity.getString(R.string.connected));
             } else if (Download.status == 1 && viewUI) {
                 MainActivity.showSnack(Statics.mainActivity.getString(R.string.noConnection));
-            } else if(Download.status == 2 && viewUI) {
+            } else if (Download.status == 2 && viewUI) {
                 MainActivity.showSnack(Statics.mainActivity.getString(R.string.nothingNew));
             }
         }
 
-        if (Download.status == 0) {
+        if (Download.status == 0 || Download.status == 2) {
             Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         }
 
@@ -97,7 +108,7 @@ public class Client {
     public static String getFormattedDate(Date date, boolean dayName, boolean useTime) {
         String pattern = "dd.MM.yyyy";
         if (useTime) pattern += " HH:mm";
-        if(dayName) pattern = "EEEE " + pattern;
+        if (dayName) pattern = "EEEE " + pattern;
 
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
         format.setTimeZone(TimeZone.getDefault());

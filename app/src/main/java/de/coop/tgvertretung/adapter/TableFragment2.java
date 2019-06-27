@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -29,6 +28,7 @@ public class TableFragment2 extends Fragment {
     private static final String INDEX = "index";
     public static ArgbEvaluator evaluator = null;
     private Table table = null;
+    public SwipeRefreshLayout refreshLayout = null;
 
     public static TableFragment2 newInstance(int sectionNumber) {
         Client.printMethod("newInstance");
@@ -52,10 +52,10 @@ public class TableFragment2 extends Fragment {
         TextView label2 = rootView.findViewById(R.id.label2);
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
-        SwipeRefreshLayout swipeRefreshLayout = rootView.findViewById(R.id.swipe_container);
+        refreshLayout = rootView.findViewById(R.id.swipe_container);
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            Client.refreshLayout = swipeRefreshLayout;
+        Statics.swipeRefreshLayouts.add(refreshLayout);
+        refreshLayout.setOnRefreshListener(() -> {
             Client.load(true);
         });
 
@@ -95,7 +95,7 @@ public class TableFragment2 extends Fragment {
             label.setTextColor(Utils.getColor(table.getDate()));
             if (Settings.settings.twoLineLabel) label2.setTextColor(Utils.getColor(table.getDate()));
 
-            swipeRefreshLayout.setColorSchemeColors(Utils.getColor(table.getDate()));
+            refreshLayout.setColorSchemeColors(Utils.getColor(table.getDate()));
         }
 
         // Show the label
