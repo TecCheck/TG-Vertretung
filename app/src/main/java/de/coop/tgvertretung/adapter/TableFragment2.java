@@ -3,7 +3,6 @@ package de.coop.tgvertretung.adapter;
 import android.animation.ArgbEvaluator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import java.util.TimeZone;
 import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.Settings;
-import de.coop.tgvertretung.utils.Statics;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.Week;
@@ -28,7 +26,6 @@ public class TableFragment2 extends Fragment {
     private static final String INDEX = "index";
     public static ArgbEvaluator evaluator = null;
     private Table table = null;
-    public SwipeRefreshLayout refreshLayout = null;
 
     public static TableFragment2 newInstance(int sectionNumber) {
         Client.printMethod("newInstance");
@@ -52,12 +49,6 @@ public class TableFragment2 extends Fragment {
         TextView label2 = rootView.findViewById(R.id.label2);
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
-        refreshLayout = rootView.findViewById(R.id.swipe_container);
-
-        Statics.swipeRefreshLayouts.add(refreshLayout);
-        refreshLayout.setOnRefreshListener(() -> {
-            Client.load(true);
-        });
 
         // Filer the table if needed
         int index = getArguments().getInt(INDEX);
@@ -79,7 +70,7 @@ public class TableFragment2 extends Fragment {
         } else {
             nothing.setVisibility(View.GONE);
 
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Statics.mainActivity.getApplicationContext());
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Utils.mainActivity.getApplicationContext());
             RecyclerView.Adapter adapter = new TableEntryAdapter(table);
 
             recyclerView.setVisibility(View.VISIBLE);
@@ -93,9 +84,8 @@ public class TableFragment2 extends Fragment {
             if (Settings.settings.twoLineLabel) Utils.addRainbow(label2);
         } else {
             label.setTextColor(Utils.getColor(table.getDate()));
-            if (Settings.settings.twoLineLabel) label2.setTextColor(Utils.getColor(table.getDate()));
-
-            refreshLayout.setColorSchemeColors(Utils.getColor(table.getDate()));
+            if (Settings.settings.twoLineLabel)
+                label2.setTextColor(Utils.getColor(table.getDate()));
         }
 
         // Show the label
@@ -113,8 +103,9 @@ public class TableFragment2 extends Fragment {
     }
 
     private String getLabelText() {
-        String week = Statics.mainActivity.getString(R.string.week) + " ";
-        if (Settings.settings.showAB) week += (table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B";
+        String week = Utils.mainActivity.getString(R.string.week) + " ";
+        if (Settings.settings.showAB)
+            week += (table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B";
         else week += table.getWeek().getLetter();
 
         return Client.getFormattedDate(table.getDate(), true, false) + " " + week;
@@ -126,12 +117,13 @@ public class TableFragment2 extends Fragment {
 
     private String getLabelTextSec() {
         String week = null;
-        if (Settings.settings.showAB) week = (table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B";
+        if (Settings.settings.showAB)
+            week = (table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B";
         else week = table.getWeek().getLetter();
 
         String pattern = "dd.MM.yyyy";
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
         format.setTimeZone(TimeZone.getDefault());
-        return format.format(table.getDate()) + " " + (week + " " + Statics.mainActivity.getString(R.string.week));
+        return format.format(table.getDate()) + " " + (week + " " + Utils.mainActivity.getString(R.string.week));
     }
 }

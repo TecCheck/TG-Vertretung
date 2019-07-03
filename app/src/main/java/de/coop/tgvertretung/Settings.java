@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import de.coop.tgvertretung.utils.ObjectSerializer;
-import de.coop.tgvertretung.utils.Statics;
+import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TimeTable;
 
-public class Settings implements Serializable{
+public class Settings implements Serializable {
 
     private static final String PREFS_KEY = "settings";
     private static final long serialVersionUID = -6062123032432580842L;
@@ -43,7 +43,7 @@ public class Settings implements Serializable{
 
     public static void load() {
         settings = new Settings();
-        if (prefs == null) prefs = Statics.mainActivity.getSharedPreferences("preferences", 0);
+        if (prefs == null) prefs = Utils.mainActivity.getSharedPreferences("preferences", 0);
 
         try {
             String settingsString = prefs.getString(PREFS_KEY, ObjectSerializer.serialize(settings));
@@ -66,7 +66,7 @@ public class Settings implements Serializable{
         }
     }
 
-    public static void print(){
+    public static void print() {
         String out = "Settings: \n";
         //out += "timeTable: " + settings.timeTable;
         out += ", lastClientRefresh: " + settings.lastClientRefresh;

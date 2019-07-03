@@ -18,10 +18,10 @@
             android:id="@+id/progressBar"
             android:layout_width="102dp"
             android:layout_height="99dp"
-            android:layout_marginBottom="32dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,18 +36,22 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:layout_gravity="top"
-            android:layout_weight="1" />
+            android:layout_height="55dp"
+            android:layout_gravity="top" />
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/container"
+        <de.coop.tgvertretung.utils.CustomSwipeRefreshLayout
+            android:id="@+id/refresh-layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="visible">
+            android:layout_height="match_parent">
 
-        </android.support.v4.view.ViewPager>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+            </android.support.v4.view.ViewPager>
+
+        </de.coop.tgvertretung.utils.CustomSwipeRefreshLayout>
 
     </LinearLayout>
 

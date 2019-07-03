@@ -1,6 +1,5 @@
 package de.coop.tgvertretung;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import java.text.SimpleDateFormat;
@@ -10,7 +9,7 @@ import java.util.TimeZone;
 
 import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.utils.Download;
-import de.coop.tgvertretung.utils.Statics;
+import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 
 public class Client {
@@ -35,27 +34,20 @@ public class Client {
     public static void load(boolean view) {
         Client.printMethod("load");
 
-        viewUI = view;
-
         if (dwdThread == null || !dwdThread.isAlive()) {
             dwdThread = new Thread(new Download(), "Download-Thread");
             dwdThread.start();
 
+            viewUI = view;
             if (view) {
                 if (Settings.settings.useOldLayout) {
-                    Statics.mainActivity.stdView.setVisibility(View.INVISIBLE);
-                    Statics.mainActivity.loadView.setVisibility(View.VISIBLE);
-                    Statics.mainActivity.progBar.setEnabled(true);
+                    Utils.mainActivity.stdView.setVisibility(View.INVISIBLE);
+                    Utils.mainActivity.loadView.setVisibility(View.VISIBLE);
+                    Utils.mainActivity.progBar.setEnabled(true);
                 } else {
                     Client.print("SwipeRefreshLayout");
-                    for (SwipeRefreshLayout swipeRefreshLayout : Statics.swipeRefreshLayouts) {
-                        if (swipeRefreshLayout != null){
-                            swipeRefreshLayout.setRefreshing(true);
-                            Client.print(swipeRefreshLayout.toString());
-                        }
-                    }
+                    Utils.mainActivity.refreshLayout.setRefreshing(true);
                 }
-
             }
         }
     }
@@ -63,43 +55,39 @@ public class Client {
     public static void loadFinished() {
         Client.printMethod("loadFinished");
 
-        for (SwipeRefreshLayout swipeRefreshLayout : Statics.swipeRefreshLayouts) {
-            if (swipeRefreshLayout != null)
-                swipeRefreshLayout.setRefreshing(false);
-        }
-
-        if (viewUI) {
-            if (Download.status == 0 && viewUI) {
-                MainActivity.showSnack(Statics.mainActivity.getString(R.string.connected));
-            } else if (Download.status == 1 && viewUI) {
-                MainActivity.showSnack(Statics.mainActivity.getString(R.string.noConnection));
-            } else if (Download.status == 2 && viewUI) {
-                MainActivity.showSnack(Statics.mainActivity.getString(R.string.nothingNew));
-            }
-        }
-
         if (Download.status == 0 || Download.status == 2) {
             Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
+            Settings.save();
         }
 
         if (viewUI) {
-            int i = Statics.mainActivity.mPager.getCurrentItem();
 
-            Statics.mainActivity.startPagerView();
+            Utils.mainActivity.refreshLayout.setRefreshing(false);
+            Utils.mainActivity.refreshLayout.setColorSchemeColors(Utils.getColor(Settings.settings.timeTable.getTables().get(0).getDate()));
+
+            if (Download.status == 0 && viewUI) {
+                MainActivity.showSnack(Utils.mainActivity.getString(R.string.connected));
+            } else if (Download.status == 1 && viewUI) {
+                MainActivity.showSnack(Utils.mainActivity.getString(R.string.noConnection));
+            } else if (Download.status == 2 && viewUI) {
+                MainActivity.showSnack(Utils.mainActivity.getString(R.string.nothingNew));
+            }
+
+            int i = Utils.mainActivity.mPager.getCurrentItem();
+
+            Utils.mainActivity.startPagerView();
             Client.print("Pager started!");
 
             if (firstPagerStart) {
-                Statics.mainActivity.setTable(getView());
+                Utils.mainActivity.setTable(getView());
                 firstPagerStart = false;
             } else {
-                Statics.mainActivity.setTable(i);
+                Utils.mainActivity.setTable(i);
             }
-        }
 
-        if (viewUI) {
-            Statics.mainActivity.loadView.setVisibility(View.GONE);
-            Statics.mainActivity.progBar.setEnabled(false);
-            Statics.mainActivity.stdView.setVisibility(View.VISIBLE);
+            Utils.mainActivity.loadView.setVisibility(View.GONE);
+            Utils.mainActivity.progBar.setEnabled(false);
+            Utils.mainActivity.stdView.setVisibility(View.VISIBLE);
 
             Client.print("Pager visible");
         }

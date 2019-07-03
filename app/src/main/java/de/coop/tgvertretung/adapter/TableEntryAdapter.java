@@ -9,21 +9,12 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.Settings;
-import de.coop.tgvertretung.utils.Statics;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 
 class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolder> {
     private Table table;
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
-        ViewHolder(CardView view) {
-            super(view);
-            cardView = view;
-        }
-    }
 
     TableEntryAdapter(Table table) {
         this.table = table;
@@ -34,7 +25,6 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_item, parent, false);
         return new ViewHolder(cardView);
     }
-
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -69,7 +59,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
 
     private String getEntryText(TableEntry entry, boolean extended) {
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            return entry.getSubject() + " " + Statics.mainActivity.getString(R.string.noClass);
+            return entry.getSubject() + " " + Utils.mainActivity.getString(R.string.noClass);
         }
 
         return entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + (extended ? (" statt " + entry.getSubject() + " in " + entry.getRoom()) : "");
@@ -78,5 +68,14 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
     @Override
     public int getItemCount() {
         return table.getTableEntries().size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
+
+        ViewHolder(CardView view) {
+            super(view);
+            cardView = view;
+        }
     }
 }

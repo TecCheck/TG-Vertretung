@@ -34,6 +34,7 @@
 
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_login">Anmelden</string>
+    <string name="title_notification">TG-Vertretung</string>
 
     <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
     <string name="version_name">Versionsname</string>

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 
-public class InfoActivity extends AppCompatActivity implements DialogInterface.OnClickListener{
+public class InfoActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
         licenses.setOnClickListener(v -> makeLicenseDialog());
     }
 
-    public void makeLicenseDialog(){
+    public void makeLicenseDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.licenses_name);
         builder.setItems(R.array.licenses, this);

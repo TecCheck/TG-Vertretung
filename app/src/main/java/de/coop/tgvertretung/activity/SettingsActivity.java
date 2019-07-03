@@ -7,8 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.MenuItem;
 
-import java.util.Set;
-
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.Settings;
 

@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     public static boolean firstTime = true;
 
     public void login() {
-        Boolean[] success = { false };
+        Boolean[] success = {false};
         Thread loginThread = new Thread(() -> {
             try {
                 new DSBMobile(nmText.getText().toString(), pwText.getText().toString());
@@ -43,10 +43,10 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        if(success[0] == null) {
+        if (success[0] == null) {
             // phone is offline
             Snackbar.make(btn, getString(R.string.noConnection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        } else if(success[0]) {
+        } else if (success[0]) {
             // credentials are correct
             Settings.settings.password = pwText.getText().toString();
             Settings.settings.username = nmText.getText().toString();

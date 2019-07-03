@@ -19,7 +19,7 @@ import java.util.Date;
 import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.Settings;
-import de.coop.tgvertretung.utils.Statics;
+import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 
@@ -72,13 +72,13 @@ public class TableFragment extends Fragment {
 
         int asn = getArguments().getInt(ARG_SECTION_NUMBER);
         table = Settings.settings.timeTable.getTables().get(asn);
-        String week = Statics.mainActivity.getString(R.string.week) + " ";
-        if(Settings.settings.showAB){
-            if(table.getWeek().getLetter().toLowerCase().equals("a") || table.getWeek().getLetter().toLowerCase().equals("c"))
+        String week = Utils.mainActivity.getString(R.string.week) + " ";
+        if (Settings.settings.showAB) {
+            if (table.getWeek().getLetter().toLowerCase().equals("a") || table.getWeek().getLetter().toLowerCase().equals("c"))
                 week = week + "A";
             else
                 week = week + "B";
-        }else{
+        } else {
             week = week + table.getWeek().getLetter();
         }
         String s = Client.getFormattedDate(table.getDate(), true, false) + " " + week;
@@ -102,10 +102,10 @@ public class TableFragment extends Fragment {
         //tableEntries = checkTableEntries(tableEntries);
         if (tableEntries.isEmpty()) {
             Client.print("Leer!");
-            addListItem(Statics.mainActivity.getString(R.string.nothing), Client.instance.nothingSize, false);
+            addListItem(Utils.mainActivity.getString(R.string.nothing), Client.instance.nothingSize, false);
         } else {
             Client.print("");
-            Client.print("tableEntries for " + label.getText() +": ");
+            Client.print("tableEntries for " + label.getText() + ": ");
             Client.print("");
             for (TableEntry entry : tableEntries) {
                 Client.print(entry.getSchoolClass() + ", " + entry.getTime());
@@ -119,8 +119,8 @@ public class TableFragment extends Fragment {
     @SuppressLint("NewApi")
     private void setColor(Date date) {
         Client.printMethod("setColor");
-        Drawable base = Statics.mainActivity.getDrawable(R.drawable.colorgrade_base);
-        Drawable stroke = Statics.mainActivity.getDrawable(R.drawable.colorgrade_stroke);
+        Drawable base = Utils.mainActivity.getDrawable(R.drawable.colorgrade_base);
+        Drawable stroke = Utils.mainActivity.getDrawable(R.drawable.colorgrade_stroke);
 
         if (date.getDay() == 1) {
             base.setTint(getResources().getColor(R.color.yellow));
@@ -153,7 +153,7 @@ public class TableFragment extends Fragment {
         String classRow = entry.getSchoolClass() + ": ";
 
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            infoRow = infoRow + entry.getSubject() + " " + Statics.mainActivity.getString(R.string.noClass);
+            infoRow = infoRow + entry.getSubject() + " " + Utils.mainActivity.getString(R.string.noClass);
         } else {
             if (extended) {
                 infoRow = infoRow + entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + " statt " + entry.getSubject() + " in " + entry.getRoom();
@@ -173,9 +173,9 @@ public class TableFragment extends Fragment {
         //adds items to the list
         int in = 2;
 
-        TextView nameText = new TextView(Statics.mainActivity);
-        Space sp = new Space(Statics.mainActivity);
-        LinearLayout ln = new LinearLayout(Statics.mainActivity);
+        TextView nameText = new TextView(Utils.mainActivity);
+        Space sp = new Space(Utils.mainActivity);
+        LinearLayout ln = new LinearLayout(Utils.mainActivity);
 
         LinearLayout.LayoutParams nameTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         nameTextParams.gravity = Gravity.START;
@@ -204,11 +204,11 @@ public class TableFragment extends Fragment {
         //adds items to the list
         int in = 2;
 
-        TextView nameText = new TextView(Statics.mainActivity);
-        TextView nameText1 = new TextView(Statics.mainActivity);
-        TextView nameText2 = new TextView(Statics.mainActivity);
-        Space sp = new Space(Statics.mainActivity);
-        LinearLayout ln = new LinearLayout(Statics.mainActivity);
+        TextView nameText = new TextView(Utils.mainActivity);
+        TextView nameText1 = new TextView(Utils.mainActivity);
+        TextView nameText2 = new TextView(Utils.mainActivity);
+        Space sp = new Space(Utils.mainActivity);
+        LinearLayout ln = new LinearLayout(Utils.mainActivity);
 
         LinearLayout.LayoutParams nameTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         nameTextParams.gravity = Gravity.START;

@@ -17,7 +17,7 @@ import java.util.Scanner;
 import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
 
-public class LicenseActivity extends AppCompatActivity implements View.OnClickListener{
+public class LicenseActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static int toShow = 0;
 
@@ -41,9 +41,9 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         String fileName = "";
         url = getResources().getStringArray(R.array.licenses_urls)[toShow];
 
-        if(toShow == 0) fileName = "gson_license";
-        else if(toShow == 1) fileName = "jsoup_license";
-        else if(toShow == 2) fileName = "tg_api_license";
+        if (toShow == 0) fileName = "gson_license";
+        else if (toShow == 1) fileName = "jsoup_license";
+        else if (toShow == 2) fileName = "tg_api_license";
 
         InputStream stream = getResources().openRawResource(getResources().getIdentifier(fileName, "raw", getPackageName()));
         Scanner scanner = new Scanner(stream);
@@ -60,13 +60,13 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         text.setText(content.toString());
     }
 
-    private ImageButton getButton(){
+    private ImageButton getButton() {
         ImageButton button = new ImageButton(getApplicationContext());
         button.setImageDrawable(getResources().getDrawable(R.drawable.ic_github));
         button.setElevation(0.3f);
         button.setBackgroundColor(0x00000000);
 
-        Toolbar.LayoutParams params = new Toolbar.LayoutParams(100, 100,Gravity.END | Gravity.BOTTOM);
+        Toolbar.LayoutParams params = new Toolbar.LayoutParams(100, 100, Gravity.END | Gravity.BOTTOM);
         button.setLayoutParams(params);
         button.setOnClickListener(this);
 

@@ -9,6 +9,7 @@ import java.util.Date;
 
 import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.adapter.TableFragment2;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
@@ -16,28 +17,29 @@ import de.sematre.tg.TableEntry;
 public class Utils {
 
     public static ArgbEvaluator evaluator = null;
+    public static MainActivity mainActivity = null;
 
     public static int getColor(Date date) {
         Client.printMethod("setColor");
 
-        switch (date.getDay()){
+        switch (date.getDay()) {
             case 1:
-                return Statics.mainActivity.getResources().getColor(R.color.yellow);
+                return mainActivity.getResources().getColor(R.color.yellow);
 
             case 2:
-                return Statics.mainActivity.getResources().getColor(R.color.blue);
+                return mainActivity.getResources().getColor(R.color.blue);
 
             case 3:
-                return Statics.mainActivity.getResources().getColor(R.color.green);
+                return mainActivity.getResources().getColor(R.color.green);
 
             case 4:
-                return Statics.mainActivity.getResources().getColor(R.color.orange);
+                return mainActivity.getResources().getColor(R.color.orange);
 
             case 5:
-                return Statics.mainActivity.getResources().getColor(R.color.pink);
+                return mainActivity.getResources().getColor(R.color.pink);
 
             default:
-                return Statics.mainActivity.getResources().getColor(R.color.purple);
+                return mainActivity.getResources().getColor(R.color.purple);
         }
     }
 
@@ -66,10 +68,10 @@ public class Utils {
         return table;
     }
 
-    public static void addRainbow(View view){
+    public static void addRainbow(View view) {
         if (evaluator == null) evaluator = new ArgbEvaluator();
 
-        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "textColor", TableFragment2.evaluator, 0xff0000ff,0xffff0000,0xff00ff00);
+        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "textColor", TableFragment2.evaluator, 0xff0000ff, 0xffff0000, 0xff00ff00);
         colorFade.setRepeatMode(ObjectAnimator.REVERSE);
         colorFade.setRepeatCount(ObjectAnimator.INFINITE);
         colorFade.setDuration(1200);

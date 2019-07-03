@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,8 @@ import android.widget.TextView;
 import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.Settings;
-import de.coop.tgvertretung.utils.Statics;
+import de.coop.tgvertretung.service.BackgroundService;
+import de.coop.tgvertretung.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -36,12 +38,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public ConstraintLayout loadView = null;
     public LinearLayout stdView = null;
     public ProgressBar progBar = null;
+    public SwipeRefreshLayout refreshLayout = null;
 
     private NavigationView navigationView = null;
     private PagerAdapter mPagerAdapter = null;
 
     public static void showSnack(String text) {
-        Snackbar.make(Statics.mainActivity.mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        Snackbar.make(Utils.mainActivity.mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     public void startPagerView() {
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Statics.mainActivity = this;
+        Utils.mainActivity = this;
         Client.print("OnCreate-------------------------------------------------------------------------------");
 
         super.onCreate(savedInstanceState);
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 lastServerRefresh = findViewById(R.id.lastReload2);
 
                 Settings.print();
-                if (Settings.settings.showClientRefresh){
+                if (Settings.settings.showClientRefresh) {
                     lastReload.setVisibility(View.VISIBLE);
                     String s = getString(R.string.lastReload) + " " + Client.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
                     lastReload.setText(s);
@@ -106,6 +109,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         stdView = findViewById(R.id.stdView);
         progBar = findViewById(R.id.progressBar);
         mPager = findViewById(R.id.container);
+        refreshLayout = findViewById(R.id.refresh_layout);
+
+        refreshLayout.setOnRefreshListener(() -> Client.load(true));
+        refreshLayout.setColorSchemeColors(Utils.getColor(Settings.settings.timeTable.getTables().get(0).getDate()));
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                refreshLayout.setColorSchemeColors(Utils.getColor(Settings.settings.timeTable.getTables().get(i).getDate()));
+            }
+        });
         navigationView.setNavigationItemSelectedListener(this);
 
         loadView.setVisibility(View.GONE);
@@ -114,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (Settings.settings.loggedIn) {
             startPagerView();
             Client.load(true);
+            if (!BackgroundService.isRunning) {
+                startService(new Intent(getApplicationContext(), BackgroundService.class));
+            }
         } else {
             LoginActivity.firstTime = true;
             startActivity(new Intent(this, LoginActivity.class));
