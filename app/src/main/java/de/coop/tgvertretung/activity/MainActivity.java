@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Download download = null;
 
-    public static void showSnack(String text) {
-        Snackbar.make(Utils.mainActivity.mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    public void showSnack(String text) {
+        Snackbar.make(mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     public void startPagerView() {
@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void load() {
         download = new Download(this);
         if (Settings.settings.useOldLayout) {
-            Utils.mainActivity.stdView.setVisibility(View.INVISIBLE);
-            Utils.mainActivity.loadView.setVisibility(View.VISIBLE);
-            Utils.mainActivity.progBar.setEnabled(true);
+            stdView.setVisibility(View.INVISIBLE);
+            loadView.setVisibility(View.VISIBLE);
+            progBar.setEnabled(true);
         } else {
             Utils.print("SwipeRefreshLayout");
-            Utils.mainActivity.refreshLayout.setRefreshing(true);
+            refreshLayout.setRefreshing(true);
         }
         if (!download.download()) {
-            Utils.mainActivity.refreshLayout.setRefreshing(false);
+            refreshLayout.setRefreshing(false);
         }
     }
 
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadView.setVisibility(View.GONE);
 
         refreshLayout.setOnRefreshListener(() -> load());
-        refreshLayout.setColorSchemeColors(Utils.getColor(Settings.settings.timeTable.getTables().get(0).getDate()));
+        refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onPageSelected(int i) {
-                refreshLayout.setColorSchemeColors(Utils.getColor(Settings.settings.timeTable.getTables().get(i).getDate()));
+                refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(i).getDate()));
             }
         });
 
@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utils.mainActivity = this;
         Utils.print("OnCreate-------------------------------------------------------------------------------");
         super.onCreate(savedInstanceState);
 
@@ -238,14 +237,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Settings.save();
 
         refreshLayout.setRefreshing(false);
-        refreshLayout.setColorSchemeColors(Utils.getColor(Settings.settings.timeTable.getTables().get(0).getDate()));
+        refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
 
         if (status == 0) {
-            MainActivity.showSnack(getString(R.string.connected));
+            showSnack(getString(R.string.connected));
         } else if (status == 1) {
-            MainActivity.showSnack(getString(R.string.noConnection));
+            showSnack(getString(R.string.noConnection));
         } else if (status == 2) {
-            MainActivity.showSnack(getString(R.string.nothingNew));
+            showSnack(getString(R.string.nothingNew));
         }
 
         int i = mPager.getCurrentItem();

@@ -1,6 +1,7 @@
 package de.coop.tgvertretung.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -71,7 +72,7 @@ public class TableFragment extends Fragment {
 
         int asn = getArguments().getInt(ARG_SECTION_NUMBER);
         table = Settings.settings.timeTable.getTables().get(asn);
-        String week = Utils.mainActivity.getString(R.string.week) + " ";
+        String week = getContext().getString(R.string.week) + " ";
         if (Settings.settings.showAB) {
             if (table.getWeek().getLetter().toLowerCase().equals("a") || table.getWeek().getLetter().toLowerCase().equals("c"))
                 week = week + "A";
@@ -101,7 +102,7 @@ public class TableFragment extends Fragment {
         //tableEntries = checkTableEntries(tableEntries);
         if (tableEntries.isEmpty()) {
             Utils.print("Leer!");
-            addListItem(Utils.mainActivity.getString(R.string.nothing), Utils.nothingSize, false);
+            addListItem(getContext().getString(R.string.nothing), Utils.nothingSize, false);
         } else {
             Utils.print("");
             Utils.print("tableEntries for " + label.getText() + ": ");
@@ -118,8 +119,8 @@ public class TableFragment extends Fragment {
     @SuppressLint("NewApi")
     private void setColor(Date date) {
         Utils.printMethod("setColor");
-        Drawable base = Utils.mainActivity.getDrawable(R.drawable.colorgrade_base);
-        Drawable stroke = Utils.mainActivity.getDrawable(R.drawable.colorgrade_stroke);
+        Drawable base = getContext().getDrawable(R.drawable.colorgrade_base);
+        Drawable stroke = getContext().getDrawable(R.drawable.colorgrade_stroke);
 
         if (date.getDay() == 1) {
             base.setTint(getResources().getColor(R.color.yellow));
@@ -152,7 +153,7 @@ public class TableFragment extends Fragment {
         String classRow = entry.getSchoolClass() + ": ";
 
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            infoRow = infoRow + entry.getSubject() + " " + Utils.mainActivity.getString(R.string.noClass);
+            infoRow = infoRow + entry.getSubject() + " " + getContext().getString(R.string.noClass);
         } else {
             if (extended) {
                 infoRow = infoRow + entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + " statt " + entry.getSubject() + " in " + entry.getRoom();
@@ -172,9 +173,9 @@ public class TableFragment extends Fragment {
         //adds items to the list
         int in = 2;
 
-        TextView nameText = new TextView(Utils.mainActivity);
-        Space sp = new Space(Utils.mainActivity);
-        LinearLayout ln = new LinearLayout(Utils.mainActivity);
+        TextView nameText = new TextView(getContext());
+        Space sp = new Space(getContext());
+        LinearLayout ln = new LinearLayout(getContext());
 
         LinearLayout.LayoutParams nameTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         nameTextParams.gravity = Gravity.START;
@@ -203,11 +204,11 @@ public class TableFragment extends Fragment {
         //adds items to the list
         int in = 2;
 
-        TextView nameText = new TextView(Utils.mainActivity);
-        TextView nameText1 = new TextView(Utils.mainActivity);
-        TextView nameText2 = new TextView(Utils.mainActivity);
-        Space sp = new Space(Utils.mainActivity);
-        LinearLayout ln = new LinearLayout(Utils.mainActivity);
+        TextView nameText = new TextView(getContext());
+        TextView nameText1 = new TextView(getContext());
+        TextView nameText2 = new TextView(getContext());
+        Space sp = new Space(getContext());
+        LinearLayout ln = new LinearLayout(getContext());
 
         LinearLayout.LayoutParams nameTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         nameTextParams.gravity = Gravity.START;

@@ -62,15 +62,15 @@ public class TableFragment2 extends Fragment {
         // Show nothing if table is empty
         if (table.getTableEntries().isEmpty()) {
             if (Settings.settings.rainbow) Utils.addRainbow(nothing);
-            else nothing.setTextColor(Utils.getColor(table.getDate()));
+            else nothing.setTextColor(Utils.getColor(getContext(), table.getDate()));
 
             nothing.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
             nothing.setVisibility(View.GONE);
 
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Utils.mainActivity.getApplicationContext());
-            RecyclerView.Adapter adapter = new TableEntryAdapter(table);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext().getApplicationContext());
+            RecyclerView.Adapter adapter = new TableEntryAdapter(table, getContext());
 
             recyclerView.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(layoutManager);
@@ -82,9 +82,9 @@ public class TableFragment2 extends Fragment {
             Utils.addRainbow(label);
             if (Settings.settings.twoLineLabel) Utils.addRainbow(label2);
         } else {
-            label.setTextColor(Utils.getColor(table.getDate()));
+            label.setTextColor(Utils.getColor(getContext(), table.getDate()));
             if (Settings.settings.twoLineLabel)
-                label2.setTextColor(Utils.getColor(table.getDate()));
+                label2.setTextColor(Utils.getColor(getContext(), table.getDate()));
         }
 
         // Show the label
@@ -102,7 +102,7 @@ public class TableFragment2 extends Fragment {
     }
 
     private String getLabelText() {
-        String week = Utils.mainActivity.getString(R.string.week) + " ";
+        String week = getContext().getString(R.string.week) + " ";
         if (Settings.settings.showAB)
             week += (table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B";
         else week += table.getWeek().getLetter();
@@ -123,6 +123,6 @@ public class TableFragment2 extends Fragment {
         String pattern = "dd.MM.yyyy";
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
         format.setTimeZone(TimeZone.getDefault());
-        return format.format(table.getDate()) + " " + (week + " " + Utils.mainActivity.getString(R.string.week));
+        return format.format(table.getDate()) + " " + (week + " " + getContext().getString(R.string.week));
     }
 }

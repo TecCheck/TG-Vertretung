@@ -2,6 +2,7 @@ package de.coop.tgvertretung.utils;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.view.View;
 
 import java.text.SimpleDateFormat;
@@ -27,29 +28,28 @@ public class Utils {
     public static int vertretungSize = 15;
 
     public static ArgbEvaluator evaluator = null;
-    public static MainActivity mainActivity = null;
 
-    public static int getColor(Date date) {
+    public static int getColor(Context context, Date date) {
         Utils.printMethod("setColor");
 
         switch (date.getDay()) {
             case 1:
-                return mainActivity.getResources().getColor(R.color.yellow);
+                return context.getResources().getColor(R.color.yellow);
 
             case 2:
-                return mainActivity.getResources().getColor(R.color.blue);
+                return context.getResources().getColor(R.color.blue);
 
             case 3:
-                return mainActivity.getResources().getColor(R.color.green);
+                return context.getResources().getColor(R.color.green);
 
             case 4:
-                return mainActivity.getResources().getColor(R.color.orange);
+                return context.getResources().getColor(R.color.orange);
 
             case 5:
-                return mainActivity.getResources().getColor(R.color.pink);
+                return context.getResources().getColor(R.color.pink);
 
             default:
-                return mainActivity.getResources().getColor(R.color.purple);
+                return context.getResources().getColor(R.color.purple);
         }
     }
 
