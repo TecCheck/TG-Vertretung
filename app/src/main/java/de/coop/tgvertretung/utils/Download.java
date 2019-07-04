@@ -6,22 +6,47 @@ import android.util.Log;
 
 import java.util.Date;
 
-import de.coop.tgvertretung.Client;
-import de.coop.tgvertretung.Settings;
 import de.sematre.tg.TG;
 
-public class Download implements Runnable {
+public class Download extends Thread {
 
-    public static boolean autoStart = false;
-    public static int status = 0;
+    private static Download dwdThread = null;
+
+    private LoadFinishedListener listener = null;
+    private int status = 0;
+
+    public Download(LoadFinishedListener listener) {
+        this.listener = listener;
+    }
+
+    public Download() {
+    }
+
+    public void setLoadFinishedListener(LoadFinishedListener listener) {
+        this.listener = listener;
+    }
+
+    public boolean download() {
+        Utils.printMethod("download");
+
+        if (dwdThread == null || !dwdThread.isAlive()) {
+            try {
+                dwdThread = this;
+                start();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 
     @Override
     public void run() {
         // online
         status = 0;
-        Client.print("AutoStart: " + autoStart);
 
-        Client.print("Download started");
+        Utils.print("Download started");
         try {
             Log.d("Download", "usr: " + Settings.settings.username + ", pw: " + Settings.settings.password);
             Date date = Settings.settings.timeTable.getDate();
@@ -32,22 +57,25 @@ public class Download implements Runnable {
                 status = 2;
             }
 
-            Client.print("ServerTime: " + Settings.settings.timeTable);
-            Client.print("Download finished");
+            Utils.print("ServerTime: " + Settings.settings.timeTable);
+            Utils.print("Download finished");
         } catch (Exception e) {
             // offline
             e.printStackTrace();
             status = 1;
         }
 
-        if (!autoStart) {
-            Handler mainHandler = new Handler(Looper.getMainLooper());
-            mainHandler.post(() -> {
-                Client.loadFinished();
-                Client.print("Runnable started");
-            });
-        }
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(() -> {
+            if (listener != null)
+                listener.loadFinished(status);
+            Utils.print("Runnable started");
+        });
+        Utils.print("Download Thread closed");
+        interrupt();
+    }
 
-        Client.print("Download Thread closed");
+    public interface LoadFinishedListener {
+        public void loadFinished(int status);
     }
 }

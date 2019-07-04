@@ -16,9 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
@@ -36,7 +35,7 @@ public class TableFragment extends Fragment {
      * Returns a new instance of this fragment for the given section number.
      */
     public static TableFragment newInstance(int sectionNumber) {
-        Client.printMethod("newInstance");
+        Utils.printMethod("newInstance");
 
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -58,13 +57,13 @@ public class TableFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Client.printMethod("onCreateView");
+        Utils.printMethod("onCreateView");
         super.onCreateView(inflater, container, savedInstanceState);
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
         mainLayout = rootView.findViewById(R.id.MainLayout);
-        //Client.print("MainLayoutID: " + R.id.MainLayout);
-        //Client.print("mainLayout: " + mainLayout);
+        //Utils.print("MainLayoutID: " + R.id.MainLayout);
+        //Utils.print("mainLayout: " + mainLayout);
         label = rootView.findViewById(R.id.label);
         mainScroll = rootView.findViewById(R.id.MainScroll);
         mainScroll.setVerticalScrollBarEnabled(false);
@@ -81,10 +80,10 @@ public class TableFragment extends Fragment {
         } else {
             week = week + table.getWeek().getLetter();
         }
-        String s = Client.getFormattedDate(table.getDate(), true, false) + " " + week;
+        String s = Utils.getFormattedDate(table.getDate(), true, false) + " " + week;
         label.setText(s);
-        //Client.print("=> Neuer Plan! (" + table.getDate() + ")");
-        //Client.print(table.toString());
+        //Utils.print("=> Neuer Plan! (" + table.getDate() + ")");
+        //Utils.print(table.toString());
         setColor(table.getDate());
 
         viewUI();
@@ -92,7 +91,7 @@ public class TableFragment extends Fragment {
     }
 
     public void viewUI() {
-        Client.printMethod("viewUI");
+        Utils.printMethod("viewUI");
 
         ArrayList<TableEntry> tableEntries = table.getTableEntries();
 
@@ -101,24 +100,24 @@ public class TableFragment extends Fragment {
         }
         //tableEntries = checkTableEntries(tableEntries);
         if (tableEntries.isEmpty()) {
-            Client.print("Leer!");
-            addListItem(Utils.mainActivity.getString(R.string.nothing), Client.instance.nothingSize, false);
+            Utils.print("Leer!");
+            addListItem(Utils.mainActivity.getString(R.string.nothing), Utils.nothingSize, false);
         } else {
-            Client.print("");
-            Client.print("tableEntries for " + label.getText() + ": ");
-            Client.print("");
+            Utils.print("");
+            Utils.print("tableEntries for " + label.getText() + ": ");
+            Utils.print("");
             for (TableEntry entry : tableEntries) {
-                Client.print(entry.getSchoolClass() + ", " + entry.getTime());
+                Utils.print(entry.getSchoolClass() + ", " + entry.getTime());
                 addTableItem(entry, Settings.settings.extended, Settings.settings.showText);
             }
         }
-        Client.print("");
-        Client.print("");
+        Utils.print("");
+        Utils.print("");
     }
 
     @SuppressLint("NewApi")
     private void setColor(Date date) {
-        Client.printMethod("setColor");
+        Utils.printMethod("setColor");
         Drawable base = Utils.mainActivity.getDrawable(R.drawable.colorgrade_base);
         Drawable stroke = Utils.mainActivity.getDrawable(R.drawable.colorgrade_stroke);
 
@@ -146,7 +145,7 @@ public class TableFragment extends Fragment {
     }
 
     public void addTableItem(TableEntry entry, boolean extended, boolean showText) {
-        Client.printMethod("addTableItem");
+        Utils.printMethod("addTableItem");
 
         String infoRow = "";
         String timeRow = entry.getTime() + ": ";
@@ -164,11 +163,11 @@ public class TableFragment extends Fragment {
         if ((!entry.getText().equals("")) && showText) {
             infoRow += " (" + entry.getText() + ")";
         }
-        addListItem(infoRow, timeRow, classRow, Client.instance.vertretungSize, Client.instance.vertretungRGB);
+        addListItem(infoRow, timeRow, classRow, Utils.vertretungSize, Utils.vertretungRGB);
     }
 
     public void addListItem(String text, Integer textSize, boolean multiText) {
-        Client.printMethod("addListItem");
+        Utils.printMethod("addListItem");
 
         //adds items to the list
         int in = 2;
@@ -184,7 +183,7 @@ public class TableFragment extends Fragment {
         nameText.setTextSize(textSize);
         //nameText.setTextColor(ARGB);
         nameText.setSingleLine(!multiText);
-        Client.print("text: " + text);
+        Utils.print("text: " + text);
         nameText.setText(text);
 
         LinearLayout.LayoutParams spParams = new LinearLayout.LayoutParams(11 * in, 15 * in);
@@ -199,7 +198,7 @@ public class TableFragment extends Fragment {
 
     public void addListItem(String text, String text1, String text2, Integer textSize, int ARGB) {
 
-        Client.printMethod("addListItem");
+        Utils.printMethod("addListItem");
 
         //adds items to the list
         int in = 2;

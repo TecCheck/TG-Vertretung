@@ -13,27 +13,27 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Random;
 
-import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.utils.Download;
 
-public class BackgroundService extends Service {
+public class BackgroundService extends Service implements Download.LoadFinishedListener {
 
     public static final String CHANNEL_ID = "TGV";
     public static final boolean TEST = false;
 
     public static Runnable runnable = null;
-    public static Runnable runnable2 = null;
     public static boolean isRunning;
 
     public Context context = this;
     public Handler handler = null;
 
+    Download download = new Download();
     int notificationId = 0;
 
     @Override
@@ -46,23 +46,14 @@ public class BackgroundService extends Service {
         isRunning = true;
         Log.d("BackgroundService", "Running");
 
+        download.setLoadFinishedListener(this);
         Settings.prefs = getSharedPreferences("preferences", 0);
-        Settings.load();
+        Settings.load(context);
 
         handler = new Handler();
         runnable = () -> {
-            Client.load(false);
-            if (!TEST)
-                handler.postDelayed(runnable2, 10000);
-            else
-                handler.postDelayed(runnable2, 5000); //Test
-        };
-
-        runnable2 = () -> {
-            if (Download.status == 0 || TEST) {
-                Log.d("BackgroundService", "Download Status: " + Download.status);
-                makeNotification();
-            }
+            download = new Download(this);
+            download.download();
             if (!TEST)
                 handler.postDelayed(runnable, 600000);
             else
@@ -108,6 +99,13 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy() {
         //handler.removeCallbacks(runnable);
-        //handler.removeCallbacks(runnable2);
+    }
+
+    @Override
+    public void loadFinished(int status) {
+        if (status == 0 || TEST) {
+            Log.d("BackgroundService", "Download Status: " + status);
+            makeNotification();
+        }
     }
 }

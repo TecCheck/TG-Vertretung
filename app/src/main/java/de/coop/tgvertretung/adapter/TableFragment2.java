@@ -14,9 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.Week;
@@ -28,7 +27,7 @@ public class TableFragment2 extends Fragment {
     private Table table = null;
 
     public static TableFragment2 newInstance(int sectionNumber) {
-        Client.printMethod("newInstance");
+        Utils.printMethod("newInstance");
 
         Bundle args = new Bundle();
         args.putInt(INDEX, sectionNumber);
@@ -40,7 +39,7 @@ public class TableFragment2 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Client.printMethod("onCreateView");
+        Utils.printMethod("onCreateView");
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Get the Views
@@ -108,7 +107,7 @@ public class TableFragment2 extends Fragment {
             week += (table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B";
         else week += table.getWeek().getLetter();
 
-        return Client.getFormattedDate(table.getDate(), true, false) + " " + week;
+        return Utils.getFormattedDate(table.getDate(), true, false) + " " + week;
     }
 
     private String getLabelTextPrim() {

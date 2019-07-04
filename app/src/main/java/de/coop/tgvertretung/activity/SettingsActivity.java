@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.MenuItem;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Settings;
 
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
 
