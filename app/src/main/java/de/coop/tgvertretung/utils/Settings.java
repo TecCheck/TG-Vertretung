@@ -35,6 +35,7 @@ public class Settings implements Serializable {
     public boolean showClientRefresh = false;
     public boolean showServerRefresh = false;
 
+    public int themeMode = 0;
     public boolean useOldLayout = false;
     public boolean rainbow = false;
     public boolean twoLineLabel = false;

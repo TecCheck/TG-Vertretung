@@ -1,6 +1,7 @@
 package de.coop.tgvertretung.activity;
 
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBar;
@@ -21,6 +22,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     private Preference showClientRefresh = null;
     private Preference showServerRefresh = null;
 
+    private ListPreference themeMode = null;
     private Preference useOldLayout = null;
     private Preference twoLineLabel = null;
     private Preference rainbow = null;
@@ -44,6 +46,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showClientRefresh = findPreference("showClientRefresh");
         showServerRefresh = findPreference("showServerRefresh");
 
+        themeMode = (ListPreference) findPreference("theme_mode");
         useOldLayout = findPreference("oldLayout");
         twoLineLabel = findPreference("two_line_label");
         rainbow = findPreference("rainbow");
@@ -59,6 +62,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showClientRefresh.setOnPreferenceChangeListener(this);
         showServerRefresh.setOnPreferenceChangeListener(this);
 
+        themeMode.setOnPreferenceChangeListener(this);
         useOldLayout.setOnPreferenceChangeListener(this);
         twoLineLabel.setOnPreferenceChangeListener(this);
         rainbow.setOnPreferenceChangeListener(this);
@@ -72,11 +76,13 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showClientRefresh.setDefaultValue(Settings.settings.showClientRefresh);
         showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
 
+        themeMode.setDefaultValue(Settings.settings.themeMode);
         useOldLayout.setDefaultValue(Settings.settings.useOldLayout);
         twoLineLabel.setDefaultValue(Settings.settings.twoLineLabel);
         rainbow.setDefaultValue(Settings.settings.rainbow);
 
         filter.setSummary(Settings.settings.filter);
+        themeMode.setSummary(getResources().getStringArray(R.array.theme_modes)[Settings.settings.themeMode]);
         //filter.setSummary(settings.getInt(FILTER_KEY, filterInt));
         filter.setEnabled(Settings.settings.useFilter);
     }
@@ -116,6 +122,10 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.rainbow = (boolean) value;
         } else if (preference.getKey().equals(twoLineLabel.getKey())) {
             Settings.settings.twoLineLabel = (boolean) value;
+        }else if(preference.getKey().equals(themeMode.getKey())){
+            Settings.settings.themeMode = themeMode.findIndexOfValue((String) value);
+            themeMode.setSummary(getResources().getStringArray(R.array.theme_modes)[Settings.settings.themeMode]);
+            AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
         }
 
         Settings.save();
