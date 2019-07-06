@@ -169,20 +169,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
-
         Utils.print("OnResume-------------------------------------------------------------------------------");
         super.onResume();
-        /*
-        navigationView.getMenu().getItem(0).setChecked(true);
-
-        Utils.print("starting Pager");
-        int i = mPager.getCurrentItem();
         startPagerView();
-        setTable(i);
-        if (Settings.settings.loggedIn) {
-            load();
-        }
-        */
     }
 
     @Override

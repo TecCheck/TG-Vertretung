@@ -194,7 +194,6 @@ public class TableFragment extends Fragment {
         ln.addView(sp);
         ln.addView(nameText);
         mainLayout.addView(ln);
-
     }
 
     public void addListItem(String text, String text1, String text2, Integer textSize, int ARGB) {

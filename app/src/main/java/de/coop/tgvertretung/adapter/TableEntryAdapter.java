@@ -62,7 +62,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
 
     private String getEntryText(TableEntry entry, boolean extended) {
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            return entry.getSubject() + " " + context.getString(R.string.noClass);
+            return entry.getSubject() + (extended ? " in " + entry.getRoom() + " " : " ") + context.getString(R.string.noClass);
         }
 
         return entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + (extended ? (" statt " + entry.getSubject() + " in " + entry.getRoom()) : "");
