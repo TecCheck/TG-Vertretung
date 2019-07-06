@@ -2,44 +2,54 @@ package de.coop.tgvertretung.utils;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.view.View;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
-import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.adapter.TableFragment2;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
+import de.sematre.tg.TimeTable;
 
 public class Utils {
 
-    public static ArgbEvaluator evaluator = null;
-    public static MainActivity mainActivity = null;
+    private static final boolean SYSOUT = true;
+    private static final boolean METHOD_SYSOUT = true;
 
-    public static int getColor(Date date) {
-        Client.printMethod("setColor");
+    public static int vertretungRGB = 0xff000000;
+    public static int nothingSize = 20;
+    public static int vertretungSize = 15;
+
+    public static ArgbEvaluator evaluator = null;
+
+    public static int getColor(Context context, Date date) {
+        Utils.printMethod("setColor");
 
         switch (date.getDay()) {
             case 1:
-                return mainActivity.getResources().getColor(R.color.yellow);
+                return context.getResources().getColor(R.color.yellow);
 
             case 2:
-                return mainActivity.getResources().getColor(R.color.blue);
+                return context.getResources().getColor(R.color.blue);
 
             case 3:
-                return mainActivity.getResources().getColor(R.color.green);
+                return context.getResources().getColor(R.color.green);
 
             case 4:
-                return mainActivity.getResources().getColor(R.color.orange);
+                return context.getResources().getColor(R.color.orange);
 
             case 5:
-                return mainActivity.getResources().getColor(R.color.pink);
+                return context.getResources().getColor(R.color.pink);
 
             default:
-                return mainActivity.getResources().getColor(R.color.purple);
+                return context.getResources().getColor(R.color.purple);
         }
     }
 
@@ -76,5 +86,42 @@ public class Utils {
         colorFade.setRepeatCount(ObjectAnimator.INFINITE);
         colorFade.setDuration(1200);
         colorFade.start();
+    }
+
+    public static String getFormattedDate(Date date, boolean dayName, boolean useTime) {
+        String pattern = "dd.MM.yyyy";
+        if (useTime) pattern += " HH:mm";
+        if (dayName) pattern = "EEEE " + pattern;
+
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+        format.setTimeZone(TimeZone.getDefault());
+        return format.format(date);
+    }
+
+    public static int getView(TimeTable timeTable) {
+        Utils.printMethod("getView");
+        int i = 0;
+
+        for (Table table : timeTable.getTables()) {
+            Date today = new Date(System.currentTimeMillis());
+            Date tableDate = table.getDate();
+            if (today.getDay() == tableDate.getDay() && today.getMonth() == tableDate.getMonth() && today.getYear() == tableDate.getYear()) {
+                return i;
+            }
+
+            Utils.print(table.getDate().toString());
+            i++;
+        }
+
+        Utils.print("Date not found");
+        return 0;
+    }
+
+    public static void print(String text) {
+        if (SYSOUT) System.out.println(text);
+    }
+
+    public static void printMethod(String name) {
+        if (METHOD_SYSOUT) System.out.println(name + "();");
     }
 }

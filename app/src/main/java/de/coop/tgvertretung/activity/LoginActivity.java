@@ -8,9 +8,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Settings;
+import de.coop.tgvertretung.utils.Utils;
 import de.sematre.dsbmobile.DSBMobile;
 
 
@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             Snackbar.make(btn, getString(R.string.noConnection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else if (success[0]) {
             // credentials are correct
+            Settings.load(getApplicationContext());
             Settings.settings.password = pwText.getText().toString();
             Settings.settings.username = nmText.getText().toString();
             Settings.settings.loggedIn = true;
@@ -75,13 +76,13 @@ public class LoginActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
 
-        Client.print("ActionBar: " + actionBar);
+        Utils.print("ActionBar: " + actionBar);
     }
 
     @Override
     public void onBackPressed() {
         if (firstTime) {
-            Client.print("EXIT-------------------------------------------------------------------------");
+            Utils.print("EXIT-------------------------------------------------------------------------");
             /*
             new AlertDialog.Builder(this)
                     .setTitle(R.string.exitTitle)

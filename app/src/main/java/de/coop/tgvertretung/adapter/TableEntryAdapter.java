@@ -1,5 +1,6 @@
 package de.coop.tgvertretung.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,16 +9,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.Settings;
+import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 
 class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolder> {
     private Table table;
+    private Context context;
 
-    TableEntryAdapter(Table table) {
+    TableEntryAdapter(Table table, Context context) {
         this.table = table;
+        this.context = context;
     }
 
     @Override
@@ -51,7 +54,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
             Utils.addRainbow(schoolClass);
             Utils.addRainbow(hour);
         } else {
-            int color = Utils.getColor(table.getDate());
+            int color = Utils.getColor(context, table.getDate());
             schoolClass.setTextColor(color);
             hour.setTextColor(color);
         }
@@ -59,7 +62,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
 
     private String getEntryText(TableEntry entry, boolean extended) {
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            return entry.getSubject() + " " + Utils.mainActivity.getString(R.string.noClass);
+            return entry.getSubject() + " " + context.getString(R.string.noClass);
         }
 
         return entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + (extended ? (" statt " + entry.getSubject() + " in " + entry.getRoom()) : "");

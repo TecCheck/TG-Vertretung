@@ -38,7 +38,7 @@
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name=".utils.AutoStart"
+            android:name=".service.AutoStart"
             android:label="AutoStart">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

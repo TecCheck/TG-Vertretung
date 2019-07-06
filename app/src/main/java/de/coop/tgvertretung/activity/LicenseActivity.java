@@ -14,8 +14,8 @@ import android.widget.TextView;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import de.coop.tgvertretung.Client;
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.utils.Utils;
 
 public class LicenseActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,8 +48,8 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         InputStream stream = getResources().openRawResource(getResources().getIdentifier(fileName, "raw", getPackageName()));
         Scanner scanner = new Scanner(stream);
 
-        Client.print("File:");
-        Client.print(scanner.toString());
+        Utils.print("File:");
+        Utils.print(scanner.toString());
 
         StringBuilder content = new StringBuilder();
         while (scanner.hasNextLine()) {

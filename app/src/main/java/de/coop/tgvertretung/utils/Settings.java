@@ -1,5 +1,6 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
@@ -7,8 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.coop.tgvertretung.utils.ObjectSerializer;
-import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TimeTable;
 
@@ -16,7 +15,6 @@ public class Settings implements Serializable {
 
     private static final String PREFS_KEY = "settings";
     private static final long serialVersionUID = -6062123032432580842L;
-
     public static Settings settings = new Settings();
     public static SharedPreferences prefs = null;
     private static SharedPreferences.Editor editor;
@@ -32,7 +30,7 @@ public class Settings implements Serializable {
     public String filter = "";
 
     public boolean extended = false;
-    public boolean showText = false;
+    public boolean showText = true;
     public boolean showAB = false;
     public boolean showClientRefresh = false;
     public boolean showServerRefresh = false;
@@ -41,9 +39,9 @@ public class Settings implements Serializable {
     public boolean rainbow = false;
     public boolean twoLineLabel = false;
 
-    public static void load() {
+    public static void load(Context context) {
         settings = new Settings();
-        if (prefs == null) prefs = Utils.mainActivity.getSharedPreferences("preferences", 0);
+        prefs = context.getSharedPreferences("preferences", 0);
 
         try {
             String settingsString = prefs.getString(PREFS_KEY, ObjectSerializer.serialize(settings));
@@ -81,6 +79,6 @@ public class Settings implements Serializable {
         out += ", showServerRefresh: " + settings.showServerRefresh;
         out += ", showAB" + settings.showAB;
 
-        Client.print(out);
+        Utils.print(out);
     }
 }
