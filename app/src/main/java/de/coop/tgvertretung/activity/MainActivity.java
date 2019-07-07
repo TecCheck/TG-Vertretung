@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Navigation Drawer
         setSupportActionBar(toolbar);
+        if (Settings.settings.themeMode == 2)
+            toolbar.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             @Override
@@ -184,14 +186,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Utils.print("OnResume-------------------------------------------------------------------------------");
         super.onResume();
 
-        if(LoginActivity.firstTime && Settings.settings.loggedIn){
+        if (LoginActivity.firstTime && Settings.settings.loggedIn) {
             LoginActivity.firstTime = false;
             initUi();
             load();
             if (!BackgroundService.isRunning) {
                 startService(new Intent(getApplicationContext(), BackgroundService.class));
             }
-        }else {
+        } else {
             startPagerView();
         }
     }

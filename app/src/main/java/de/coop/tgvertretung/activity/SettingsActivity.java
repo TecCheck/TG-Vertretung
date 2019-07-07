@@ -1,5 +1,6 @@
 package de.coop.tgvertretung.activity;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -32,8 +33,9 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         super.onCreate(savedInstanceState);
         ActionBar actionBar = AppCompatDelegate.create(this, null).getSupportActionBar();
         if (actionBar != null) {
-            // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
+            if (Settings.settings.themeMode == 2)
+                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
         addPreferencesFromResource(R.xml.activity_settings);

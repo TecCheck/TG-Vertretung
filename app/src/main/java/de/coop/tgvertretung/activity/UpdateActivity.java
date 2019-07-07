@@ -3,6 +3,7 @@ package de.coop.tgvertretung.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 
 
@@ -49,8 +51,9 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
         ActionBar actionBar = getDelegate().getSupportActionBar();
         if (actionBar != null) {
-            // show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
+            if (Settings.settings.themeMode == 2)
+                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
         updateStatus = findViewById(R.id.update_status);
@@ -110,7 +113,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void downloadUpdateFinished(int status) {
-        if(status == 0)
+        if (status == 0)
             return;
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -181,8 +184,8 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
     static class DownloadApkTask extends AsyncTask<String, Integer, String> {
 
-        private Context context;
         UpdateActivity activity;
+        private Context context;
         private PowerManager.WakeLock mWakeLock;
 
         DownloadApkTask(Context context, UpdateActivity activity) {

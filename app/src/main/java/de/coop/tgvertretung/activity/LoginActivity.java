@@ -1,6 +1,7 @@
 package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -17,10 +18,10 @@ import de.sematre.dsbmobile.DSBMobile;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static boolean firstTime = true;
     private Button btn = null;
     private EditText pwText = null;
     private EditText nmText = null;
-    public static boolean firstTime = true;
 
     private void login() {
         Boolean[] success = {false};
@@ -74,8 +75,10 @@ public class LoginActivity extends AppCompatActivity {
         btn.setOnClickListener((view) -> login());
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null && firstTime) {
-            actionBar.setDisplayHomeAsUpEnabled(false);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(!firstTime);
+            if (Settings.settings.themeMode == 2)
+                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
         Utils.print("ActionBar: " + actionBar);
@@ -98,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                     }).create().show();
                     */
             Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-            homeIntent.addCategory( Intent.CATEGORY_HOME );
+            homeIntent.addCategory(Intent.CATEGORY_HOME);
             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(homeIntent);
             //System.exit(1);

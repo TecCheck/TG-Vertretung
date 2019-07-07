@@ -3,6 +3,8 @@ package de.coop.tgvertretung.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -15,6 +17,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 
 public class LicenseActivity extends AppCompatActivity implements View.OnClickListener {
@@ -29,8 +32,17 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_license);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
+        CollapsingToolbarLayout toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar.setTitle(getResources().getStringArray(R.array.licenses)[toShow]);
         toolbar.addView(getButton());
+        if (Settings.settings.themeMode == 2) {
+            toolbar.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
+            appBarLayout.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
+            toolbarLayout.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
+            toolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.toolbarDark));
+            toolbarLayout.setContentScrimColor(getResources().getColor(R.color.toolbarDark));
+        }
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
