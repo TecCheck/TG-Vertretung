@@ -1,4 +1,4 @@
-package de.coop.tgvertretung.utils;
+package de.coop.tgvertretung.adapter;
 
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
