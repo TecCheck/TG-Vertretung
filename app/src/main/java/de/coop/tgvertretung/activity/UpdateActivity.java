@@ -1,11 +1,12 @@
 package de.coop.tgvertretung.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,24 +17,29 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.utils.Utils;
 
 
 public class UpdateActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private String PATH = "";
 
     TextView updateStatus = null;
     Button updateButton = null;
     ProgressBar updateProgress = null;
 
-    DownloadTask downloadTask = null;
-    UpdateThread updateThread = new UpdateThread();
+    DownloadInfoTask downloadInfoTask = null;
+    DownloadApkTask downloadApkTask = null;
     boolean updateAvailable = false;
     String updateUrl = "";
 
@@ -55,37 +61,69 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         updateButton.setOnClickListener(this);
         updateButton.setEnabled(false);
 
+        PATH = Utils.getUpdateDownloadFile(this);
+
         searchForUpdate();
     }
 
     void searchForUpdate() {
-        if (updateThread != null && updateThread.isAlive()) {
-            return;
-        }
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_checking);
         updateProgress.setIndeterminate(true);
-        downloadTask = new DownloadTask(getApplicationContext(), 0);
-        downloadTask.execute(getString(R.string.update_url));
+        downloadInfoTask = new DownloadInfoTask(getApplicationContext());
+        downloadInfoTask.execute(getString(R.string.update_url));
+    }
+
+    public void searchForUpdateFinished(int status, String version, String link) {
+        updateProgress.setIndeterminate(false);
+        if (status == 0) {
+            updateStatus.setText(R.string.update_status_failed);
+            updateButton.setText(R.string.update_button_try_again);
+            updateButton.setEnabled(true);
+            updateAvailable = false;
+            return;
+        }
+
+        updateUrl = link;
+        int versionCode = Integer.parseInt(version);
+        int currentVersion = getAppVersion();
+
+        if (versionCode > currentVersion) {
+            updateAvailable = true;
+            updateButton.setEnabled(true);
+            updateStatus.setText(R.string.update_status_available);
+        } else {
+            updateAvailable = false;
+            updateStatus.setText(R.string.update_status_newest);
+            updateButton.setText(R.string.update_button_try_again);
+            updateButton.setEnabled(true);
+        }
+
+        Utils.print("Version: " + versionCode);
+        Utils.print("Link: " + updateUrl);
     }
 
     void downloadUpdate() {
-        if (updateThread != null && updateThread.isAlive()) {
-            return;
-        }
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_downloading);
-        downloadTask = new DownloadTask(getApplicationContext(), 1);
-        downloadTask.execute(updateUrl);
+        downloadApkTask = new DownloadApkTask(getApplicationContext());
+        downloadApkTask.execute(updateUrl);
+    }
+
+    public void downloadUpdateFinished(int status) {
+        if(status == 0)
+            return;
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(new File(PATH)), "application/vnd.android.package-archive");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            if (updateThread != null && updateThread.isAlive()) {
-                updateThread.interrupt();
-            }
             super.onBackPressed();
             return true;
         }
@@ -104,36 +142,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void downloadFinished(int type, String status) {
-        if (type == 0) {
-            updateProgress.setIndeterminate(false);
-            if (status.equals("0")) {
-                updateStatus.setText(R.string.update_status_failed);
-                updateButton.setText(R.string.update_button_try_again);
-                updateButton.setEnabled(true);
-                updateAvailable = false;
-                return;
-            }
-
-            updateUrl = status.substring(status.indexOf("\n") + 1);
-            int versionCode = Integer.parseInt(status.substring(0, status.indexOf("\n")));
-            int currentVersion = getAppVersion();
-            if (versionCode > currentVersion) {
-                updateAvailable = true;
-                updateButton.setEnabled(true);
-                updateStatus.setText(R.string.update_status_available);
-            } else {
-                updateAvailable = false;
-                updateStatus.setText(R.string.update_status_newest);
-                updateButton.setText(R.string.update_button_try_again);
-                updateButton.setEnabled(true);
-            }
-
-        } else {
-            //Install
-        }
-    }
-
     private int getAppVersion() {
         try {
             return getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
@@ -143,45 +151,41 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    class UpdateThread extends Thread {
-        String downloadUrl;
-        int type;
-        UpdateActivity activity;
+    class DownloadInfoTask extends AsyncTask<String, Integer, String> {
+        String version;
+        String link;
+        private Context context;
 
-        public void init(String downloadUrl, int type, UpdateActivity activity) {
-            this.downloadUrl = downloadUrl;
-            this.type = type;
-            this.activity = activity;
+        public DownloadInfoTask(Context context) {
+            this.context = context;
         }
 
         @Override
-        public void run() {
-            String s = "237\n" +
-                    "https://github.com/TecCheck/TG-Vertretung/releases/download/Beta1.10.4/TG-Vertretung-Beta1.10.4.apk";
-
+        protected String doInBackground(String... sUrl) {
             try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                URL url = new URL(sUrl[0]);
+                Scanner s = new Scanner(url.openStream());
+                version = s.nextLine();
+                link = s.nextLine();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
+            return null;
+        }
 
-            Handler mainHandler = new Handler(Looper.getMainLooper());
-            mainHandler.post(() -> {
-                if (activity != null)
-                    activity.downloadFinished(type, s);
-            });
+
+        @Override
+        protected void onPostExecute(String result) {
+            searchForUpdateFinished(1, version, link);
         }
     }
 
-    class DownloadTask extends AsyncTask<String, Integer, String> {
+    class DownloadApkTask extends AsyncTask<String, Integer, String> {
 
-        int type;
-        String out;
         private Context context;
         private PowerManager.WakeLock mWakeLock;
 
-        public DownloadTask(Context context, int type) {
-            this.type = type;
+        public DownloadApkTask(Context context) {
             this.context = context;
         }
 
@@ -192,95 +196,54 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
             OutputStream output = null;
             HttpURLConnection connection = null;
 
-            if (type == 0) {
-                try {
-                    URL url = new URL(sUrl[0]);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.connect();
+            try {
+                URL url = new URL(sUrl[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
 
-                    // expect HTTP 200 OK, so we don't mistakenly save error report
-                    // instead of the file
-                    if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        return "Server returned HTTP " + connection.getResponseCode()
-                                + " " + connection.getResponseMessage();
-                    }
-
-                    // this will be useful to display download percentage
-                    // might be -1: server did not report the length
-                    int fileLength = connection.getContentLength();
-
-                    // download the file
-                    input = connection.getInputStream();
-                    output = new FileOutputStream("/sdcard/TGV.apk");
-
-                    byte data[] = new byte[fileLength];
-                    input.read(data);
-                    out = new String(data);
-                } catch (Exception e) {
-                    return e.toString();
-                } finally {
-                    try {
-                        if (output != null)
-                            output.close();
-                        if (input != null)
-                            input.close();
-                    } catch (IOException ignored) {
-                    }
-
-                    if (connection != null)
-                        connection.disconnect();
+                // expect HTTP 200 OK, so we don't mistakenly save error report
+                // instead of the file
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage();
                 }
 
-            } else {
-                try {
-                    URL url = new URL(sUrl[0]);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.connect();
+                // this will be useful to display download percentage
+                // might be -1: server did not report the length
+                int fileLength = connection.getContentLength();
 
-                    // expect HTTP 200 OK, so we don't mistakenly save error report
-                    // instead of the file
-                    if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        return "Server returned HTTP " + connection.getResponseCode()
-                                + " " + connection.getResponseMessage();
+                // download the file
+                input = connection.getInputStream();
+                output = new FileOutputStream(PATH);
+
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    // allow canceling with back button
+                    if (isCancelled()) {
+                        input.close();
+                        return null;
                     }
-
-                    // this will be useful to display download percentage
-                    // might be -1: server did not report the length
-                    int fileLength = connection.getContentLength();
-
-                    // download the file
-                    input = connection.getInputStream();
-                    output = new FileOutputStream("/sdcard/TGV.apk");
-
-                    byte data[] = new byte[4096];
-                    long total = 0;
-                    int count;
-                    while ((count = input.read(data)) != -1) {
-                        // allow canceling with back button
-                        if (isCancelled()) {
-                            input.close();
-                            return null;
-                        }
-                        total += count;
-                        // publishing the progress....
-                        if (fileLength > 0) // only if total length is known
-                            publishProgress((int) (total * 100 / fileLength));
-                        output.write(data, 0, count);
-                    }
-                } catch (Exception e) {
-                    return e.toString();
-                } finally {
-                    try {
-                        if (output != null)
-                            output.close();
-                        if (input != null)
-                            input.close();
-                    } catch (IOException ignored) {
-                    }
-
-                    if (connection != null)
-                        connection.disconnect();
+                    total += count;
+                    // publishing the progress....
+                    if (fileLength > 0) // only if total length is known
+                        publishProgress((int) (total * 100 / fileLength));
+                    output.write(data, 0, count);
                 }
+            } catch (Exception e) {
+                return e.toString();
+            } finally {
+                try {
+                    if (output != null)
+                        output.close();
+                    if (input != null)
+                        input.close();
+                } catch (IOException ignored) {
+                }
+
+                if (connection != null)
+                    connection.disconnect();
             }
 
             return null;
@@ -310,7 +273,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPostExecute(String result) {
             mWakeLock.release();
-            downloadFinished(type, out);
+            downloadUpdateFinished(1);
             if (result != null)
                 Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
             else

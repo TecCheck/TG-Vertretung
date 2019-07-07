@@ -3,6 +3,7 @@ package de.coop.tgvertretung.utils;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.os.Environment;
 import android.view.View;
 
 import java.text.SimpleDateFormat;
@@ -115,6 +116,10 @@ public class Utils {
 
         Utils.print("Date not found");
         return 0;
+    }
+
+    public static String getUpdateDownloadFile(Context context){
+        return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/TGV.apk";
     }
 
     public static void print(String text) {

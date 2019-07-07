@@ -2,6 +2,7 @@ package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.FileObserver;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
@@ -22,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.Date;
 
 import de.coop.tgvertretung.R;
@@ -159,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Settings.load(getApplicationContext());
         AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
+
+        new File(Utils.getUpdateDownloadFile(this)).delete();
+        Utils.print(Utils.getUpdateDownloadFile(this));
 
         //Load if Logged in
         if (Settings.settings.loggedIn) {
