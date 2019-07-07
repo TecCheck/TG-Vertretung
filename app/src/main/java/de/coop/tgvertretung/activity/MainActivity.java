@@ -2,7 +2,6 @@ package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.FileObserver;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
@@ -29,11 +28,11 @@ import java.util.Date;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.ScreenSlidePagerAdapter;
 import de.coop.tgvertretung.service.BackgroundService;
-import de.coop.tgvertretung.utils.Download;
+import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Download.LoadFinishedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.LoadFinishedListener {
 
     public static final boolean CLOSE_WARNING = false;
     private static boolean firstPagerStart = true;
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public ProgressBar progBar = null;
     public SwipeRefreshLayout refreshLayout = null;
 
-    Download download = null;
+    Downloader downloader = null;
 
     public void showSnack(String text) {
         Snackbar.make(mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void load() {
-        download = new Download(this);
+        downloader = new Downloader(this);
         if (Settings.settings.useOldLayout) {
             stdView.setVisibility(View.INVISIBLE);
             loadView.setVisibility(View.VISIBLE);
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             refreshLayout.setRefreshing(true);
         }
 
-        if (!download.download()) {
+        if (!downloader.download()) {
             refreshLayout.setRefreshing(false);
         }
     }

@@ -17,11 +17,11 @@ import android.util.Log;
 import java.util.Random;
 
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.activity.MainActivity;
-import de.coop.tgvertretung.utils.Download;
 
-public class BackgroundService extends Service implements Download.LoadFinishedListener {
+public class BackgroundService extends Service implements Downloader.LoadFinishedListener {
 
     public static final String CHANNEL_ID = "TGV";
     public static final boolean TEST = false;
@@ -32,7 +32,7 @@ public class BackgroundService extends Service implements Download.LoadFinishedL
     public Context context = this;
     public Handler handler = null;
 
-    Download download = new Download();
+    Downloader downloader = new Downloader();
     int notificationId = 0;
 
     @Override
@@ -45,14 +45,14 @@ public class BackgroundService extends Service implements Download.LoadFinishedL
         isRunning = true;
         Log.d("BackgroundService", "Running");
 
-        download.setLoadFinishedListener(this);
+        downloader.setLoadFinishedListener(this);
         Settings.prefs = getSharedPreferences("preferences", 0);
         Settings.load(context);
 
         handler = new Handler();
         runnable = () -> {
-            download = new Download(this);
-            download.download();
+            downloader = new Downloader(this);
+            downloader.download();
             if (!TEST)
                 handler.postDelayed(runnable, 600000);
             else

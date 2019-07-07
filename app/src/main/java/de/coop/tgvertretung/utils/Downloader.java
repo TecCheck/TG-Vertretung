@@ -8,18 +8,18 @@ import java.util.Date;
 
 import de.sematre.tg.TG;
 
-public class Download extends Thread {
+public class Downloader extends Thread {
 
-    private static Download dwdThread = null;
+    private static Downloader dwdThread = null;
 
     private LoadFinishedListener listener = null;
     private int status = 0;
 
-    public Download(LoadFinishedListener listener) {
+    public Downloader(LoadFinishedListener listener) {
         this.listener = listener;
     }
 
-    public Download() {}
+    public Downloader() {}
 
     public void setLoadFinishedListener(LoadFinishedListener listener) {
         this.listener = listener;
