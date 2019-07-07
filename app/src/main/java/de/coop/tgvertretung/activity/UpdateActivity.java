@@ -111,8 +111,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void downloadUpdateFinished(int status) {
-        if(status == 0)
-            return;
+        if(status == 0) return;
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(new File(PATH)), "application/vnd.android.package-archive");
@@ -134,11 +133,8 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (v.getId() == updateButton.getId()) {
-            if (updateAvailable) {
-                downloadUpdate();
-            } else {
-                searchForUpdate();
-            }
+            if (updateAvailable) downloadUpdate();
+            else searchForUpdate();
         }
     }
 
@@ -170,9 +166,9 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+
             return null;
         }
-
 
         @Override
         protected void onPostExecute(String result) {
@@ -201,7 +197,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
-                // expect HTTP 200 OK, so we don't mistakenly save error report
+                // expect HTTP 200 OK, so we don't mistakenly save an error report
                 // instead of the file
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                     return "Server returned HTTP " + connection.getResponseCode()
@@ -225,6 +221,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                         input.close();
                         return null;
                     }
+
                     total += count;
                     // publishing the progress....
                     if (fileLength > 0) // only if total length is known
@@ -235,15 +232,11 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                 return e.toString();
             } finally {
                 try {
-                    if (output != null)
-                        output.close();
-                    if (input != null)
-                        input.close();
-                } catch (IOException ignored) {
-                }
+                    if (output != null) output.close();
+                    if (input != null) input.close();
+                } catch (IOException ignored) {}
 
-                if (connection != null)
-                    connection.disconnect();
+                if (connection != null) connection.disconnect();
             }
 
             return null;
@@ -264,6 +257,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
+
             // if we get here, length is known, now set indeterminate to false
             updateProgress.setIndeterminate(false);
             updateProgress.setMax(100);
@@ -274,10 +268,12 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         protected void onPostExecute(String result) {
             mWakeLock.release();
             downloadUpdateFinished(1);
-            if (result != null)
+
+            if (result != null) {
                 Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
-            else
+            } else {
                 Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

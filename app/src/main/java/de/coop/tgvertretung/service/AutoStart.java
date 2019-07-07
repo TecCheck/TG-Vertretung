@@ -19,6 +19,7 @@ public class AutoStart extends BroadcastReceiver {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             context.startService(new Intent(context, BackgroundService.class));
         }
     }

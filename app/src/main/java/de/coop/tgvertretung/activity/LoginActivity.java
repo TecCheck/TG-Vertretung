@@ -45,19 +45,19 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (success[0] == null) {
-            // phone is offline
+            // Phone is offline
             Snackbar.make(btn, getString(R.string.noConnection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else if (success[0]) {
-            // credentials are correct
+            // Credentials are correct
             Settings.load(getApplicationContext());
             Settings.settings.password = pwText.getText().toString();
             Settings.settings.username = nmText.getText().toString();
             Settings.settings.loggedIn = true;
             Settings.save();
             finish();
-            //super.onBackPressed();
+            // Super.onBackPressed();
         } else {
-            // credentials are incorrect
+            // Credentials are incorrect
             Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }

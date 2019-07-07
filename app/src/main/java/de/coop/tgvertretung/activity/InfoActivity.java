@@ -23,15 +23,15 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
 
         ActionBar actionBar = getDelegate().getSupportActionBar();
         if (actionBar != null) {
-            // show the Up button in the action bar.
+            // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // current version
+        // Current version
         TextView versionNameTxt = findViewById(R.id.versionNameTxt);
         versionNameTxt.setText(getVersion());
 
-        //set Link for GitHub website
+        // Set Link for GitHub website
         LinearLayout gitHub = findViewById(R.id.Github);
         gitHub.setOnClickListener(v -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_url)));

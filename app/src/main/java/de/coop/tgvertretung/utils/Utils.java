@@ -13,7 +13,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.adapter.TableFragment2;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
@@ -84,8 +83,8 @@ public class Utils {
 
     public static int getView(TimeTable timeTable) {
         Utils.printMethod("getView");
-        int i = 0;
 
+        int i = 0;
         for (Table table : timeTable.getTables()) {
             Date today = new Date(System.currentTimeMillis());
             Date tableDate = table.getDate();

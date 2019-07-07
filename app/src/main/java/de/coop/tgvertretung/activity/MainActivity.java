@@ -74,13 +74,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Utils.print("SwipeRefreshLayout");
             refreshLayout.setRefreshing(true);
         }
+
         if (!download.download()) {
             refreshLayout.setRefreshing(false);
         }
     }
 
     void initUi() {
-
         // Get views
         Toolbar toolbar = findViewById(R.id.toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -136,12 +136,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-            }
+            public void onPageScrolled(int i, float v, int i1) {}
 
             @Override
-            public void onPageScrollStateChanged(int i) {
-            }
+            public void onPageScrollStateChanged(int i) {}
 
             @Override
             public void onPageSelected(int i) {
@@ -150,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
-
         startPagerView();
     }
 
