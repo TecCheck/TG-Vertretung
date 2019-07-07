@@ -15,6 +15,10 @@
             android:icon="@drawable/ic_help_outline_black_24dp"
             android:title="@string/nav_info" />
         <item
+            android:id="@+id/nav_update"
+            android:icon="@drawable/ic_file_download_black_24dp"
+            android:title="@string/nav_update" />
+        <item
             android:id="@+id/nav_login"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/nav_login" />

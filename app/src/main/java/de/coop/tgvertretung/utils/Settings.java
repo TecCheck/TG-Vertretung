@@ -32,8 +32,8 @@ public class Settings implements Serializable {
     public boolean extended = false;
     public boolean showText = true;
     public boolean showAB = false;
-    public boolean showClientRefresh = false;
-    public boolean showServerRefresh = false;
+    public boolean showClientRefresh = true;
+    public boolean showServerRefresh = true;
 
     public int themeMode = 0;
     public boolean useOldLayout = false;

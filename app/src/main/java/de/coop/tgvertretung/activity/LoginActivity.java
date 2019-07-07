@@ -1,5 +1,6 @@
 package de.coop.tgvertretung.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -53,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
             Settings.settings.username = nmText.getText().toString();
             Settings.settings.loggedIn = true;
             Settings.save();
-            super.onBackPressed();
+            finish();
+            //super.onBackPressed();
         } else {
             // credentials are incorrect
             Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -95,7 +97,11 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }).create().show();
                     */
-            System.exit(1);
+            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+            homeIntent.addCategory( Intent.CATEGORY_HOME );
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(homeIntent);
+            //System.exit(1);
         } else {
             super.onBackPressed();
         }

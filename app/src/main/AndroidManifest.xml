@@ -11,10 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.UpdateActivity"></activity>
 
         <service
-            android:enabled="true"
-            android:name=".service.BackgroundService"/>
+            android:name=".service.BackgroundService"
+            android:enabled="true" />
+
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
@@ -53,7 +55,7 @@
         <activity
             android:name=".activity.LicenseActivity"
             android:label="@string/title_activity_license"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

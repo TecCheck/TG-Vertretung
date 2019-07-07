@@ -78,17 +78,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     void initUi() {
-        setContentView(R.layout.activity_main);
 
         // Get views
         Toolbar toolbar = findViewById(R.id.toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        loadView = findViewById(R.id.loadView);
-        stdView = findViewById(R.id.stdView);
-        progBar = findViewById(R.id.progressBar);
-        mPager = findViewById(R.id.container);
-        refreshLayout = findViewById(R.id.refresh_layout);
 
         // Navigation Drawer
         setSupportActionBar(toolbar);
@@ -122,11 +116,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        loadView = findViewById(R.id.loadView);
+        stdView = findViewById(R.id.stdView);
+        progBar = findViewById(R.id.progressBar);
+        mPager = findViewById(R.id.container);
+        refreshLayout = findViewById(R.id.refresh_layout);
+
         navigationView.setNavigationItemSelectedListener(this);
         loadView.setVisibility(View.GONE);
 
         refreshLayout.setOnRefreshListener(() -> load());
-        refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
+        try {
+            refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -152,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         Utils.print("OnCreate-------------------------------------------------------------------------------");
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         Settings.load(getApplicationContext());
         AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
 
@@ -174,7 +179,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         Utils.print("OnResume-------------------------------------------------------------------------------");
         super.onResume();
-        startPagerView();
+        Settings.load(getApplicationContext());
+        AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
+
+        //Load if Logged in
+        if (Settings.settings.loggedIn) {
+            initUi();
+            load();
+            if (!BackgroundService.isRunning) {
+                startService(new Intent(getApplicationContext(), BackgroundService.class));
+            }
+        }
     }
 
     @Override
@@ -213,6 +228,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_login) {
             LoginActivity.firstTime = false;
             startActivity(new Intent(this, LoginActivity.class));
+        } else if (id == R.id.nav_update) {
+            startActivity(new Intent(this, UpdateActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -229,7 +246,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Settings.save();
 
         refreshLayout.setRefreshing(false);
-        refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
+        try {
+            refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (status == 0) {
             showSnack(getString(R.string.connected));
