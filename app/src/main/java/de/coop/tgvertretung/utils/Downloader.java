@@ -8,19 +8,18 @@ import java.util.Date;
 
 import de.sematre.tg.TG;
 
-public class Download extends Thread {
+public class Downloader extends Thread {
 
-    private static Download dwdThread = null;
+    private static Downloader dwdThread = null;
 
     private LoadFinishedListener listener = null;
     private int status = 0;
 
-    public Download(LoadFinishedListener listener) {
+    public Downloader(LoadFinishedListener listener) {
         this.listener = listener;
     }
 
-    public Download() {
-    }
+    public Downloader() {}
 
     public void setLoadFinishedListener(LoadFinishedListener listener) {
         this.listener = listener;
@@ -38,6 +37,7 @@ public class Download extends Thread {
                 e.printStackTrace();
             }
         }
+
         return false;
     }
 
@@ -46,8 +46,9 @@ public class Download extends Thread {
         // online
         status = 0;
 
-        Utils.print("Download started");
         try {
+            Utils.print("Download started");
+
             Log.d("Download", "usr: " + Settings.settings.username + ", pw: " + Settings.settings.password);
             Date date = Settings.settings.timeTable.getDate();
             TG tgv = new TG(Settings.settings.username, Settings.settings.password);
@@ -71,6 +72,7 @@ public class Download extends Thread {
                 listener.loadFinished(status);
             Utils.print("Runnable started");
         });
+
         Utils.print("Download Thread closed");
         interrupt();
     }

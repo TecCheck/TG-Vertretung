@@ -115,10 +115,7 @@ public class TableFragment2 extends Fragment {
     }
 
     private String getLabelTextSec() {
-        String week = null;
-        if (Settings.settings.showAB)
-            week = (table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B";
-        else week = table.getWeek().getLetter();
+        String week = Settings.settings.showAB ? ((table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B") : table.getWeek().getLetter();
 
         String pattern = "dd.MM.yyyy";
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());

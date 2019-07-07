@@ -28,11 +28,11 @@ import java.util.Date;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.ScreenSlidePagerAdapter;
 import de.coop.tgvertretung.service.BackgroundService;
-import de.coop.tgvertretung.utils.Download;
+import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Download.LoadFinishedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.LoadFinishedListener {
 
     private static final boolean CLOSE_WARNING = false;
     private static boolean firstPagerStart = true;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProgressBar progBar = null;
     private SwipeRefreshLayout refreshLayout = null;
 
-    private Download download = null;
+    private Downloader downloader = null;
 
     private void showSnack(String text) {
         Snackbar.make(mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void load() {
-        download = new Download(this);
+        downloader = new Downloader(this);
         if (Settings.settings.useOldLayout) {
             stdView.setVisibility(View.INVISIBLE);
             loadView.setVisibility(View.VISIBLE);
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Utils.print("SwipeRefreshLayout");
             refreshLayout.setRefreshing(true);
         }
-        if (!download.download()) {
+        if (!downloader.download()) {
             refreshLayout.setRefreshing(false);
         }
     }

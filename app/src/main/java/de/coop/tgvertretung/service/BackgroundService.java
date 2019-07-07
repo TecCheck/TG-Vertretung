@@ -19,9 +19,9 @@ import java.util.Random;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.activity.MainActivity;
-import de.coop.tgvertretung.utils.Download;
+import de.coop.tgvertretung.utils.Downloader;
 
-public class BackgroundService extends Service implements Download.LoadFinishedListener {
+public class BackgroundService extends Service implements Downloader.LoadFinishedListener {
 
     private static final String CHANNEL_ID = "TGV";
     private static final boolean TEST = false;
@@ -32,7 +32,7 @@ public class BackgroundService extends Service implements Download.LoadFinishedL
     private Context context = this;
     private Handler handler = null;
 
-    private Download download = new Download();
+    private Downloader download = new Downloader();
     private int notificationId = 0;
 
     @Override
@@ -51,7 +51,7 @@ public class BackgroundService extends Service implements Download.LoadFinishedL
 
         handler = new Handler();
         runnable = () -> {
-            download = new Download(this);
+            download = new Downloader(this);
             download.download();
             if (!TEST)
                 handler.postDelayed(runnable, 600000);

@@ -15,6 +15,7 @@ public class Settings implements Serializable {
 
     private static final String PREFS_KEY = "settings";
     private static final long serialVersionUID = -6062123032432580842L;
+
     public static Settings settings = new Settings();
     public static SharedPreferences prefs = null;
 

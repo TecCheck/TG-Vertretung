@@ -39,7 +39,7 @@
             android:layout_height="55dp"
             android:layout_gravity="top" />
 
-        <de.coop.tgvertretung.utils.CustomSwipeRefreshLayout
+        <de.coop.tgvertretung.adapter.CustomSwipeRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -51,7 +51,7 @@
                 android:visibility="visible">
             </android.support.v4.view.ViewPager>
 
-        </de.coop.tgvertretung.utils.CustomSwipeRefreshLayout>
+        </de.coop.tgvertretung.adapter.CustomSwipeRefreshLayout>
 
     </LinearLayout>
 

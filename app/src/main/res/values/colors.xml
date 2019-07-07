@@ -10,4 +10,13 @@
     <color name="orange">#e68625</color>
     <color name="yellow">#edb322</color>
     <color name="purple">#8e6dac</color>
+
+    <array name="day_of_week_color">
+        <item>@color/yellow</item>
+        <item>@color/blue</item>
+        <item>@color/green</item>
+        <item>@color/orange</item>
+        <item>@color/pink</item>
+        <item>@color/purple</item>
+    </array>
 </resources>

@@ -32,25 +32,8 @@ public class Utils {
     public static int getColor(Context context, Date date) {
         Utils.printMethod("setColor");
 
-        switch (date.getDay()) {
-            case 1:
-                return context.getResources().getColor(R.color.yellow);
-
-            case 2:
-                return context.getResources().getColor(R.color.blue);
-
-            case 3:
-                return context.getResources().getColor(R.color.green);
-
-            case 4:
-                return context.getResources().getColor(R.color.orange);
-
-            case 5:
-                return context.getResources().getColor(R.color.pink);
-
-            default:
-                return context.getResources().getColor(R.color.purple);
-        }
+        int dayOfWeek = date.getDay() - 1;
+        return context.getResources().getIntArray(R.array.day_of_week_color)[Math.min(dayOfWeek, 5)];
     }
 
     public static ArrayList<TableEntry> filterTable(ArrayList<TableEntry> entries, String filter) {
@@ -100,8 +83,8 @@ public class Utils {
 
     public static int getView(TimeTable timeTable) {
         Utils.printMethod("getView");
-        int i = 0;
 
+        int i = 0;
         for (Table table : timeTable.getTables()) {
             Date today = new Date(System.currentTimeMillis());
             Date tableDate = table.getDate();
