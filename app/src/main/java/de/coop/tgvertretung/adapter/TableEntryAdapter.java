@@ -1,5 +1,6 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,22 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.utils.Settings;
+import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 
 class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolder> {
     private Table table;
+    private Context context;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
-        ViewHolder(CardView view) {
-            super(view);
-            cardView = view;
-        }
-    }
-
-    TableEntryAdapter(Table table) {
+    TableEntryAdapter(Table table, Context context) {
         this.table = table;
+        this.context = context;
     }
 
     @Override
@@ -30,7 +28,6 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_item, parent, false);
         return new ViewHolder(cardView);
     }
-
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -45,40 +42,43 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         schoolClass.setText(entry.getSchoolClass());
         hour.setText(entry.getTime());
         entryText.setText(getEntryText(entry, Settings.settings.extended));
-        if(Settings.settings.showText && !entry.getText().equals("")){
+        if (Settings.settings.showText && !entry.getText().equals("")) {
             info.setVisibility(View.VISIBLE);
             info.setText(entry.getText());
-        }else {
+        } else {
             info.setVisibility(View.GONE);
             info.setText("");
         }
 
-        if(Settings.settings.rainbow){
+        if (Settings.settings.rainbow) {
             Utils.addRainbow(schoolClass);
             Utils.addRainbow(hour);
-        }else {
-            int color = Utils.getColor(table.getDate());
+        } else {
+            int color = Utils.getColor(context, table.getDate());
             schoolClass.setTextColor(color);
             hour.setTextColor(color);
         }
     }
 
-    private String getEntryText(TableEntry entry, boolean extended){
-        String out = "";
-
+    private String getEntryText(TableEntry entry, boolean extended) {
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            out += entry.getSubject() + " " + Statics.mainActivity.getString(R.string.noClass);
-        } else {
-            out += entry.getReplacementSubject() + " in " + entry.getReplacementRoom();
-            if(extended){
-                out += " statt " + entry.getSubject() + " in " + entry.getRoom();
-            }
+            return entry.getSubject() + (extended ? " in " + entry.getRoom() + " " : " ") + context.getString(R.string.no_class);
         }
-        return out;
+
+        return entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + (extended ? (" statt " + entry.getSubject() + " in " + entry.getRoom()) : "");
     }
 
     @Override
     public int getItemCount() {
         return table.getTableEntries().size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
+
+        ViewHolder(CardView view) {
+            super(view);
+            cardView = view;
+        }
     }
 }

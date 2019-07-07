@@ -1,4 +1,4 @@
-package de.coop.tgvertretung;
+package de.coop.tgvertretung.utils;
 
 import android.util.Base64;
 
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class ObjectSerializer {
+class ObjectSerializer {
 
     public static String serialize(Object object) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -29,5 +29,4 @@ public class ObjectSerializer {
         inputStream.close();
         return obj;
     }
-
 }
