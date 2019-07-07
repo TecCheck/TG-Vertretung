@@ -1,63 +1,71 @@
 <resources>
+    <!-- Titles -->
     <string name="app_name" translatable="false">TGVertretung</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_login">Anmelden</string>
+    <string name="title_activity_license">OpenSource-License</string>
+    <string name="title_activity_update">Update</string>
+    <string name="title_activity_info">Über</string>
+    <string name="title_notification">TG-Vertretung</string>
+
+    <!-- Snack Strings -->
+    <string name="connected">Daten aktualisiert</string>
+    <string name="no_connection">Keine Verbindung!</string>
+    <string name="nothing_new">Nichts neues gefunden</string>
+
+    <!-- Exit Message -->
+    <string name="exit_title">Wirklich Beenden?</string>
+    <string name="exit_message">Willst du die App wirklich beenden?</string>
+
+    <!-- Notification -->
+    <string name="channel_name">TG-Vertretung</string>
+    <string name="channel_description">Neue Vertretungspläne</string>
+    <string name="new_content">Neuer Vertretungsplan verfügbar</string>
+
+    <!-- Main Activity Menu -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="last_server_refresh">Letzte Änderung:</string>
+    <string name="last_reload">Zul. Aktualisiert:</string>
+    <string name="never">nie</string>
     <string name="nav_main">Tabelle</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_info">Über</string>
     <string name="nav_login">Anmelden</string>
     <string name="nav_update">Update</string>
 
-    <string name="update_url">https://raw.githubusercontent.com/TecCheck/TG-Vertretung/development/Update.txt</string>
-    <string name="update_status_checking">Suche nach Update</string>
-    <string name="update_status_available">Update verfügbar</string>
-    <string name="update_status_newest">Neueste Version installiert</string>
-    <string name="update_status_failed">Suche nach Update fehlgeschlagen</string>
-    <string name="update_status_downloading">Update wird herruntergeladen</string>
-    <string name="update_button_try_again">Erneut suchen</string>
-    <string name="update_button_download">Update Herrunterladen</string>
-
+    <!-- Main Activity content -->
     <string name="none">Das solltest du nicht sehen :(</string>
-    <string name="nothingSaved">Nichts gespeichert!</string>
+    <string name="nothing_saved">Nichts gespeichert!</string>
     <string name="nothing">Keine Vertretungen</string>
-    <string name="noClass">Entfall</string>
+    <string name="no_class">Entfall</string>
     <string name="loading">Laden…</string>
     <string name="week">Woche</string>
 
-    <string name="setting_filterTitle">Filter</string>
-    <string name="setting_filterSwitch">Filter benutzen</string>
-    <string name="setting_filterPref">Filter</string>
-    <string name="setting_viewTitle">Ansicht</string>
-    <string name="setting_extendedView">Erweiterte Ansicht</string>
-    <string name="showAB">Vereinfachte Wochenart</string>
-    <string name="showABSummary">A und B Woche statt  A, B, C, und D Woche anzeigen </string>
-    <string name="showText">Vertetungstext anzeigen</string>
-    <string name="setting_contextMenuTitle">Kontextmenü</string>
-    <string name="setting_unnecessaryMenuTitle">Unnötig</string>
-    <string name="showServerRefresh">Letzte Änderung anzeigen</string>
-    <string name="showClientRefresh">Letzte Aktualisierung anzeigen</string>
-    <string name="useOldLayout">Altes Layout benutzen</string>
-    <string name="twoLineLabel">Label in zwei Zeilen aufteilen</string>
-    <string name="requires_restart">Neustart der App erforderlich</string>
-    <string name="rainbow">RAINBOW!</string>
+    <!-- Settings Activity content -->
+    <string name="setting_filter_title">Filter</string>
+    <string name="setting_filter_switch">Filter benutzen</string>
+    <string name="setting_filter_pref">Filter</string>
+    <string name="setting_view_title">Ansicht</string>
+    <string name="setting_extended_view">Erweiterte Ansicht</string>
+    <string name="setting_show_ab">Vereinfachte Wochenart</string>
+    <string name="setting_show_ab_summary">A und B Woche statt  A, B, C, und D Woche anzeigen </string>
+    <string name="setting_show_text">Vertetungstext anzeigen</string>
+    <string name="setting_context_menu_title">Kontextmenü</string>
+    <string name="setting_unnecessary_menu_title">Unnötig</string>
+    <string name="setting_show_server_refresh">Letzte Änderung anzeigen</string>
+    <string name="setting_show_client_refresh">Letzte Aktualisierung anzeigen</string>
+    <string name="setting_use_old_layout">Altes Layout benutzen</string>
+    <string name="setting_two_line_label">Label in zwei Zeilen aufteilen</string>
+    <string name="setting_requires_restart">Neustart der App erforderlich</string>
+    <string name="setting_rainbow">RAINBOW!</string>
+    <array name="setting_theme_modes">
+        <item>Standard</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </array>
 
-    <string name="connected">Daten aktualisiert</string>
-    <string name="noConnection">Keine Verbindung!</string>
-    <string name="nothingNew">Nichts neues gefunden</string>
-
-    <string name="exitTitle">Wirklich Beenden?</string>
-    <string name="exitMessage">Willst du die App wirklich beenden?</string>
-
-    <string name="lastServerRefresh">Letzte Änderung:</string>
-    <string name="lastReload">Zul. Aktualisiert:</string>
-    <string name="never">nie</string>
-    <string name="new_content">Neuer Vertretungsplan verfügbar</string>
-
-    <string name="title_activity_settings">Einstellungen</string>
-    <string name="title_activity_login">Anmelden</string>
-    <string name="title_notification">TG-Vertretung</string>
-
+    <!-- Info Activity content -->
     <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
     <string name="version_name">Versionsname</string>
     <string name="github_name" translatable="false">GitHub</string>
@@ -68,123 +76,31 @@
     <string name="christoph" translatable="false">Christoph</string>
     <string name="licenses_name">OpenSource-Lizenzen</string>
     <string name="licenses_txt">OpenSource Lizenzen anzeigen</string>
-
-    <!-- Strings related to login -->
-    <string name="prompt_username">Kennung</string>
-    <string name="prompt_password">Passwort</string>
-    <string name="action_sign_in">Anmelden</string>
-    <string name="action_sign_in_short">Anmelden</string>
-    <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
-
     <array name="licenses">
         <item>Gson</item>
         <item>Jsoup</item>
         <item>TG-API</item>
     </array>
-
     <array name="licenses_urls">
         <item>https://github.com/google/gson</item>
         <item>https://github.com/jhy/jsoup/</item>
         <item>https://github.com/Sematre/TG-API</item>
     </array>
 
-    <array name="theme_modes">
-        <item>Standard</item>
-        <item>Light</item>
-        <item>Dark</item>
-    </array>
+    <!-- Update Activity content -->
+    <string name="update_url">https://raw.githubusercontent.com/TecCheck/TG-Vertretung/development/Update.txt</string>
+    <string name="update_status_checking">Suche nach Update</string>
+    <string name="update_status_available">Update verfügbar</string>
+    <string name="update_status_newest">Neueste Version installiert</string>
+    <string name="update_status_failed">Suche nach Update fehlgeschlagen</string>
+    <string name="update_status_downloading">Update wird herruntergeladen</string>
+    <string name="update_button_try_again">Erneut suchen</string>
+    <string name="update_button_download">Update Herrunterladen</string>
 
-    <string name="title_activity_license">OpenSource-License</string>
-    <string name="large_text" translatable="false">
-        "Material is the metaphor.\n\n"
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
-    <string name="action_settings">Settings</string>
-    <string name="channel_name">TG-Vertretung</string>
-    <string name="channel_description">Neue Vertretungspläne</string>
+    <!-- Login Activity content -->
+    <string name="prompt_username">Kennung</string>
+    <string name="prompt_password">Passwort</string>
+    <string name="action_sign_in">Anmelden</string>
+    <string name="action_sign_in_short">Anmelden</string>
+    <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
 </resources>

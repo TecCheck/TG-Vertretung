@@ -7,12 +7,12 @@
     android:weightSum="1">
 
     <LinearLayout
-        android:id="@+id/Info"
+        android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/Version"
+        app:layout_constraintBottom_toTopOf="@+id/version"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/Version"
+        android:id="@+id/version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -39,8 +39,8 @@
         android:focusable="true"
         android:fadingEdge="none"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="@+id/Info"
-        app:layout_constraintTop_toBottomOf="@+id/Info">
+        app:layout_constraintStart_toStartOf="@+id/info"
+        app:layout_constraintTop_toBottomOf="@+id/info">
 
         <View
             android:id="@+id/divider1"
@@ -58,7 +58,7 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/AppIcon"
+                    android:id="@+id/app_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -78,7 +78,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/VersionName"
+                    android:id="@+id/version_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -89,27 +89,28 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/versionNameTxt"
+                    android:id="@+id/version_name_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/version_name"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/VersionName" />
+                    app:layout_constraintTop_toBottomOf="@+id/version_name" />
             </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/Github"
+        android:id="@+id/github"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:fadingEdge="none"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="@+id/Version"
-        app:layout_constraintTop_toBottomOf="@+id/Version">
+        app:layout_constraintStart_toStartOf="@+id/version"
+        app:layout_constraintTop_toBottomOf="@+id/version"
+        android:focusable="true">
 
         <View
             android:id="@+id/divider3"
@@ -127,7 +128,7 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/GithubIcon"
+                    android:id="@+id/github_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -147,7 +148,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/GitHubName"
+                    android:id="@+id/github_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -158,28 +159,29 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/GitHubTxt"
+                    android:id="@+id/github_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/github_txt"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/GitHubName" />
+                    app:layout_constraintTop_toBottomOf="@+id/github_name" />
             </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/Developers"
+        android:id="@+id/developers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:fadingEdge="none"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/Licenses"
-        app:layout_constraintStart_toStartOf="@+id/Github"
-        app:layout_constraintTop_toBottomOf="@+id/Github">
+        app:layout_constraintBottom_toTopOf="@+id/licenses"
+        app:layout_constraintStart_toStartOf="@+id/github"
+        app:layout_constraintTop_toBottomOf="@+id/github"
+        android:focusable="true">
 
         <View
             android:id="@+id/divider4"
@@ -197,7 +199,7 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/DevIcon"
+                    android:id="@+id/dev_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -217,7 +219,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/DevelopersName"
+                    android:id="@+id/developers_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -228,20 +230,20 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/DevelopersTxt1"
+                    android:id="@+id/developers_txt1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tobias"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/DevelopersName" />
+                    app:layout_constraintTop_toBottomOf="@+id/developers_name" />
 
                 <TextView
-                    android:id="@+id/DevelopersTxt2"
+                    android:id="@+id/developers_txt2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/christoph"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/DevelopersTxt1" />
+                    app:layout_constraintTop_toBottomOf="@+id/developers_txt1" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -252,15 +254,16 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/Licenses"
+        android:id="@+id/licenses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:fadingEdge="none"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="@+id/Developers"
-        app:layout_constraintTop_toBottomOf="@+id/Developers">
+        app:layout_constraintStart_toStartOf="@+id/developers"
+        app:layout_constraintTop_toBottomOf="@+id/developers"
+        android:focusable="true">
 
         <View
             android:id="@+id/divider5"
@@ -278,7 +281,7 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/LicensesIcon"
+                    android:id="@+id/licenses_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -298,7 +301,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/LicensesNameName"
+                    android:id="@+id/licenses_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -309,12 +312,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/LicensesTxt"
+                    android:id="@+id/licenses_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/licenses_txt"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/GitHubName" />
+                    app:layout_constraintTop_toBottomOf="@+id/github_name" />
 
             </LinearLayout>
         </LinearLayout>

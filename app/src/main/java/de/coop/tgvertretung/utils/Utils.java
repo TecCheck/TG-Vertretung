@@ -13,7 +13,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.adapter.TableFragment2;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
@@ -28,7 +27,7 @@ public class Utils {
     public static int nothingSize = 20;
     public static int vertretungSize = 15;
 
-    public static ArgbEvaluator evaluator = null;
+    private static ArgbEvaluator evaluator = null;
 
     public static int getColor(Context context, Date date) {
         Utils.printMethod("setColor");

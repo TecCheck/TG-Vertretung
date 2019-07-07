@@ -17,9 +17,8 @@ public class Settings implements Serializable {
     private static final long serialVersionUID = -6062123032432580842L;
     public static Settings settings = new Settings();
     public static SharedPreferences prefs = null;
-    private static SharedPreferences.Editor editor;
 
-    public TimeTable timeTable = new TimeTable(new Date(System.currentTimeMillis()), new ArrayList<Table>());
+    public TimeTable timeTable = new TimeTable(new Date(System.currentTimeMillis()), new ArrayList<>());
     public Date lastClientRefresh = null;
 
     public String username = "";
@@ -56,7 +55,7 @@ public class Settings implements Serializable {
 
     public static void save() {
         try {
-            editor = prefs.edit();
+            SharedPreferences.Editor editor = prefs.edit();
 
             editor.putString(PREFS_KEY, ObjectSerializer.serialize(settings));
             editor.apply();

@@ -28,21 +28,21 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
         }
 
         // current version
-        TextView versionNameTxt = findViewById(R.id.versionNameTxt);
+        TextView versionNameTxt = findViewById(R.id.version_name_txt);
         versionNameTxt.setText(getVersion());
 
         //set Link for GitHub website
-        LinearLayout gitHub = findViewById(R.id.Github);
+        LinearLayout gitHub = findViewById(R.id.github);
         gitHub.setOnClickListener(v -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_url)));
             startActivity(browserIntent);
         });
 
-        LinearLayout licenses = findViewById(R.id.Licenses);
+        LinearLayout licenses = findViewById(R.id.licenses);
         licenses.setOnClickListener(v -> makeLicenseDialog());
     }
 
-    public void makeLicenseDialog() {
+    private void makeLicenseDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.licenses_name);
         builder.setItems(R.array.licenses, this);

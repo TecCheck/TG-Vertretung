@@ -21,7 +21,6 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
 
     public static int toShow = 0;
 
-    private TextView text = null;
     private String url = "";
 
     @Override
@@ -36,7 +35,7 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        text = findViewById(R.id.license_content_text);
+        TextView text = findViewById(R.id.license_content_text);
 
         String fileName = "";
         url = getResources().getStringArray(R.array.licenses_urls)[toShow];

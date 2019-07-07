@@ -1,6 +1,5 @@
 package de.coop.tgvertretung.adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,7 +9,7 @@ import de.coop.tgvertretung.utils.Settings;
 
 public class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
-    public static boolean reset = false;
+    private static boolean reset = false;
 
     public ScreenSlidePagerAdapter(FragmentManager fm) {
         super(fm);

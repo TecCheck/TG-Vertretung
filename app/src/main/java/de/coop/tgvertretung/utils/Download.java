@@ -76,6 +76,6 @@ public class Download extends Thread {
     }
 
     public interface LoadFinishedListener {
-        public void loadFinished(int status);
+        void loadFinished(int status);
     }
 }

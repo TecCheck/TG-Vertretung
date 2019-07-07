@@ -37,17 +37,17 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         }
 
         addPreferencesFromResource(R.xml.activity_settings);
-        filterSwitch = findPreference("switch_preference");
-        filter = findPreference("filterPref");
+        filterSwitch = findPreference("filter_switch");
+        filter = findPreference("filter");
 
-        extendedView = findPreference("extendedView");
-        showText = findPreference("showText");
-        showAB = findPreference("showAB");
-        showClientRefresh = findPreference("showClientRefresh");
-        showServerRefresh = findPreference("showServerRefresh");
+        extendedView = findPreference("extended_view");
+        showText = findPreference("show_text");
+        showAB = findPreference("show_ab");
+        showClientRefresh = findPreference("show_client_refresh");
+        showServerRefresh = findPreference("show_server_refresh");
 
         themeMode = (ListPreference) findPreference("theme_mode");
-        useOldLayout = findPreference("oldLayout");
+        useOldLayout = findPreference("old_layout");
         twoLineLabel = findPreference("two_line_label");
         rainbow = findPreference("rainbow");
 
@@ -82,7 +82,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         rainbow.setDefaultValue(Settings.settings.rainbow);
 
         filter.setSummary(Settings.settings.filter);
-        themeMode.setSummary(getResources().getStringArray(R.array.theme_modes)[Settings.settings.themeMode]);
+        themeMode.setSummary(getResources().getStringArray(R.array.setting_theme_modes)[Settings.settings.themeMode]);
         //filter.setSummary(settings.getInt(FILTER_KEY, filterInt));
         filter.setEnabled(Settings.settings.useFilter);
     }
@@ -124,7 +124,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.twoLineLabel = (boolean) value;
         }else if(preference.getKey().equals(themeMode.getKey())){
             Settings.settings.themeMode = themeMode.findIndexOfValue((String) value);
-            themeMode.setSummary(getResources().getStringArray(R.array.theme_modes)[Settings.settings.themeMode]);
+            themeMode.setSummary(getResources().getStringArray(R.array.setting_theme_modes)[Settings.settings.themeMode]);
             AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
         }
 

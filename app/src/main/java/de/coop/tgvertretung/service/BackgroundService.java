@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Random;
 
@@ -24,17 +23,17 @@ import de.coop.tgvertretung.utils.Download;
 
 public class BackgroundService extends Service implements Download.LoadFinishedListener {
 
-    public static final String CHANNEL_ID = "TGV";
-    public static final boolean TEST = false;
+    private static final String CHANNEL_ID = "TGV";
+    private static final boolean TEST = false;
 
-    public static Runnable runnable = null;
+    private static Runnable runnable = null;
     public static boolean isRunning;
 
-    public Context context = this;
-    public Handler handler = null;
+    private Context context = this;
+    private Handler handler = null;
 
-    Download download = new Download();
-    int notificationId = 0;
+    private Download download = new Download();
+    private int notificationId = 0;
 
     @Override
     public IBinder onBind(Intent intent) {

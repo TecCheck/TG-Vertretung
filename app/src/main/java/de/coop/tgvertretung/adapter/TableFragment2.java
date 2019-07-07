@@ -46,7 +46,7 @@ public class TableFragment2 extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main2, container, false);
         TextView label = rootView.findViewById(R.id.label);
         TextView label2 = rootView.findViewById(R.id.label2);
-        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
 
         // Filer the table if needed

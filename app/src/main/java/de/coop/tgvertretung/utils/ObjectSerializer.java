@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class ObjectSerializer {
+class ObjectSerializer {
 
     public static String serialize(Object object) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

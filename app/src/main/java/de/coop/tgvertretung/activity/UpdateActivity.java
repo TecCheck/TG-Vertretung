@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,16 +31,16 @@ import de.coop.tgvertretung.utils.Utils;
 
 public class UpdateActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String PATH = "";
+    private static String PATH = "";
 
-    TextView updateStatus = null;
-    Button updateButton = null;
-    ProgressBar updateProgress = null;
+    private TextView updateStatus = null;
+    private Button updateButton = null;
+    private ProgressBar updateProgress = null;
 
-    DownloadInfoTask downloadInfoTask = null;
-    DownloadApkTask downloadApkTask = null;
-    boolean updateAvailable = false;
-    String updateUrl = "";
+    private DownloadInfoTask downloadInfoTask = null;
+    private DownloadApkTask downloadApkTask = null;
+    private boolean updateAvailable = false;
+    private String updateUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +65,15 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         searchForUpdate();
     }
 
-    void searchForUpdate() {
+    private void searchForUpdate() {
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_checking);
         updateProgress.setIndeterminate(true);
-        downloadInfoTask = new DownloadInfoTask(getApplicationContext());
+        downloadInfoTask = new DownloadInfoTask(this);
         downloadInfoTask.execute(getString(R.string.update_url));
     }
 
-    public void searchForUpdateFinished(int status, String version, String link) {
+    private void searchForUpdateFinished(int status, String version, String link) {
         updateProgress.setIndeterminate(false);
         if (status == 0) {
             updateStatus.setText(R.string.update_status_failed);
@@ -103,14 +102,14 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         Utils.print("Link: " + updateUrl);
     }
 
-    void downloadUpdate() {
+    private void downloadUpdate() {
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_downloading);
-        downloadApkTask = new DownloadApkTask(getApplicationContext());
+        downloadApkTask = new DownloadApkTask(getApplicationContext(), this);
         downloadApkTask.execute(updateUrl);
     }
 
-    public void downloadUpdateFinished(int status) {
+    private void downloadUpdateFinished(int status) {
         if(status == 0)
             return;
 
@@ -151,13 +150,13 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    class DownloadInfoTask extends AsyncTask<String, Integer, String> {
+    static class DownloadInfoTask extends AsyncTask<String, Integer, String> {
         String version;
         String link;
-        private Context context;
+        UpdateActivity activity;
 
-        public DownloadInfoTask(Context context) {
-            this.context = context;
+        DownloadInfoTask(UpdateActivity activity) {
+            this.activity = activity;
         }
 
         @Override
@@ -176,17 +175,19 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         protected void onPostExecute(String result) {
-            searchForUpdateFinished(1, version, link);
+            activity.searchForUpdateFinished(1, version, link);
         }
     }
 
-    class DownloadApkTask extends AsyncTask<String, Integer, String> {
+    static class DownloadApkTask extends AsyncTask<String, Integer, String> {
 
         private Context context;
+        UpdateActivity activity;
         private PowerManager.WakeLock mWakeLock;
 
-        public DownloadApkTask(Context context) {
+        DownloadApkTask(Context context, UpdateActivity activity) {
             this.context = context;
+            this.activity = activity;
         }
 
         @Override
@@ -216,7 +217,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                 input = connection.getInputStream();
                 output = new FileOutputStream(PATH);
 
-                byte data[] = new byte[4096];
+                byte[] data = new byte[4096];
                 long total = 0;
                 int count;
                 while ((count = input.read(data)) != -1) {
@@ -258,22 +259,22 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     getClass().getName());
             mWakeLock.acquire(12000);
-            updateProgress.setIndeterminate(false);
+            activity.updateProgress.setIndeterminate(false);
         }
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
             // if we get here, length is known, now set indeterminate to false
-            updateProgress.setIndeterminate(false);
-            updateProgress.setMax(100);
-            updateProgress.setProgress(progress[0]);
+            activity.updateProgress.setIndeterminate(false);
+            activity.updateProgress.setMax(100);
+            activity.updateProgress.setProgress(progress[0]);
         }
 
         @Override
         protected void onPostExecute(String result) {
             mWakeLock.release();
-            downloadUpdateFinished(1);
+            activity.downloadUpdateFinished(1);
             if (result != null)
                 Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
             else

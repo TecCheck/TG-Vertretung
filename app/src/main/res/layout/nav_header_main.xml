@@ -13,7 +13,7 @@ android:paddingTop="@dimen/activity_vertical_margin"
 android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -28,15 +28,15 @@ android:theme="@style/ThemeOverlay.AppCompat.Dark">
     android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/lastReload"
+        android:id="@+id/last_reload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/lastReload" />
+        android:text="@string/last_reload" />
 
     <TextView
-        android:id="@+id/lastReload2"
+        android:id="@+id/last_reload2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/lastServerRefresh" />
+        android:text="@string/last_server_refresh" />
 
 </LinearLayout>

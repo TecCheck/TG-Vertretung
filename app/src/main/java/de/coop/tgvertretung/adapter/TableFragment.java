@@ -1,7 +1,6 @@
 package de.coop.tgvertretung.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -46,7 +45,7 @@ public class TableFragment extends Fragment {
         return fragment;
     }
 
-    public static ArrayList<TableEntry> filterTable(ArrayList<TableEntry> entries, String filter) {
+    private static ArrayList<TableEntry> filterTable(ArrayList<TableEntry> entries, String filter) {
         ArrayList<TableEntry> filtered = new ArrayList<>();
         for (TableEntry entry : entries) {
             if (entry.getSchoolClass().toLowerCase().contains(filter.toLowerCase())) {
@@ -62,11 +61,11 @@ public class TableFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
-        mainLayout = rootView.findViewById(R.id.MainLayout);
+        mainLayout = rootView.findViewById(R.id.main_layout);
         //Utils.print("MainLayoutID: " + R.id.MainLayout);
         //Utils.print("mainLayout: " + mainLayout);
         label = rootView.findViewById(R.id.label);
-        mainScroll = rootView.findViewById(R.id.MainScroll);
+        mainScroll = rootView.findViewById(R.id.main_scroll);
         mainScroll.setVerticalScrollBarEnabled(false);
         mainScroll.setHorizontalScrollBarEnabled(false);
 
@@ -91,7 +90,7 @@ public class TableFragment extends Fragment {
         return rootView;
     }
 
-    public void viewUI() {
+    private void viewUI() {
         Utils.printMethod("viewUI");
 
         ArrayList<TableEntry> tableEntries = table.getTableEntries();
@@ -145,7 +144,7 @@ public class TableFragment extends Fragment {
         mainScroll.setBackground(stroke);
     }
 
-    public void addTableItem(TableEntry entry, boolean extended, boolean showText) {
+    private void addTableItem(TableEntry entry, boolean extended, boolean showText) {
         Utils.printMethod("addTableItem");
 
         String infoRow = "";
@@ -153,7 +152,7 @@ public class TableFragment extends Fragment {
         String classRow = entry.getSchoolClass() + ": ";
 
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            infoRow = infoRow + entry.getSubject() + " " + getContext().getString(R.string.noClass);
+            infoRow = infoRow + entry.getSubject() + " " + getContext().getString(R.string.no_class);
         } else {
             if (extended) {
                 infoRow = infoRow + entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + " statt " + entry.getSubject() + " in " + entry.getRoom();
@@ -167,7 +166,7 @@ public class TableFragment extends Fragment {
         addListItem(infoRow, timeRow, classRow, Utils.vertretungSize, Utils.vertretungRGB);
     }
 
-    public void addListItem(String text, Integer textSize, boolean multiText) {
+    private void addListItem(String text, Integer textSize, boolean multiText) {
         Utils.printMethod("addListItem");
 
         //adds items to the list
@@ -196,7 +195,7 @@ public class TableFragment extends Fragment {
         mainLayout.addView(ln);
     }
 
-    public void addListItem(String text, String text1, String text2, Integer textSize, int ARGB) {
+    private void addListItem(String text, String text1, String text2, Integer textSize, int ARGB) {
 
         Utils.printMethod("addListItem");
 

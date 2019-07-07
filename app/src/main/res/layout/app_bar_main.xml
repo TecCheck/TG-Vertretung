@@ -9,13 +9,13 @@
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/loadView"
+        android:id="@+id/load_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/progress_bar"
             android:layout_width="102dp"
             android:layout_height="99dp"
             android:layout_marginStart="8dp"
@@ -40,7 +40,7 @@
             android:layout_gravity="top" />
 
         <de.coop.tgvertretung.utils.CustomSwipeRefreshLayout
-            android:id="@+id/refresh-layout"
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

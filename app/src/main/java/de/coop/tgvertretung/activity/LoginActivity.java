@@ -17,12 +17,12 @@ import de.sematre.dsbmobile.DSBMobile;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static Button btn = null;
-    public static EditText pwText = null;
-    public static EditText nmText = null;
+    private Button btn = null;
+    private EditText pwText = null;
+    private EditText nmText = null;
     public static boolean firstTime = true;
 
-    public void login() {
+    private void login() {
         Boolean[] success = {false};
         Thread loginThread = new Thread(() -> {
             try {
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (success[0] == null) {
             // phone is offline
-            Snackbar.make(btn, getString(R.string.noConnection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Snackbar.make(btn, getString(R.string.no_connection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else if (success[0]) {
             // credentials are correct
             Settings.load(getApplicationContext());
@@ -87,8 +87,8 @@ public class LoginActivity extends AppCompatActivity {
             Utils.print("EXIT-------------------------------------------------------------------------");
             /*
             new AlertDialog.Builder(this)
-                    .setTitle(R.string.exitTitle)
-                    .setMessage(R.string.exitMessage)
+                    .setTitle(R.string.exit_title)
+                    .setMessage(R.string.exit_message)
                     .setNegativeButton(android.R.string.no, null)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
