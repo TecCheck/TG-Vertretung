@@ -65,6 +65,16 @@
     <string name="setting_unnecessaryMenuTitle">Unnecessary</string>
     <string name="useOldLayout">Use old layout</string>
     <string name="twoLineLabel">Split label in two lines</string>
+    <string name="channel_description">New timetable</string>
+    <string name="nav_update">Update</string>
+    <string name="new_content">New timetable available</string>
+    <string name="update_button_download">Download update</string>
+    <string name="update_button_try_again">Search again</string>
+    <string name="update_status_available">Update available</string>
+    <string name="update_status_checking">Search for update</string>
+    <string name="update_status_downloading">Downloading update</string>
+    <string name="update_status_failed">Update search failed</string>
+    <string name="update_status_newest">Latest version installed</string>
 
 
 </resources>

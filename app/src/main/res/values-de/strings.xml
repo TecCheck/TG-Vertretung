@@ -64,5 +64,15 @@
     <string name="requires_restart">Neustart der App erforderlich</string>
     <string name="useOldLayout">Altes Layout benutzen</string>
     <string name="twoLineLabel">Label in zwei Zeilen aufteilen</string>
+    <string name="channel_description">Neue Vertretungspläne</string>
+    <string name="nav_update">Update</string>
+    <string name="new_content">Neuer Vertretungsplan verfügbar</string>
+    <string name="update_button_try_again">Erneut suchen</string>
+    <string name="update_button_download">Update herrunterladen</string>
+    <string name="update_status_available">Update verfügbar</string>
+    <string name="update_status_downloading">Update wird herruntergeladen</string>
+    <string name="update_status_failed">Suche nach Update fehlgeschlagen</string>
+    <string name="update_status_newest">Neueste Version installiert</string>
+    <string name="update_status_checking">Suche nach Update</string>
 
 </resources>

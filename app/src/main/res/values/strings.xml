@@ -9,14 +9,14 @@
     <string name="nav_login">Anmelden</string>
     <string name="nav_update">Update</string>
 
-    <string name="update_url">https://raw.githubusercontent.com/TecCheck/TG-Vertretung/development/Update.txt</string>
+    <string name="update_url" translatable="false">https://raw.githubusercontent.com/TecCheck/TG-Vertretung/development/Update.txt</string>
     <string name="update_status_checking">Suche nach Update</string>
     <string name="update_status_available">Update verfügbar</string>
     <string name="update_status_newest">Neueste Version installiert</string>
     <string name="update_status_failed">Suche nach Update fehlgeschlagen</string>
     <string name="update_status_downloading">Update wird herruntergeladen</string>
     <string name="update_button_try_again">Erneut suchen</string>
-    <string name="update_button_download">Update Herrunterladen</string>
+    <string name="update_button_download">Update herrunterladen</string>
 
     <string name="none">Das solltest du nicht sehen :(</string>
     <string name="nothingSaved">Nichts gespeichert!</string>
@@ -185,6 +185,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-    <string name="channel_name">TG-Vertretung</string>
+    <string name="channel_name" translatable="false">TG-Vertretung</string>
     <string name="channel_description">Neue Vertretungspläne</string>
 </resources>
