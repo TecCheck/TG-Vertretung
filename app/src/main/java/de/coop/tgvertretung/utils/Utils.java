@@ -33,25 +33,8 @@ public class Utils {
     public static int getColor(Context context, Date date) {
         Utils.printMethod("setColor");
 
-        switch (date.getDay()) {
-            case 1:
-                return context.getResources().getColor(R.color.yellow);
-
-            case 2:
-                return context.getResources().getColor(R.color.blue);
-
-            case 3:
-                return context.getResources().getColor(R.color.green);
-
-            case 4:
-                return context.getResources().getColor(R.color.orange);
-
-            case 5:
-                return context.getResources().getColor(R.color.pink);
-
-            default:
-                return context.getResources().getColor(R.color.purple);
-        }
+        int dayOfWeek = date.getDay() - 1;
+        return context.getResources().getIntArray(R.array.dayOfWeekColor)[Math.min(dayOfWeek, 5)];
     }
 
     public static ArrayList<TableEntry> filterTable(ArrayList<TableEntry> entries, String filter) {
