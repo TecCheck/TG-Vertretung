@@ -78,7 +78,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
     private void searchForUpdateFinished(int status, String version, String link) {
         updateProgress.setIndeterminate(false);
-        if (status == 0) {
+        if (status == 0 || version == null) {
             updateStatus.setText(R.string.update_status_failed);
             updateButton.setText(R.string.update_button_try_again);
             updateButton.setEnabled(true);
