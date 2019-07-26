@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final boolean CLOSE_WARNING = false;
     private static boolean firstPagerStart = true;
     private ViewPager mPager = null;
-    private LinearLayout mainLayout = null;
     private TextView lastReload = null;
     private TextView lastServerRefresh = null;
     private ConstraintLayout loadView = null;
@@ -45,18 +44,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProgressBar progBar = null;
     private SwipeRefreshLayout refreshLayout = null;
 
-    private Downloader downloader = null;
 
     private void showSnack(String text) {
         Snackbar.make(mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     private void startPagerView() {
+        int index = Utils.getView(Settings.settings.timeTable);
+        try {
+            index = mPager.getCurrentItem();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager = findViewById(R.id.container);
         mPager.setAdapter(mPagerAdapter);
-
-        mainLayout = findViewById(R.id.main_layout);
+        if (index >= 0) mPager.setCurrentItem(index);
     }
 
     private void setTable(int index) {
@@ -64,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void load() {
-        downloader = new Downloader(this);
         if (Settings.settings.useOldLayout) {
             stdView.setVisibility(View.INVISIBLE);
             loadView.setVisibility(View.VISIBLE);
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Utils.print("SwipeRefreshLayout");
             refreshLayout.setRefreshing(true);
         }
-        if (!downloader.download()) {
+        if (!Downloader.download()) {
             refreshLayout.setRefreshing(false);
         }
     }
@@ -84,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        loadView = findViewById(R.id.load_view);
+        stdView = findViewById(R.id.stdView);
+        progBar = findViewById(R.id.progress_bar);
+        mPager = findViewById(R.id.container);
+        refreshLayout = findViewById(R.id.refresh_layout);
 
         // Navigation Drawer
         setSupportActionBar(toolbar);
@@ -118,12 +126,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        loadView = findViewById(R.id.load_view);
-        stdView = findViewById(R.id.stdView);
-        progBar = findViewById(R.id.progress_bar);
-        mPager = findViewById(R.id.container);
-        refreshLayout = findViewById(R.id.refresh_layout);
 
         navigationView.setNavigationItemSelectedListener(this);
         loadView.setVisibility(View.GONE);
@@ -165,11 +167,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         new File(Utils.getUpdateDownloadFile(this)).delete();
         Utils.print(Utils.getUpdateDownloadFile(this));
+        Downloader.addLoadFinishedListener(this);
 
         //Load if Logged in
         if (Settings.settings.loggedIn) {
             initUi();
             load();
+
             if (!BackgroundService.isRunning) {
                 startService(new Intent(getApplicationContext(), BackgroundService.class));
             }
@@ -196,6 +200,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             startPagerView();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Downloader.removeLoadFinishedListener(this);
+        super.onDestroy();
     }
 
     @Override

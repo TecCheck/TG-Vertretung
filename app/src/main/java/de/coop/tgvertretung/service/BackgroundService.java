@@ -32,7 +32,6 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     private Context context = this;
     private Handler handler = null;
 
-    private Downloader download = new Downloader();
     private int notificationId = 0;
 
     @Override
@@ -45,14 +44,13 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
         isRunning = true;
         Log.d("BackgroundService", "Running");
 
-        download.setLoadFinishedListener(this);
+        Downloader.addLoadFinishedListener(this);
         Settings.prefs = getSharedPreferences("preferences", 0);
         Settings.load(context);
 
         handler = new Handler();
         runnable = () -> {
-            download = new Downloader(this);
-            download.download();
+            Downloader.download();
             if (!TEST)
                 handler.postDelayed(runnable, 600000);
             else

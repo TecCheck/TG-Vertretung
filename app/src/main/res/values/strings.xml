@@ -88,7 +88,7 @@
     </array>
 
     <!-- Update Activity content -->
-    <string name="update_url">https://raw.githubusercontent.com/TecCheck/TG-Vertretung/development/Update.txt</string>
+    <string name="update_url">https://gist.githubusercontent.com/TecCheck/d5dfdb74a5f7418d97e0ac9d28513fcb/raw/93b241c6886eafeee40e69f29bfad59576ee3ec7/update.txt</string>
     <string name="update_status_checking">Suche nach Update</string>
     <string name="update_status_available">Update verfügbar</string>
     <string name="update_status_newest">Neueste Version installiert</string>

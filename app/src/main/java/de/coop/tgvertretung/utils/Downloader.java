@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import de.sematre.tg.TG;
@@ -11,27 +12,27 @@ import de.sematre.tg.TG;
 public class Downloader extends Thread {
 
     private static Downloader dwdThread = null;
+    private static ArrayList<LoadFinishedListener> listeners = new ArrayList<>();
 
-    private LoadFinishedListener listener = null;
     private int status = 0;
 
-    public Downloader(LoadFinishedListener listener) {
-        this.listener = listener;
+    public static void addLoadFinishedListener(LoadFinishedListener listener) {
+        if (!listeners.contains(listener))
+            listeners.add(listener);
     }
 
-    public Downloader() {}
-
-    public void setLoadFinishedListener(LoadFinishedListener listener) {
-        this.listener = listener;
+    public static void removeLoadFinishedListener(LoadFinishedListener listener) {
+        if (!listeners.contains(listener))
+            listeners.remove(listener);
     }
 
-    public boolean download() {
+    public static boolean download() {
         Utils.printMethod("download");
 
         if (dwdThread == null || !dwdThread.isAlive()) {
             try {
-                dwdThread = this;
-                start();
+                dwdThread = new Downloader();
+                dwdThread.start();
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -68,8 +69,9 @@ public class Downloader extends Thread {
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
-            if (listener != null)
+            for (LoadFinishedListener listener : listeners) {
                 listener.loadFinished(status);
+            }
             Utils.print("Runnable started");
         });
 
