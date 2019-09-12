@@ -7,7 +7,6 @@
     <SwitchPreference
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:defaultValue="false"
         android:key="filter_switch"
         android:title="@string/setting_filter_switch" />
     <EditTextPreference
@@ -35,7 +34,6 @@
 
     </PreferenceCategory>
     <SwitchPreference
-        android:defaultValue="false"
         android:key="show_ab"
         android:summary="@string/setting_show_ab_summary"
         android:title="@string/setting_show_ab" />
@@ -43,26 +41,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:defaultValue="false"
         android:enabled="true"
         android:focusable="false"
         android:key="extended_view"
         android:title="@string/setting_extended_view" />
     <SwitchPreference
-        android:defaultValue="false"
         android:key="show_text"
         android:title="@string/setting_show_text" />
     <SwitchPreference
-        android:defaultValue="false"
         android:key="old_layout"
         android:summary="@string/setting_requires_restart"
         android:title="@string/setting_use_old_layout" />
     <SwitchPreference
-        android:defaultValue="false"
         android:key="two_line_label"
         android:title="@string/setting_two_line_label" />
     <ListPreference
-        android:defaultValue="1"
         android:entries="@array/setting_theme_modes"
         android:entryValues="@array/setting_theme_modes"
         android:key="theme_mode"
@@ -71,18 +64,15 @@
 
     </PreferenceCategory>
     <SwitchPreference
-        android:defaultValue="false"
         android:key="show_server_refresh"
         android:title="@string/setting_show_server_refresh" />
     <SwitchPreference
-        android:defaultValue="false"
         android:key="show_client_refresh"
         android:title="@string/setting_show_client_refresh" />
     <PreferenceCategory android:title="@string/setting_unnecessary_menu_title">
 
     </PreferenceCategory>
     <SwitchPreference
-        android:defaultValue="false"
         android:key="rainbow"
         android:title="@string/setting_rainbow" />
 

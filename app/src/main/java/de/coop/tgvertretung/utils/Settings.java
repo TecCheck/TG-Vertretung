@@ -40,6 +40,8 @@ public class Settings implements Serializable {
     public boolean rainbow = false;
     public boolean twoLineLabel = false;
 
+    public ClassSymbols symbols = new ClassSymbols();
+
     public static void load(Context context) {
         settings = new Settings();
         prefs = context.getSharedPreferences("preferences", 0);
@@ -47,7 +49,6 @@ public class Settings implements Serializable {
         try {
             String settingsString = prefs.getString(PREFS_KEY, ObjectSerializer.serialize(settings));
             settings = (Settings) ObjectSerializer.deserialize(settingsString);
-
             print();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

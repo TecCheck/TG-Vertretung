@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="@string/nav_settings" />
         <item
+            android:id="@+id/nav_symbols"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="@string/nav_symbols" />
+        <item
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_help_outline_black_24dp"
             android:title="@string/nav_info" />

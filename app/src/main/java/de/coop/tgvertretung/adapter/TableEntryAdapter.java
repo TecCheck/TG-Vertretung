@@ -61,11 +61,22 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
     }
 
     private String getEntryText(TableEntry entry, boolean extended) {
-        if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            return entry.getSubject() + (extended ? " in " + entry.getRoom() + " " : " ") + context.getString(R.string.no_class);
+
+        String subject = Settings.settings.symbols.getSymbolName(entry.getSubject());
+        if(subject == null){
+            subject = entry.getSubject();
         }
 
-        return entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + (extended ? (" statt " + entry.getSubject() + " in " + entry.getRoom()) : "");
+        String replacementSubject = Settings.settings.symbols.getSymbolName(entry.getReplacementSubject());
+        if(replacementSubject == null){
+            replacementSubject = entry.getReplacementSubject();
+        }
+
+        if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
+            return subject + (extended ? " in " + entry.getRoom() + " " : " ") + context.getString(R.string.no_class);
+        }
+
+        return replacementSubject + " in " + entry.getReplacementRoom() + (extended ? (" statt " + subject + " in " + entry.getRoom()) : "");
     }
 
     @Override
