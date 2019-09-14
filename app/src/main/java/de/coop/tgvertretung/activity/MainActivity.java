@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
         drawer.addDrawerListener(toggle);
+        navigationView.getMenu().getItem(0).setChecked(true);
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -235,21 +236,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_info) {
-            startActivity(new Intent(this, InfoActivity.class));
+        if (id == R.id.nav_time_table){
+            startActivity(new Intent(this, TimeTableActivity.class));
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_login) {
             LoginActivity.firstTime = false;
             startActivity(new Intent(this, LoginActivity.class));
+        } else if (id == R.id.nav_symbols){
+            startActivity(new Intent(this, SubjectSymbolsActivity.class));
         } else if (id == R.id.nav_update) {
             startActivity(new Intent(this, UpdateActivity.class));
-        }else if(id == R.id.nav_symbols){
-            startActivity(new Intent(this, SubjectSymbolsActivity.class));
-        }else if(id == R.id.nav_time_table){
-            startActivity(new Intent(this, TimeTableActivity.class));
+        } else if (id == R.id.nav_info) {
+            startActivity(new Intent(this, InfoActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
