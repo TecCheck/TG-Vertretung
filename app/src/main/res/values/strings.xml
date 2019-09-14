@@ -7,6 +7,7 @@
     <string name="title_activity_update">Update</string>
     <string name="title_activity_info">Über</string>
     <string name="title_activity_symbols">Kürzel</string>
+    <string name="title_activity_time_table">Stundenplan</string>
     <string name="title_notification">TG-Vertretung</string>
 
     <!-- Snack Strings -->
@@ -35,6 +36,7 @@
     <string name="nav_login">Anmelden</string>
     <string name="nav_update">Update</string>
     <string name="nav_symbols">Kürzel</string>
+    <string name="nav_time_table">Stundenplan</string>
 
     <!-- Main Activity content -->
     <string name="none">Das solltest du nicht sehen :(</string>
@@ -106,9 +108,24 @@
     <string name="action_sign_in_short">Anmelden</string>
     <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
 
-    <!-- Class Symbols Activity -->
+    <!-- Subject Symbols Activity -->
     <string name="symbol">Kürzel</string>
     <string name="symbol_name">Name</string>
     <string name="add_symbol">Kürzel Hinzufügen</string>
     <string name="please_add_text">Bitte gib etwas in beide Felder ein.</string>
+
+    <!-- Timetable Activity-->
+    <string-array name="days">
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+    </string-array>
+    <string name="item_empty">Frei</string>
+    <string name="subject">Fach</string>
+    <string name="room">Raum</string>
+    <string name="teacher">Lehrer/in</string>
+    <string name="dialog_set_class_title">Stunde bearbeiten</string>
+
 </resources>

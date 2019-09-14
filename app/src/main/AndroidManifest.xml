@@ -17,7 +17,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-
         <service
             android:name=".service.BackgroundService"
             android:enabled="true" />
@@ -64,10 +63,13 @@
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ClassSymbolsActivity"
+            android:name=".activity.SubjectSymbolsActivity"
             android:label="@string/title_activity_symbols"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TimeTableActivity"
+            android:label="@string/title_activity_time_table" />
     </application>
 
 </manifest>

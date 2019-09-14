@@ -41,6 +41,7 @@ public class Settings implements Serializable {
     public boolean twoLineLabel = false;
 
     public ClassSymbols symbols = new ClassSymbols();
+    public de.coop.tgvertretung.utils.TimeTable myTimeTable = new de.coop.tgvertretung.utils.TimeTable();
 
     public static void load(Context context) {
         settings = new Settings();

@@ -36,7 +36,6 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="10/1, 10/2"
                     android:textColor="@color/blue"
                     android:textSize="18sp" />
 
@@ -46,7 +45,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="4dp"
-                    android:text="1-2"
                     android:textColor="@color/blue"
                     android:textSize="18sp" />
 
@@ -57,9 +55,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="4"
-                android:paddingBottom="4dp"
                 android:paddingTop="4dp"
-                android:text="M in 020"
+                android:paddingBottom="4dp"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="16sp" />
 
@@ -69,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
 
-                android:text="Vertretungstext" />
+                />
         </LinearLayout>
 
     </LinearLayout>

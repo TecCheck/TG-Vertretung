@@ -21,7 +21,7 @@ import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.ClassSymbols;
 import de.coop.tgvertretung.utils.Settings;
 
-public class ClassSymbolsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SubjectSymbolsActivity extends AppCompatActivity implements View.OnClickListener {
 
     RecyclerView recyclerView = null;
     FloatingActionButton floatingActionButton = null;
@@ -31,7 +31,7 @@ public class ClassSymbolsActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_class_symbols);
+        setContentView(R.layout.activity_subject_symbols);
         recyclerView = findViewById(R.id.recyclerView);
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

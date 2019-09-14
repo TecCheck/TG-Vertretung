@@ -247,7 +247,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_update) {
             startActivity(new Intent(this, UpdateActivity.class));
         }else if(id == R.id.nav_symbols){
-            startActivity(new Intent(this, ClassSymbolsActivity.class));
+            startActivity(new Intent(this, SubjectSymbolsActivity.class));
+        }else if(id == R.id.nav_time_table){
+            startActivity(new Intent(this, TimeTableActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
