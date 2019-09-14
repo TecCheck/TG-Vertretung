@@ -13,9 +13,9 @@ import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.TimeTable;
 
 class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.ViewHolder> {
+    int dayOfWeek;
     private TimeTable.TimeTableDay day;
     private Context context;
-    int dayOfWeek;
 
     TimeTableEntryAdapter(TimeTable.TimeTableDay day, int dayOfWeek, Context context) {
         this.day = day;
@@ -42,14 +42,14 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
         schoolClass.setTextColor(context.getResources().getIntArray(R.array.day_of_week_color)[dayOfWeek]);
         hour.setTextColor(context.getResources().getIntArray(R.array.day_of_week_color)[dayOfWeek]);
 
-        if(entry == null){
+        if (entry == null) {
             schoolClass.setText(R.string.item_empty);
             hour.setText("");
             entryText.setVisibility(View.GONE);
             info.setVisibility(View.GONE);
-        }else {
+        } else {
             String schoolCl = Settings.settings.symbols.getSymbolName(entry.getSubject());
-            if(schoolCl == null){
+            if (schoolCl == null) {
                 schoolCl = entry.getSubject();
             }
             schoolClass.setText(schoolCl);

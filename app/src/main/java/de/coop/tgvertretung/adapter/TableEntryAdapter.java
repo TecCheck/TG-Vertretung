@@ -63,12 +63,12 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
     private String getEntryText(TableEntry entry, boolean extended) {
 
         String subject = Settings.settings.symbols.getSymbolName(entry.getSubject());
-        if(subject == null){
+        if (subject == null) {
             subject = entry.getSubject();
         }
 
         String replacementSubject = Settings.settings.symbols.getSymbolName(entry.getReplacementSubject());
-        if(replacementSubject == null){
+        if (replacementSubject == null) {
             replacementSubject = entry.getReplacementSubject();
         }
 

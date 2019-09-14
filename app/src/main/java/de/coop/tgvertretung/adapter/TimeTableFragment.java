@@ -85,7 +85,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == spinner.getAdapter().getCount() - 1){
+                if (position == spinner.getAdapter().getCount() - 1) {
                     spinner.setVisibility(View.GONE);
                     EditText symbol = dialog.findViewById(R.id.editTextSubject);
                     EditText name = dialog.findViewById(R.id.editTextSubjectName);
@@ -110,10 +110,10 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
 
             String subjectS = "";
 
-            if(subject.getVisibility() == View.VISIBLE){
+            if (subject.getVisibility() == View.VISIBLE) {
                 subjectS = subject.getText().toString();
                 Settings.settings.symbols.setSymbol(subjectS, subjectName.getText().toString());
-            }else {
+            } else {
                 subjectS = Settings.settings.symbols.getSymbol(spinner.getSelectedItemPosition());
             }
 
@@ -167,10 +167,10 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.symbol_entry_item, parent, false);
             TextView textView = view.findViewById(R.id.textView);
-            if(position != Settings.settings.symbols.getCount()){
+            if (position != Settings.settings.symbols.getCount()) {
                 view.findViewById(R.id.imageView).setVisibility(View.GONE);
                 textView.setText(Settings.settings.symbols.getSymbolName(position));
-            }else {
+            } else {
                 view.findViewById(R.id.imageView).setVisibility(View.VISIBLE);
                 textView.setText(R.string.add);
             }
@@ -211,10 +211,10 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.symbol_entry_item, parent, false);
             TextView textView = view.findViewById(R.id.textView);
-            if(position != Settings.settings.symbols.getCount()){
+            if (position != Settings.settings.symbols.getCount()) {
                 view.findViewById(R.id.imageView).setVisibility(View.GONE);
                 textView.setText(Settings.settings.symbols.getSymbolName(position));
-            }else {
+            } else {
                 view.findViewById(R.id.imageView).setVisibility(View.VISIBLE);
                 textView.setText(R.string.add);
             }

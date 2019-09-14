@@ -36,17 +36,11 @@
         android:layout_marginTop="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true"
         android:fadingEdge="none"
+        android:focusable="true"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@+id/info"
         app:layout_constraintTop_toBottomOf="@+id/info">
-
-        <View
-            android:id="@+id/divider1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,10 +55,10 @@
                     android:id="@+id/app_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -98,6 +92,12 @@
             </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -107,16 +107,10 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:fadingEdge="none"
+        android:focusable="true"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@+id/version"
-        app:layout_constraintTop_toBottomOf="@+id/version"
-        android:focusable="true">
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+        app:layout_constraintTop_toBottomOf="@+id/version">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -131,10 +125,10 @@
                     android:id="@+id/github_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -168,6 +162,12 @@
             </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -177,17 +177,11 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:fadingEdge="none"
+        android:focusable="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/licenses"
         app:layout_constraintStart_toStartOf="@+id/github"
-        app:layout_constraintTop_toBottomOf="@+id/github"
-        android:focusable="true">
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+        app:layout_constraintTop_toBottomOf="@+id/github">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -202,10 +196,10 @@
                     android:id="@+id/dev_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -218,16 +212,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/developers_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/devs_name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp" />
 
                 <TextView
                     android:id="@+id/developers_txt1"
@@ -245,11 +232,24 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/developers_txt1" />
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp" />
+                <TextView
+                    android:id="@+id/developers_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/devs_name"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
         </LinearLayout>
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
     </LinearLayout>
 
@@ -260,16 +260,10 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:fadingEdge="none"
+        android:focusable="true"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@+id/developers"
-        app:layout_constraintTop_toBottomOf="@+id/developers"
-        android:focusable="true">
-
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+        app:layout_constraintTop_toBottomOf="@+id/developers">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -284,10 +278,10 @@
                     android:id="@+id/licenses_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -321,6 +315,12 @@
 
             </LinearLayout>
         </LinearLayout>
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
         <View
             android:id="@+id/divider6"

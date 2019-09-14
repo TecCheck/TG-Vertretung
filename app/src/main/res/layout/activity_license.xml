@@ -44,6 +44,6 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_license"/>
+    <include layout="@layout/content_license" />
 
 </android.support.design.widget.CoordinatorLayout>

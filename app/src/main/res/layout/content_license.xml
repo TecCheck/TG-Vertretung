@@ -8,26 +8,26 @@
     tools:context=".activity.LicenseActivity"
     tools:showIn="@layout/activity_license">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+        <TextView
+            android:id="@+id/license_content_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="10sp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp" />
-
-            <TextView
-                android:id="@+id/license_content_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:textSize="10sp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp" />
-
-        </LinearLayout>
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

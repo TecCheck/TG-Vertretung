@@ -118,7 +118,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.rainbow = (boolean) value;
         } else if (preference.getKey().equals(twoLineLabel.getKey())) {
             Settings.settings.twoLineLabel = (boolean) value;
-        }else if(preference.getKey().equals(themeMode.getKey())){
+        } else if (preference.getKey().equals(themeMode.getKey())) {
             Settings.settings.themeMode = themeMode.findIndexOfValue((String) value);
             themeMode.setSummary(getResources().getStringArray(R.array.setting_theme_modes)[Settings.settings.themeMode]);
             AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);

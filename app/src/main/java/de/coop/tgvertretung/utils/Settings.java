@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.sematre.tg.Table;
 import de.sematre.tg.TimeTable;
 
 public class Settings implements Serializable {
