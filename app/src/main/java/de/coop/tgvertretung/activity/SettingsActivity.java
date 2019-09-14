@@ -24,7 +24,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     private Preference showServerRefresh = null;
 
     private ListPreference themeMode = null;
-    private Preference useOldLayout = null;
     private Preference twoLineLabel = null;
     private Preference rainbow = null;
 
@@ -49,7 +48,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh = findPreference("show_server_refresh");
 
         themeMode = (ListPreference) findPreference("theme_mode");
-        useOldLayout = findPreference("old_layout");
         twoLineLabel = findPreference("two_line_label");
         rainbow = findPreference("rainbow");
 
@@ -65,7 +63,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh.setOnPreferenceChangeListener(this);
 
         themeMode.setOnPreferenceChangeListener(this);
-        useOldLayout.setOnPreferenceChangeListener(this);
         twoLineLabel.setOnPreferenceChangeListener(this);
         rainbow.setOnPreferenceChangeListener(this);
 
@@ -79,7 +76,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
 
         themeMode.setDefaultValue(Settings.settings.themeMode);
-        useOldLayout.setDefaultValue(Settings.settings.useOldLayout);
         twoLineLabel.setDefaultValue(Settings.settings.twoLineLabel);
         rainbow.setDefaultValue(Settings.settings.rainbow);
 
@@ -118,8 +114,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.showServerRefresh = (boolean) value;
         } else if (preference.getKey().equals(showAB.getKey())) {
             Settings.settings.showAB = (boolean) value;
-        } else if (preference.getKey().equals(useOldLayout.getKey())) {
-            Settings.settings.useOldLayout = (boolean) value;
         } else if (preference.getKey().equals(rainbow.getKey())) {
             Settings.settings.rainbow = (boolean) value;
         } else if (preference.getKey().equals(twoLineLabel.getKey())) {

@@ -49,10 +49,6 @@
         android:key="show_text"
         android:title="@string/setting_show_text" />
     <SwitchPreference
-        android:key="old_layout"
-        android:summary="@string/setting_requires_restart"
-        android:title="@string/setting_use_old_layout" />
-    <SwitchPreference
         android:key="two_line_label"
         android:title="@string/setting_two_line_label" />
     <ListPreference

@@ -17,8 +17,7 @@ public class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (Settings.settings.useOldLayout) return TableFragment.newInstance(position);
-        return TableFragment2.newInstance(position);
+        return TableFragment.newInstance(position);
     }
 
     @Override

@@ -3,7 +3,6 @@ package de.coop.tgvertretung.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.File;
@@ -39,9 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager mPager = null;
     private TextView lastReload = null;
     private TextView lastServerRefresh = null;
-    private ConstraintLayout loadView = null;
-    private LinearLayout stdView = null;
-    private ProgressBar progBar = null;
     private SwipeRefreshLayout refreshLayout = null;
 
 
@@ -53,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int index = Utils.getView(Settings.settings.timeTable);
         try {
             index = mPager.getCurrentItem();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -67,14 +62,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void load() {
-        if (Settings.settings.useOldLayout) {
-            stdView.setVisibility(View.INVISIBLE);
-            loadView.setVisibility(View.VISIBLE);
-            progBar.setEnabled(true);
-        } else {
-            Utils.print("SwipeRefreshLayout");
-            refreshLayout.setRefreshing(true);
-        }
+
+        Utils.print("SwipeRefreshLayout");
+        refreshLayout.setRefreshing(true);
+
         if (!Downloader.download()) {
             refreshLayout.setRefreshing(false);
         }
@@ -87,9 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-        loadView = findViewById(R.id.load_view);
-        stdView = findViewById(R.id.stdView);
-        progBar = findViewById(R.id.progress_bar);
         mPager = findViewById(R.id.container);
         refreshLayout = findViewById(R.id.refresh_layout);
 
@@ -129,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        loadView.setVisibility(View.GONE);
 
         refreshLayout.setOnRefreshListener(this::load);
         try {
@@ -237,14 +224,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_time_table){
+        if (id == R.id.nav_time_table) {
             startActivity(new Intent(this, TimeTableActivity.class));
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_login) {
             LoginActivity.firstTime = false;
             startActivity(new Intent(this, LoginActivity.class));
-        } else if (id == R.id.nav_symbols){
+        } else if (id == R.id.nav_symbols) {
             startActivity(new Intent(this, SubjectSymbolsActivity.class));
         } else if (id == R.id.nav_update) {
             startActivity(new Intent(this, UpdateActivity.class));
@@ -291,10 +278,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             setTable(i);
         }
-
-        loadView.setVisibility(View.GONE);
-        progBar.setEnabled(false);
-        stdView.setVisibility(View.VISIBLE);
 
         Utils.print("Pager visible");
     }

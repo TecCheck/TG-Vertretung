@@ -52,7 +52,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);
 
         dialog = new Dialog(this);
-        dialog.setContentView(R.layout.symbol_add_dialog);
+        dialog.setContentView(R.layout.dialog_symbol_add);
         dialog.setTitle(R.string.add_symbol);
         dialog.setCancelable(true);
         button = dialog.findViewById(R.id.buttonAdd);

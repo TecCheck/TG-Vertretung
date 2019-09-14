@@ -1,7 +1,6 @@
 package de.coop.tgvertretung.adapter;
 
 import android.app.Dialog;
-import android.app.Notification;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
@@ -47,7 +45,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Get the Views
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main2, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
         TextView label = rootView.findViewById(R.id.label);
         TextView label2 = rootView.findViewById(R.id.label2);
         recyclerView = rootView.findViewById(R.id.recycler_view);

@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.adapter.TableFragment2;
+import de.coop.tgvertretung.adapter.TableFragment;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 import de.sematre.tg.TimeTable;
@@ -64,7 +64,7 @@ public class Utils {
     public static void addRainbow(View view) {
         if (evaluator == null) evaluator = new ArgbEvaluator();
 
-        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "textColor", TableFragment2.evaluator, 0xff0000ff, 0xffff0000, 0xff00ff00);
+        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "textColor", TableFragment.evaluator, 0xff0000ff, 0xffff0000, 0xff00ff00);
         colorFade.setRepeatMode(ObjectAnimator.REVERSE);
         colorFade.setRepeatCount(ObjectAnimator.INFINITE);
         colorFade.setDuration(1200);
