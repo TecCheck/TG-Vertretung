@@ -128,4 +128,8 @@
     <string name="teacher">Lehrer/in</string>
     <string name="dialog_set_class_title">Stunde bearbeiten</string>
 
+    <!-- Misc -->
+    <string name="add">Hinzufügen</string>
+    <string name="remove">Entfernen</string>
+
 </resources>

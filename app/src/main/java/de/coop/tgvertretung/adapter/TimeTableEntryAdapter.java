@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.TimeTable;
 
 class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.ViewHolder> {
@@ -47,7 +48,11 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
             entryText.setVisibility(View.GONE);
             info.setVisibility(View.GONE);
         }else {
-            schoolClass.setText(entry.getSubject());
+            String schoolCl = Settings.settings.symbols.getSymbolName(entry.getSubject());
+            if(schoolCl == null){
+                schoolCl = entry.getSubject();
+            }
+            schoolClass.setText(schoolCl);
             hour.setText(entry.getRoom());
             entryText.setText(entry.getTeacher());
             entryText.setVisibility(View.VISIBLE);
