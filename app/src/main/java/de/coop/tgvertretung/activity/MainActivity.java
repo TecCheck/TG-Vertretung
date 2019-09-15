@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startService(new Intent(getApplicationContext(), BackgroundService.class));
             }
         } else {
-            LoginActivity.firstTime = true;
             startActivity(new Intent(this, LoginActivity.class));
         }
 
@@ -178,8 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Utils.print("OnResume-------------------------------------------------------------------------------");
         super.onResume();
 
-        if (LoginActivity.firstTime && Settings.settings.loggedIn) {
-            LoginActivity.firstTime = false;
+        if (Settings.settings.loggedIn) {
             initUi();
             load();
             if (!BackgroundService.isRunning) {
@@ -229,7 +227,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_login) {
-            LoginActivity.firstTime = false;
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_symbols) {
             startActivity(new Intent(this, SubjectSymbolsActivity.class));
