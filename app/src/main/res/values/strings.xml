@@ -1,45 +1,30 @@
 <resources>
     <!-- Titles -->
-    <array name="setting_theme_modes">
-        <item>Standard</item>
-        <item>Light</item>
-        <item>Dark</item>
-    </array>
-    <array name="licenses">
-        <item>Gson</item>
-        <item>Jsoup</item>
-        <item>TG-API</item>
-    </array>
-    <array name="licenses_urls">
-        <item>https://github.com/google/gson</item>
-        <item>https://github.com/jhy/jsoup/</item>
-        <item>https://github.com/Sematre/TG-API</item>
-    </array>
     <string name="app_name" translatable="false">TGVertretung</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_login">Anmelden</string>
     <string name="title_activity_license">OpenSource-License</string>
     <string name="title_activity_update">Update</string>
     <string name="title_activity_info">Über</string>
-
-    <!-- Snack Strings -->
     <string name="title_activity_symbols">Kürzel</string>
     <string name="title_activity_time_table">Stundenplan</string>
     <string name="title_notification">TG-Vertretung</string>
 
-    <!-- Exit Message -->
+    <!-- Snack Strings -->
     <string name="connected">Daten aktualisiert</string>
     <string name="no_connection">Keine Verbindung!</string>
-
-    <!-- Notification -->
     <string name="nothing_new">Nichts neues gefunden</string>
+
+    <!-- Exit Message -->
     <string name="exit_title">Wirklich Beenden?</string>
     <string name="exit_message">Willst du die App wirklich beenden?</string>
 
-    <!-- Main Activity Menu -->
+    <!-- Notification -->
     <string name="channel_name">TG-Vertretung</string>
     <string name="channel_description">Neue Vertretungspläne</string>
     <string name="new_content">Neuer Vertretungsplan verfügbar</string>
+
+    <!-- Main Activity Menu -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="last_server_refresh">Letzte Änderung:</string>
@@ -49,19 +34,19 @@
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_info">Über</string>
     <string name="nav_login">Anmelden</string>
-
-    <!-- Main Activity content -->
     <string name="nav_update">Update</string>
     <string name="nav_symbols">Kürzel</string>
     <string name="nav_time_table">Stundenplan</string>
+
+    <!-- Main Activity content -->
     <string name="none">Das solltest du nicht sehen :(</string>
     <string name="nothing_saved">Nichts gespeichert!</string>
     <string name="nothing">Keine Vertretungen</string>
-
-    <!-- Settings Activity content -->
     <string name="no_class">Entfall</string>
     <string name="loading">Laden…</string>
     <string name="week">Woche</string>
+
+    <!-- Settings Activity content -->
     <string name="setting_filter_title">Filter</string>
     <string name="setting_filter_switch">Filter benutzen</string>
     <string name="setting_filter_pref">Filter</string>
@@ -76,10 +61,15 @@
     <string name="setting_show_client_refresh">Letzte Aktualisierung anzeigen</string>
     <string name="setting_use_old_layout">Altes Layout benutzen</string>
     <string name="setting_two_line_label">Label in zwei Zeilen aufteilen</string>
-
-    <!-- Info Activity content -->
     <string name="setting_requires_restart">Neustart der App erforderlich</string>
     <string name="setting_rainbow">RAINBOW!</string>
+    <array name="setting_theme_modes">
+        <item>Standard</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </array>
+
+    <!-- Info Activity content -->
     <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
     <string name="version_name">Versionsname</string>
     <string name="github_name" translatable="false">GitHub</string>
@@ -90,6 +80,16 @@
     <string name="christoph" translatable="false">Christoph</string>
     <string name="licenses_name">OpenSource-Lizenzen</string>
     <string name="licenses_txt">OpenSource Lizenzen anzeigen</string>
+    <array name="licenses">
+        <item>Gson</item>
+        <item>Jsoup</item>
+        <item>TG-API</item>
+    </array>
+    <array name="licenses_urls">
+        <item>https://github.com/google/gson</item>
+        <item>https://github.com/jhy/jsoup/</item>
+        <item>https://github.com/Sematre/TG-API</item>
+    </array>
 
     <!-- Update Activity content -->
     <string name="update_url">https://gist.githubusercontent.com/TecCheck/d5dfdb74a5f7418d97e0ac9d28513fcb/raw/</string>
@@ -115,15 +115,6 @@
     <string name="please_add_text">Bitte gib etwas in beide Felder ein.</string>
 
     <!-- Timetable Activity-->
-    <string name="item_empty">Frei</string>
-    <string name="subject">Fach</string>
-    <string name="room">Raum</string>
-    <string name="teacher">Lehrer/in</string>
-    <string name="dialog_set_class_title">Stunde bearbeiten</string>
-    <string name="add">Hinzufügen</string>
-
-    <!-- Misc -->
-    <string name="remove">Entfernen</string>
     <string-array name="days">
         <item>Montag</item>
         <item>Dienstag</item>
@@ -131,5 +122,14 @@
         <item>Donnerstag</item>
         <item>Freitag</item>
     </string-array>
+    <string name="item_empty">Frei</string>
+    <string name="subject">Fach</string>
+    <string name="room">Raum</string>
+    <string name="teacher">Lehrer/in</string>
+    <string name="dialog_set_class_title">Stunde bearbeiten</string>
+
+    <!-- Misc -->
+    <string name="add">Hinzufügen</string>
+    <string name="remove">Entfernen</string>
 
 </resources>

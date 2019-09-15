@@ -100,7 +100,7 @@ public class Utils {
         return 0;
     }
 
-    public static String getUpdateDownloadFile(Context context) {
+    public static String getUpdateDownloadFile(Context context){
         return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/TGV.apk";
     }
 

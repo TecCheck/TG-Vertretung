@@ -20,7 +20,7 @@ public class TimeTableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_time_table);
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
 

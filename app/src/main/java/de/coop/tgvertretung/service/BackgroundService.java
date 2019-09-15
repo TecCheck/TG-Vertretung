@@ -17,16 +17,18 @@ import android.util.Log;
 import java.util.Random;
 
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.utils.Downloader;
-import de.coop.tgvertretung.utils.Settings;
 
 public class BackgroundService extends Service implements Downloader.LoadFinishedListener {
 
     private static final String CHANNEL_ID = "TGV";
     private static final boolean TEST = false;
-    public static boolean isRunning;
+
     private static Runnable runnable = null;
+    public static boolean isRunning;
+
     private Context context = this;
     private Handler handler = null;
 

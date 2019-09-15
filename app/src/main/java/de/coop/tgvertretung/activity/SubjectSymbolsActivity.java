@@ -36,7 +36,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         recyclerView = findViewById(R.id.recyclerView);
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
 
@@ -75,7 +75,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
                 symbol.setText("");
                 dialog.dismiss();
             }
-        } else if (v.equals(removeButton)) {
+        }else if(v.equals(removeButton)){
             EditText name = dialog.findViewById(R.id.editTextName);
             EditText symbol = dialog.findViewById(R.id.editTextSymbol);
             if (name.getText().toString().equals("") || symbol.getText().toString().equals("")) {
@@ -110,10 +110,10 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onItemClick(View view, int position) {
-        if (Settings.settings.symbols.getCount() == position) {
+        if(Settings.settings.symbols.getCount() == position){
             dialog.show();
             removeButton.setVisibility(View.GONE);
-        } else {
+        }else {
             EditText name = dialog.findViewById(R.id.editTextName);
             EditText symbol = dialog.findViewById(R.id.editTextSymbol);
             name.setText(Settings.settings.symbols.getSymbolName(position));
@@ -151,10 +151,10 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
             TextView textView = viewHolder.view.findViewById(R.id.textView);
             ImageView imageView = viewHolder.view.findViewById(R.id.imageView);
-            if (i != Settings.settings.symbols.getCount()) {
+            if(i != Settings.settings.symbols.getCount()){
                 textView.setText(Settings.settings.symbols.getSymbol(i) + ": " + Settings.settings.symbols.getSymbolName(i));
                 imageView.setVisibility(View.GONE);
-            } else {
+            }else {
                 imageView.setVisibility(View.VISIBLE);
                 textView.setText(R.string.add);
             }

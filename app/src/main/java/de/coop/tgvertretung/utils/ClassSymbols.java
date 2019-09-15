@@ -9,38 +9,38 @@ public class ClassSymbols implements Serializable {
 
     private HashMap<String, String> symbols = new HashMap<>();
 
-    public void setSymbol(String symbol, String name) {
+    public void setSymbol(String symbol, String name){
         symbols.put(symbol, name);
     }
 
-    public void removeSymbol(String symbol) {
+    public void removeSymbol(String symbol){
         symbols.remove(symbol);
     }
 
-    public String getSymbolName(String symbol) {
+    public String getSymbolName(String symbol){
         return symbols.get(symbol);
     }
 
-    public String getSymbolName(int index) {
+    public String getSymbolName(int index){
         try {
             return (String) symbols.values().toArray()[index];
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return null;
 
     }
 
-    public String getSymbol(int index) {
+    public String getSymbol(int index){
         try {
             return (String) symbols.keySet().toArray()[index];
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public int getCount() {
+    public int getCount(){
         return symbols.size();
     }
 

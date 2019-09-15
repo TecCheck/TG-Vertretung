@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context="de.coop.tgvertretung.activity.MainActivity">
 
+
     <LinearLayout
         android:id="@+id/stdView1"
         android:layout_width="match_parent"
