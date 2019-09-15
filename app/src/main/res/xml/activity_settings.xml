@@ -46,12 +46,14 @@
         android:key="extended_view"
         android:title="@string/setting_extended_view" />
     <SwitchPreference
+        android:defaultValue="true"
         android:key="show_text"
         android:title="@string/setting_show_text" />
     <SwitchPreference
         android:key="two_line_label"
         android:title="@string/setting_two_line_label" />
     <ListPreference
+        android:defaultValue="0"
         android:entries="@array/setting_theme_modes"
         android:entryValues="@array/setting_theme_modes"
         android:key="theme_mode"
@@ -60,9 +62,11 @@
 
     </PreferenceCategory>
     <SwitchPreference
+        android:defaultValue="true"
         android:key="show_server_refresh"
         android:title="@string/setting_show_server_refresh" />
     <SwitchPreference
+        android:defaultValue="true"
         android:key="show_client_refresh"
         android:title="@string/setting_show_client_refresh" />
     <PreferenceCategory android:title="@string/setting_unnecessary_menu_title">
