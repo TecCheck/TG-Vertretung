@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Utils.print("Status: " + status);
 
-        Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
+        if (status != 1) Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         Settings.save();
 
         refreshLayout.setRefreshing(false);
