@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="de.coop.tgvertretung">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="false"
@@ -16,18 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <service
-            android:name=".service.BackgroundService"
-            android:enabled="true" />
-
-        <receiver
-            android:name=".service.AutoStart"
-            android:label="AutoStart">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".activity.MainActivity"
@@ -40,11 +28,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".activity.InfoActivity"
             android:label="@string/title_activity_info"
@@ -70,6 +60,20 @@
         <activity
             android:name=".activity.TimeTableActivity"
             android:label="@string/title_activity_time_table" />
+
+        <activity android:name=".activity.TimeTableEditActivity"
+            android:label="@string/title_activity_time_table_edit"/>
+
+        <receiver
+            android:name=".service.AutoStart"
+            android:label="AutoStart">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".service.BackgroundService"
+            android:enabled="true" />
     </application>
 
 </manifest>

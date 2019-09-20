@@ -30,6 +30,21 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        /*
+        try {
+            TimeTablePagerAdapter adapter = (TimeTablePagerAdapter) mPager.getAdapter();
+            adapter.update();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        */
+
+        mPager.setAdapter(new TimeTablePagerAdapter(getSupportFragmentManager()));
+        super.onResume();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {

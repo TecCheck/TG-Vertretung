@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
@@ -38,23 +39,33 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
         TextView hour = cardView.findViewById(R.id.hour);
         TextView entryText = cardView.findViewById(R.id.entry);
         TextView info = cardView.findViewById(R.id.info_text);
+        ImageView imageView = cardView.findViewById(R.id.imageView2);
+        if(position == day.getSize()){
+            imageView.setVisibility(View.VISIBLE);
+            entryText.setText(R.string.add);
+            hour.setVisibility(View.GONE);
+            schoolClass.setVisibility(View.GONE);
+            info.setVisibility(View.GONE);
+            return;
+        }
 
         schoolClass.setTextColor(context.getResources().getIntArray(R.array.day_of_week_color)[dayOfWeek]);
         hour.setTextColor(context.getResources().getIntArray(R.array.day_of_week_color)[dayOfWeek]);
+        imageView.setVisibility(View.GONE);
 
-        if(entry == null){
+        if(entry == null || entry.getEmptyA()){
             schoolClass.setText(R.string.item_empty);
             hour.setText("");
             entryText.setVisibility(View.GONE);
             info.setVisibility(View.GONE);
         }else {
-            String schoolCl = Settings.settings.symbols.getSymbolName(entry.getSubject());
+            String schoolCl = Settings.settings.symbols.getSymbolName(entry.getSubjectA());
             if(schoolCl == null){
-                schoolCl = entry.getSubject();
+                schoolCl = entry.getSubjectA();
             }
             schoolClass.setText(schoolCl);
-            hour.setText(entry.getRoom());
-            entryText.setText(entry.getTeacher());
+            hour.setText(entry.getRoomA());
+            entryText.setText(entry.getTeacherA());
             entryText.setVisibility(View.VISIBLE);
             info.setVisibility(View.GONE);
         }
@@ -62,7 +73,7 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
 
     @Override
     public int getItemCount() {
-        return day.getSize();
+        return day.getSize() + 1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

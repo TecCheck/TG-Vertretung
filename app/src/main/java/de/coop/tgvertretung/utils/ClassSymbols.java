@@ -40,6 +40,16 @@ public class ClassSymbols implements Serializable {
         return null;
     }
 
+    public int getSymbolIndex(String symbol){
+        Object[] keys = symbols.keySet().toArray();
+        for(int i = 0; i < keys.length; i++){
+            String key = (String) keys[i];
+            if(key.equals(symbol))
+                return i;
+        }
+        return -1;
+    }
+
     public int getCount(){
         return symbols.size();
     }

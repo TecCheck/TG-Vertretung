@@ -39,9 +39,11 @@ public class TimeTable implements Serializable {
         public ArrayList<TimeTableEntry> entries = new ArrayList<>();
 
         public TimeTableDay(){
+            /*
             for(int i = 0; i < 11; i++){
                 entries.add(null);
             }
+            */
         }
 
         public void setEntry(int hour, TimeTableEntry entry){
@@ -66,6 +68,10 @@ public class TimeTable implements Serializable {
             return null;
         }
 
+        public void removeEntry(int hour){
+            entries.remove(hour);
+        }
+
         public int getSize(){
             return entries.size();
         }
@@ -75,26 +81,64 @@ public class TimeTable implements Serializable {
 
         private static final long serialVersionUID = -7162123053432181952L;
 
-        String subject = "";
-        String room = "";
-        String teacher = "";
+        String subjectA = "";
+        String roomA = "";
+        String teacherA = "";
+        boolean emptyA = true;
 
-        public TimeTableEntry(String subject, String room, String teacher){
-            this.subject = subject;
-            this.room = room;
-            this.teacher = teacher;
+        String subjectB = "";
+        String roomB = "";
+        String teacherB = "";
+        boolean emptyB = true;
+
+        public TimeTableEntry(String subjectA, String roomA, String teacherA, String subjectB, String roomB, String teacherB){
+            this.subjectA = subjectA;
+            this.roomA = roomA;
+            this.teacherA = teacherA;
+
+            this.subjectB = subjectB;
+            this.roomB = roomB;
+            this.teacherB = teacherB;
         }
 
-        public String getSubject(){
-            return subject;
+        public void setEmptyA(boolean empty){
+            this.emptyA = empty;
         }
 
-        public String getRoom(){
-            return room;
+        public void setEmptyB(boolean empty){
+            this.emptyB = empty;
         }
 
-        public String getTeacher(){
-            return teacher;
+        public String getSubjectA(){
+            return subjectA;
+        }
+
+        public String getRoomA(){
+            return roomA;
+        }
+
+        public String getTeacherA(){
+            return teacherA;
+        }
+
+        public String getSubjectB(){
+            return subjectB;
+        }
+
+        public String getRoomB(){
+            return roomB;
+        }
+
+        public String getTeacherB(){
+            return teacherB;
+        }
+
+        public boolean getEmptyA(){
+            return emptyA;
+        }
+
+        public boolean getEmptyB(){
+            return emptyB;
         }
     }
 

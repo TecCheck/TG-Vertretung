@@ -28,4 +28,11 @@ public class TimeTablePagerAdapter extends FragmentPagerAdapter {
     public int getItemPosition(Object object) {
         return super.getItemPosition(object);
     }
+
+    public void update(){
+        for(int i = 0; i < getCount(); i++){
+            TimeTableFragment fragment = (TimeTableFragment) this.getItem(i);
+            fragment.update();
+        }
+    }
 }
