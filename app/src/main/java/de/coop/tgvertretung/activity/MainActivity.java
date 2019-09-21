@@ -46,11 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void startPagerView() {
         int index = Utils.getView(Settings.settings.timeTable);
-        try {
-            index = mPager.getCurrentItem();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (mPager != null) index = mPager.getCurrentItem();
+
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager = findViewById(R.id.container);
         mPager.setAdapter(mPagerAdapter);
