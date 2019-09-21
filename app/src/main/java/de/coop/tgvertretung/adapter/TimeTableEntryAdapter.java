@@ -12,11 +12,13 @@ import android.widget.TextView;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.TimeTable;
+import de.coop.tgvertretung.utils.Utils;
 
 class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.ViewHolder> {
     private TimeTable.TimeTableDay day;
     private Context context;
-    int dayOfWeek;
+    private int dayOfWeek;
+    public boolean isAWeek;
 
     TimeTableEntryAdapter(TimeTable.TimeTableDay day, int dayOfWeek, Context context) {
         this.day = day;
@@ -51,21 +53,43 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
 
         schoolClass.setTextColor(context.getResources().getIntArray(R.array.day_of_week_color)[dayOfWeek]);
         hour.setTextColor(context.getResources().getIntArray(R.array.day_of_week_color)[dayOfWeek]);
-        imageView.setVisibility(View.GONE);
 
-        if(entry == null || entry.getEmptyA()){
+        imageView.setVisibility(View.GONE);
+        hour.setVisibility(View.VISIBLE);
+        schoolClass.setVisibility(View.VISIBLE);
+        info.setVisibility(View.VISIBLE);
+
+        boolean empty;
+        String schoolCl;
+        String room;
+        String teacher;
+        if(isAWeek){
+            empty = entry.getEmptyA();
+            schoolCl = Settings.settings.symbols.getSymbolName(entry.getSubjectA());
+            if(schoolCl == null){
+                schoolCl = entry.getSubjectA();
+            }
+            room = entry.getRoomA();
+            teacher = entry.getTeacherA();
+        }else {
+            empty = entry.getEmptyB();
+            schoolCl = Settings.settings.symbols.getSymbolName(entry.getSubjectB());
+            if(schoolCl == null){
+                schoolCl = entry.getSubjectB();
+            }
+            room = entry.getRoomB();
+            teacher = entry.getTeacherB();
+        }
+
+        if(empty){
             schoolClass.setText(R.string.item_empty);
             hour.setText("");
             entryText.setVisibility(View.GONE);
             info.setVisibility(View.GONE);
         }else {
-            String schoolCl = Settings.settings.symbols.getSymbolName(entry.getSubjectA());
-            if(schoolCl == null){
-                schoolCl = entry.getSubjectA();
-            }
             schoolClass.setText(schoolCl);
-            hour.setText(entry.getRoomA());
-            entryText.setText(entry.getTeacherA());
+            hour.setText(room);
+            entryText.setText(teacher);
             entryText.setVisibility(View.VISIBLE);
             info.setVisibility(View.GONE);
         }

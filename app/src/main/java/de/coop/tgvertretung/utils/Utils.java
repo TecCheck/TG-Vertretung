@@ -81,7 +81,7 @@ public class Utils {
         return format.format(date);
     }
 
-    public static int getView(TimeTable timeTable) {
+    public static int getView(TimeTable timeTable, int defaultValue) {
         Utils.printMethod("getView");
 
         int i = 0;
@@ -97,7 +97,11 @@ public class Utils {
         }
 
         Utils.print("Date not found");
-        return 0;
+        return defaultValue;
+    }
+
+    public static int getView(TimeTable timeTable) {
+        return getView(timeTable, 0);
     }
 
     public static String getUpdateDownloadFile(Context context){

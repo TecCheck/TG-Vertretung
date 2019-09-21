@@ -131,6 +131,7 @@
     <!-- Misc -->
     <string name="remove">Entfernen</string>
     <string name="add">Hinzufügen</string>
+    <string name="double_class">Doppelstunde</string>
     <string-array name="days">
         <item>Montag</item>
         <item>Dienstag</item>

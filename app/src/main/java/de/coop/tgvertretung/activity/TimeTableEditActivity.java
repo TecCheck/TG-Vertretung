@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -35,6 +36,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
     EditText editTeacherB;
     EditText editRoomB;
 
+    CheckBox checkBoxDouble;
     Button button;
     Button removeButton;
 
@@ -67,6 +69,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         editTeacherB = findViewById(R.id.editTextTeacherB);
         editRoomB = findViewById(R.id.editTextRoomB);
 
+        checkBoxDouble = findViewById(R.id.checkBoxDouble);
         button = findViewById(R.id.buttonAdd);
         removeButton = findViewById(R.id.buttonRemove);
 
@@ -181,6 +184,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
         entry.setEmptyB(spinnerB.getSelectedItemPosition() == 0);
         TimeTable.TimeTableDay day = Settings.settings.myTimeTable.getDay(dayIndex);
         day.setEntry(entryIndex, entry);
+        if(checkBoxDouble.isChecked())
+            day.setEntry(entryIndex + 1, entry);
         Settings.settings.myTimeTable.setDay(dayIndex, day);
     }
 
