@@ -14,12 +14,6 @@ public class AutoStart extends BroadcastReceiver {
         Settings.load(context);
 
         if (Settings.settings.loggedIn && !BackgroundService.isRunning) {
-            try {
-                Thread.sleep(60000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             context.startService(new Intent(context, BackgroundService.class));
         }
     }
