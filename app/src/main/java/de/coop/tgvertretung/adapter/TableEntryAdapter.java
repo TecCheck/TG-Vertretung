@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
@@ -38,7 +39,9 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         TextView hour = cardView.findViewById(R.id.hour);
         TextView entryText = cardView.findViewById(R.id.entry);
         TextView info = cardView.findViewById(R.id.info_text);
+        ImageView imageView = cardView.findViewById(R.id.imageView2);
 
+        imageView.setVisibility(View.GONE);
         schoolClass.setText(entry.getSchoolClass());
         hour.setText(entry.getTime());
         entryText.setText(getEntryText(entry, Settings.settings.extended));
