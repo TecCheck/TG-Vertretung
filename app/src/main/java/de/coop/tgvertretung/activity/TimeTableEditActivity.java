@@ -196,7 +196,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
             View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.symbol_entry_item, parent, false);
             TextView textView = view.findViewById(R.id.textView);
-            textView.setTextColor(0xff000000);
 
             int realPos = position - 1;
 

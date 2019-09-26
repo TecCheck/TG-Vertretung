@@ -3,5 +3,6 @@
     <color name="colorPrimary">@color/toolbarDark</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">@color/green</color>
+    <color name="icon_color">@android:color/primary_text_dark</color>
 
 </resources>

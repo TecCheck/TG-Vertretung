@@ -26,7 +26,8 @@
             android:layout_weight="1"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="@string/add" />
+            android:text="@string/add"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     </LinearLayout>
 
     <View
