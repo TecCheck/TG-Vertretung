@@ -12,7 +12,6 @@ import android.widget.TextView;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.TimeTable;
-import de.coop.tgvertretung.utils.Utils;
 
 class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.ViewHolder> {
     private TimeTable.TimeTableDay day;

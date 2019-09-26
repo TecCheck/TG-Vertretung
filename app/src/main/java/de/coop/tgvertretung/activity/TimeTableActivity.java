@@ -5,18 +5,13 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.adapter.TimeTableFragment;
 import de.coop.tgvertretung.adapter.TimeTablePagerAdapter;
 import de.coop.tgvertretung.utils.Settings;
-import de.coop.tgvertretung.utils.Utils;
 
 public class TimeTableActivity extends AppCompatActivity {
 

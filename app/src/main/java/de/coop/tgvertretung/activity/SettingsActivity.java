@@ -1,6 +1,5 @@
 package de.coop.tgvertretung.activity;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
