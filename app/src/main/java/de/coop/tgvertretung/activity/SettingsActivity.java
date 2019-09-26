@@ -33,8 +33,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         ActionBar actionBar = AppCompatDelegate.create(this, null).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            if (Settings.settings.themeMode == 2)
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
         addPreferencesFromResource(R.xml.activity_settings);

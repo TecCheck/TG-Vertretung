@@ -26,8 +26,6 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
         ActionBar actionBar = getDelegate().getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            if (Settings.settings.themeMode == 2)
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
         // current version

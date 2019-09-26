@@ -52,8 +52,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         ActionBar actionBar = getDelegate().getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            if (Settings.settings.themeMode == 2)
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
         updateStatus = findViewById(R.id.update_status);

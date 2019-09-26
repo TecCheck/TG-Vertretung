@@ -32,18 +32,8 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_license);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
-        CollapsingToolbarLayout toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar.setTitle(getResources().getStringArray(R.array.licenses)[toShow]);
         toolbar.addView(getButton());
-        if (Settings.settings.themeMode == 2) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
-            appBarLayout.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
-            toolbarLayout.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
-            toolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.toolbarDark));
-            toolbarLayout.setContentScrimColor(getResources().getColor(R.color.toolbarDark));
-        }
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

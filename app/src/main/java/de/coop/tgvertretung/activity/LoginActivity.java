@@ -80,8 +80,6 @@ public class LoginActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
-            if (Settings.settings.themeMode == 2)
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
         Utils.print("ActionBar: " + actionBar);
