@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,10 +35,9 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_symbols);
         recyclerView = findViewById(R.id.recyclerView);
-        try {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }catch (Exception e){
-            e.printStackTrace();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         if (Settings.settings.symbols == null) {

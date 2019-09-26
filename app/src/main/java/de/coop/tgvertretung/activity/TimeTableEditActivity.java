@@ -3,6 +3,7 @@ package de.coop.tgvertretung.activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
@@ -48,10 +49,9 @@ public class TimeTableEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table_edit);
-        try {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (Exception e) {
-            e.printStackTrace();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         Intent intent = getIntent();
