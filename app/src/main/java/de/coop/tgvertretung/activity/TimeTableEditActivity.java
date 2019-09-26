@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -196,6 +197,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
             View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.symbol_entry_item, parent, false);
             TextView textView = view.findViewById(R.id.textView);
+            textView.setTextColor(getResources().getColor(R.color.icon_color));
 
             int realPos = position - 1;
 
