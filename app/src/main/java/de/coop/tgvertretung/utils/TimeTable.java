@@ -69,6 +69,8 @@ public class TimeTable implements Serializable {
         }
 
         public void removeEntry(int hour){
+            if(hour >= entries.size())
+                return;
             entries.remove(hour);
         }
 
