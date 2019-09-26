@@ -47,6 +47,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         TextView label2 = rootView.findViewById(R.id.label2);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
+        isAWeek = isAWeek();
 
         label.setClickable(true);
         label.setOnClickListener(v -> {
@@ -64,7 +65,6 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
             Settings.settings.myTimeTable = new TimeTable();
         }
 
-        isAWeek = isAWeek();
         Log.d("Week", "A: " + isAWeek);
 
         label.setText(getResources().getStringArray(R.array.days)[index] + " " + (isAWeek ? getString(R.string.week_a) : getString(R.string.week_b)));
@@ -74,7 +74,8 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         nothing.setVisibility(View.GONE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        RecyclerView.Adapter adapter = new TimeTableEntryAdapter(Settings.settings.myTimeTable.getDay(index), index, getContext());
+        TimeTableEntryAdapter adapter = new TimeTableEntryAdapter(Settings.settings.myTimeTable.getDay(index), index, getContext());
+        adapter.isAWeek = isAWeek;
         RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(getContext(), recyclerView, this);
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);
         recyclerView.setVisibility(View.VISIBLE);
