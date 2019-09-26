@@ -38,40 +38,20 @@ public class TimeTable implements Serializable {
 
         public ArrayList<TimeTableEntry> entries = new ArrayList<>();
 
-        public TimeTableDay(){
-            /*
-            for(int i = 0; i < 11; i++){
-                entries.add(null);
-            }
-            */
-        }
-
         public void setEntry(int hour, TimeTableEntry entry){
-            if(entries.size() <= hour){
-                int i = entries.size() - hour;
-                while (i > 0){
-                    entries.add(null);
-                    i--;
-                }
+            if(entries.size() <= hour)
                 entries.add(entry);
-            }else {
+            else
                 entries.set(hour, entry);
-            }
         }
 
         public TimeTableEntry getEntry(int hour){
-            try{
-                return entries.get(hour);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return null;
+            return hour < entries.size() ? entries.get(hour) : null;
         }
 
         public void removeEntry(int hour){
-            if(hour >= entries.size())
-                return;
-            entries.remove(hour);
+            if(hour < entries.size())
+                entries.remove(hour);
         }
 
         public int getSize(){
