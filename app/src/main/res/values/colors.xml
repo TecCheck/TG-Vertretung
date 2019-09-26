@@ -3,8 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">@color/green</color>
+
     <color name="toolbarDark">#424242</color>
     <color name="icon_color">@android:color/primary_text_light</color>
+    <color name="icon_light">@android:color/primary_text_dark</color>
 
     <color name="green">#7db931</color>
     <color name="blue">#02a1dc</color>

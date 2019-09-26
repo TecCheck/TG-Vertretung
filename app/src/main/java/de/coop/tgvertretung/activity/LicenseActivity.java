@@ -1,6 +1,7 @@
 package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -64,11 +65,13 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
 
     private ImageButton getButton() {
         ImageButton button = new ImageButton(getApplicationContext());
-        button.setImageDrawable(getResources().getDrawable(R.drawable.ic_github));
+        Drawable d = getResources().getDrawable(R.drawable.ic_github);
+        d.setTint(getResources().getColor(R.color.icon_light));
+        button.setImageDrawable(d);
         button.setElevation(0.3f);
         button.setBackgroundColor(0x00000000);
 
-        Toolbar.LayoutParams params = new Toolbar.LayoutParams(100, 100, Gravity.END | Gravity.BOTTOM);
+        Toolbar.LayoutParams params = new Toolbar.LayoutParams(100, 100, Gravity.END | Gravity.CENTER_VERTICAL);
         button.setLayoutParams(params);
         button.setOnClickListener(this);
 
