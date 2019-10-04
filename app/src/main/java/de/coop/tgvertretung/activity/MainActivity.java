@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Utils.print("SwipeRefreshLayout");
         refreshLayout.setRefreshing(true);
 
-        if (!Downloader.download()) {
+        if (!Downloader.download(2)) {
             refreshLayout.setRefreshing(false);
         }
     }
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void loadFinished(int status) {
+    public void loadFinished(int status, int owner) {
 
         Utils.print("Status: " + status);
 

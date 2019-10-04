@@ -50,7 +50,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
 
         handler = new Handler();
         runnable = () -> {
-            Downloader.download();
+            Downloader.download(1);
             if (!TEST)
                 handler.postDelayed(runnable, 600000);
             else
@@ -99,8 +99,8 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     }
 
     @Override
-    public void loadFinished(int status) {
-        if (status == 0 || TEST) {
+    public void loadFinished(int status, int owner) {
+        if ((status == 0 && owner == 1) || TEST) {
             Log.d("BackgroundService", "Download Status: " + status);
             makeNotification();
         }

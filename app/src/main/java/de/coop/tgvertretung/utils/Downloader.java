@@ -15,6 +15,7 @@ public class Downloader extends Thread {
     private static ArrayList<LoadFinishedListener> listeners = new ArrayList<>();
 
     private int status = 0;
+    private int owner = 0;
 
     public static void addLoadFinishedListener(LoadFinishedListener listener) {
         if (!listeners.contains(listener))
@@ -26,12 +27,13 @@ public class Downloader extends Thread {
             listeners.remove(listener);
     }
 
-    public static boolean download() {
+    public static boolean download(int owner) {
         Utils.printMethod("download");
 
         if (dwdThread == null || !dwdThread.isAlive()) {
             try {
                 dwdThread = new Downloader();
+                dwdThread.owner = owner;
                 dwdThread.start();
                 return true;
             } catch (Exception e) {
@@ -70,7 +72,7 @@ public class Downloader extends Thread {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
             for (LoadFinishedListener listener : listeners) {
-                listener.loadFinished(status);
+                listener.loadFinished(status, owner);
             }
             Utils.print("Runnable started");
         });
@@ -80,6 +82,6 @@ public class Downloader extends Thread {
     }
 
     public interface LoadFinishedListener {
-        void loadFinished(int status);
+        void loadFinished(int status, int owner);
     }
 }
