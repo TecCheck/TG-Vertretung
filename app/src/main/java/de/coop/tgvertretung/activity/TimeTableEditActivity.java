@@ -3,6 +3,7 @@ package de.coop.tgvertretung.activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,11 +11,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,6 +33,10 @@ public class TimeTableEditActivity extends AppCompatActivity {
     EditText editSubjectNameA;
     EditText editTeacherA;
     EditText editRoomA;
+
+    ConstraintLayout layoutB;
+    ConstraintLayout dividerB;
+    ImageView expander;
 
     Spinner spinnerB;
     EditText editSubjectB;
@@ -72,6 +79,21 @@ public class TimeTableEditActivity extends AppCompatActivity {
         checkBoxDouble = findViewById(R.id.checkBoxDouble);
         button = findViewById(R.id.buttonAdd);
         removeButton = findViewById(R.id.buttonRemove);
+
+        layoutB = findViewById(R.id.layoutB);
+        dividerB = findViewById(R.id.linearLayout5);
+        expander = findViewById(R.id.imageView3);
+        layoutB.setVisibility(View.GONE);
+        dividerB.setOnClickListener(v -> {
+
+            if(layoutB.getVisibility() == View.GONE) {
+                layoutB.setVisibility(View.VISIBLE);
+                expander.setRotation(180);
+            }else {
+                layoutB.setVisibility(View.GONE);
+                expander.setRotation(0);
+            }
+        });
 
         init();
     }
@@ -179,9 +201,17 @@ public class TimeTableEditActivity extends AppCompatActivity {
             subjectB = Settings.settings.symbols.getSymbol(spinnerB.getSelectedItemPosition() - 1);
         }
 
-        TimeTable.TimeTableEntry entry = new TimeTable.TimeTableEntry(subjectA, editRoomA.getText().toString(), editTeacherA.getText().toString(), subjectB, editRoomB.getText().toString(), editTeacherB.getText().toString());
-        entry.setEmptyA(spinnerA.getSelectedItemPosition() == 0);
-        entry.setEmptyB(spinnerB.getSelectedItemPosition() == 0);
+        TimeTable.TimeTableEntry entry;
+        if(layoutB.getVisibility() == View.GONE){
+            entry = new TimeTable.TimeTableEntry(subjectA, editRoomA.getText().toString(), editTeacherA.getText().toString(), subjectA, editRoomA.getText().toString(), editTeacherA.getText().toString());
+            entry.setEmptyA(spinnerA.getSelectedItemPosition() == 0);
+            entry.setEmptyB(spinnerA.getSelectedItemPosition() == 0);
+        }else {
+            entry = new TimeTable.TimeTableEntry(subjectA, editRoomA.getText().toString(), editTeacherA.getText().toString(), subjectB, editRoomB.getText().toString(), editTeacherB.getText().toString());
+            entry.setEmptyA(spinnerA.getSelectedItemPosition() == 0);
+            entry.setEmptyB(spinnerB.getSelectedItemPosition() == 0);
+        }
+
         TimeTable.TimeTableDay day = Settings.settings.myTimeTable.getDay(dayIndex);
         day.setEntry(entryIndex, entry);
         if(checkBoxDouble.isChecked())
