@@ -11,20 +11,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.TimeTableFragment;
+import de.coop.tgvertretung.utils.NewTimeTable;
 import de.coop.tgvertretung.utils.Settings;
-import de.coop.tgvertretung.utils.TimeTable;
+import de.sematre.tg.Week;
 
 public class TimeTableEditActivity extends AppCompatActivity {
 
@@ -95,29 +94,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
             }
         });
 
-        init();
-    }
-
-    @Override
-    public void onBackPressed() {
-        Log.d("test", "back");
-        Settings.save();
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            super.onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void init() {
-
         spinnerA.setAdapter(new SpinnerAdapter());
         spinnerA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -156,32 +132,63 @@ public class TimeTableEditActivity extends AppCompatActivity {
             onBackPressed();
         });
         removeButton.setOnClickListener(v -> {
-            TimeTable.TimeTableDay day = Settings.settings.myTimeTable.getDay(dayIndex);
-            day.removeEntry(entryIndex);
-            Settings.settings.myTimeTable.setDay(dayIndex, day);
+            Settings.settings.myNewTimeTable.removeEntry(Week.A, dayIndex, entryIndex);
+            Settings.settings.myNewTimeTable.removeEntry(Week.B, dayIndex, entryIndex);
             onBackPressed();
         });
 
-        if (Settings.settings.myTimeTable.getDay(dayIndex).getSize() <= entryIndex || Settings.settings.myTimeTable.getDay(dayIndex).getEntry(entryIndex) == null) {
+        init();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("test", "back");
+        Settings.save();
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void init() {
+        // Set Values
+        // New
+        NewTimeTable.TimeTableDayEntry entryA = Settings.settings.myNewTimeTable.getEntry(Week.A, dayIndex, entryIndex);
+        NewTimeTable.TimeTableDayEntry entryB = Settings.settings.myNewTimeTable.getEntry(Week.B, dayIndex, entryIndex);
+
+        if(entryA == null) {
+            checkBoxDouble.setChecked(true);
             return;
         }
 
-        //Set Values
-        TimeTable.TimeTableEntry entry = Settings.settings.myTimeTable.getDay(dayIndex).getEntry(entryIndex);
-
-        if (entry.getEmptyA())
+        boolean emptyA = !NewTimeTable.notEmpty(entryA.subject);
+        if(emptyA){
             spinnerA.setSelection(0);
-        else
-            spinnerA.setSelection(Settings.settings.symbols.getSymbolIndex(entry.getSubjectA()) + 1);
-        editTeacherA.setText(entry.getTeacherA());
-        editRoomA.setText(entry.getRoomA());
+        }else {
+            spinnerA.setSelection(Settings.settings.symbols.getSymbolIndex(entryA.subject) + 1);
+        }
+        editRoomA.setText(entryA.room);
+        editTeacherA.setText(entryA.teacher);
 
-        if (entry.getEmptyB())
+        if(entryB == null)
+            return;
+
+        boolean emptyB = !NewTimeTable.notEmpty(entryB.subject);
+        if(emptyB){
             spinnerB.setSelection(0);
-        else
-            spinnerB.setSelection(Settings.settings.symbols.getSymbolIndex(entry.getSubjectB()) + 1);
-        editTeacherB.setText(entry.getTeacherB());
-        editRoomB.setText(entry.getRoomB());
+        }else {
+            spinnerB.setSelection(Settings.settings.symbols.getSymbolIndex(entryB.subject) + 1);
+        }
+        editRoomB.setText(entryB.room);
+        editTeacherB.setText(entryB.teacher);
     }
 
     public void save() {
@@ -189,6 +196,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
         if (editSubjectA.getVisibility() == View.VISIBLE) {
             subjectA = editSubjectA.getText().toString();
             Settings.settings.symbols.setSymbol(subjectA, editSubjectNameA.getText().toString());
+        } else if(spinnerA.getSelectedItemPosition() == 0){
+            subjectA = "";
         } else {
             subjectA = Settings.settings.symbols.getSymbol(spinnerA.getSelectedItemPosition() - 1);
         }
@@ -197,26 +206,33 @@ public class TimeTableEditActivity extends AppCompatActivity {
         if (editSubjectB.getVisibility() == View.VISIBLE) {
             subjectB = editSubjectB.getText().toString();
             Settings.settings.symbols.setSymbol(subjectB, editSubjectNameB.getText().toString());
+        } else if(spinnerB.getSelectedItemPosition() == 0){
+            subjectB = "";
         } else {
             subjectB = Settings.settings.symbols.getSymbol(spinnerB.getSelectedItemPosition() - 1);
         }
 
-        TimeTable.TimeTableEntry entry;
+        NewTimeTable.TimeTableDayEntry entryA = new NewTimeTable.TimeTableDayEntry();
+        entryA.subject = subjectA;
+        entryA.room = editRoomA.getText().toString();
+        entryA.teacher = editTeacherA.getText().toString();
+
+        NewTimeTable.TimeTableDayEntry entryB = new NewTimeTable.TimeTableDayEntry();
+
         if(layoutB.getVisibility() == View.GONE){
-            entry = new TimeTable.TimeTableEntry(subjectA, editRoomA.getText().toString(), editTeacherA.getText().toString(), subjectA, editRoomA.getText().toString(), editTeacherA.getText().toString());
-            entry.setEmptyA(spinnerA.getSelectedItemPosition() == 0);
-            entry.setEmptyB(spinnerA.getSelectedItemPosition() == 0);
+            entryB = entryA;
         }else {
-            entry = new TimeTable.TimeTableEntry(subjectA, editRoomA.getText().toString(), editTeacherA.getText().toString(), subjectB, editRoomB.getText().toString(), editTeacherB.getText().toString());
-            entry.setEmptyA(spinnerA.getSelectedItemPosition() == 0);
-            entry.setEmptyB(spinnerB.getSelectedItemPosition() == 0);
+            entryB.subject = subjectB;
+            entryB.room = editRoomB.getText().toString();
+            entryB.teacher = editTeacherB.getText().toString();
         }
 
-        TimeTable.TimeTableDay day = Settings.settings.myTimeTable.getDay(dayIndex);
-        day.setEntry(entryIndex, entry);
-        if(checkBoxDouble.isChecked())
-            day.setEntry(entryIndex + 1, entry);
-        Settings.settings.myTimeTable.setDay(dayIndex, day);
+        Settings.settings.myNewTimeTable.setEntry(Week.A, dayIndex, entryIndex, entryA);
+        Settings.settings.myNewTimeTable.setEntry(Week.B, dayIndex, entryIndex, entryB);
+        if(checkBoxDouble.isChecked()){
+            Settings.settings.myNewTimeTable.setEntry(Week.A, dayIndex, entryIndex + 1, entryA);
+            Settings.settings.myNewTimeTable.setEntry(Week.B, dayIndex, entryIndex + 1, entryB);
+        }
     }
 
     class SpinnerAdapter implements android.widget.SpinnerAdapter {
@@ -297,5 +313,4 @@ public class TimeTableEditActivity extends AppCompatActivity {
             return false;
         }
     }
-
 }

@@ -39,7 +39,7 @@ public class Settings implements Serializable {
     public boolean twoLineLabel = false;
 
     public ClassSymbols symbols = new ClassSymbols();
-    public de.coop.tgvertretung.utils.TimeTable myTimeTable = new de.coop.tgvertretung.utils.TimeTable();
+    public NewTimeTable myNewTimeTable = new NewTimeTable();
 
     public static void load(Context context) {
         settings = new Settings();
@@ -52,6 +52,7 @@ public class Settings implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        settings.initVariables();
     }
 
     public static void save() {
@@ -63,6 +64,11 @@ public class Settings implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void initVariables(){
+        if(myNewTimeTable == null)
+            myNewTimeTable = new NewTimeTable();
     }
 
     public static void print() {

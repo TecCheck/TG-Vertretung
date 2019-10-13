@@ -122,6 +122,7 @@
     <string name="subject">Fach</string>
     <string name="room">Raum</string>
     <string name="teacher">Lehrer/in</string>
+    <string name="share">Teilen</string>
 
     <!-- TimeTableEdit Activity -->
     <string name="week_a">Woche A</string>

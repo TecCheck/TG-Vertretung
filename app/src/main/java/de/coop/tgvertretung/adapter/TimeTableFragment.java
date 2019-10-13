@@ -14,7 +14,6 @@ import android.widget.TextView;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.activity.TimeTableEditActivity;
 import de.coop.tgvertretung.utils.Settings;
-import de.coop.tgvertretung.utils.TimeTable;
 import de.coop.tgvertretung.utils.Utils;
 
 public class TimeTableFragment extends Fragment implements RecyclerItemClickListener.OnItemClickListener {
@@ -61,10 +60,6 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         // Get index
         index = getArguments().getInt(INDEX);
 
-        if (Settings.settings.myTimeTable == null) {
-            Settings.settings.myTimeTable = new TimeTable();
-        }
-
         Log.d("Week", "A: " + isAWeek);
 
         label.setText(getResources().getStringArray(R.array.days)[index] + " " + (isAWeek ? getString(R.string.week_a) : getString(R.string.week_b)));
@@ -74,7 +69,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         nothing.setVisibility(View.GONE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        TimeTableEntryAdapter adapter = new TimeTableEntryAdapter(Settings.settings.myTimeTable.getDay(index), index, getContext());
+        TimeTableEntryAdapter adapter = new TimeTableEntryAdapter(index, getContext());
         adapter.isAWeek = isAWeek;
         RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(getContext(), recyclerView, this);
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);
@@ -87,7 +82,13 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
 
     boolean isAWeek() {
         int i = Utils.getView(Settings.settings.timeTable, Settings.settings.timeTable.getTables().size() - 1);
-        return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
+        try{
+            return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
+
+        }catch (ArrayIndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
