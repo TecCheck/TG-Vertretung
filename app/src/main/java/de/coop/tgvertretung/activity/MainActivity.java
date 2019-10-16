@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Settings.load(getApplicationContext());
-        AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
 
         new File(Utils.getUpdateDownloadFile(this)).delete();
         Utils.print(Utils.getUpdateDownloadFile(this));
@@ -171,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Utils.print("OnResume-------------------------------------------------------------------------------");
         super.onResume();
 
+        /*
+
         if (Settings.settings.loggedIn) {
             initUi();
             load();
@@ -180,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             startPagerView();
         }
+
+        */
     }
 
     @Override
