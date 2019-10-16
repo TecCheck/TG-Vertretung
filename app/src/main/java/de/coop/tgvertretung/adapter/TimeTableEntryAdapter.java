@@ -18,7 +18,6 @@ import de.sematre.tg.Week;
 class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.ViewHolder> {
     private Context context;
     private int dayOfWeek;
-    public boolean isAWeek;
 
     TimeTableEntryAdapter(int dayOfWeek, Context context) {
         this.dayOfWeek = dayOfWeek;
@@ -40,7 +39,7 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
         TextView entryText = cardView.findViewById(R.id.entry);
         TextView info = cardView.findViewById(R.id.info_text);
         ImageView imageView = cardView.findViewById(R.id.imageView2);
-        if(position == Settings.settings.myNewTimeTable.getDaySize(isAWeek ? Week.A : Week.B, dayOfWeek)){
+        if(position == Settings.settings.myNewTimeTable.getDaySize(TimeTableFragment.week, dayOfWeek)){
             imageView.setVisibility(View.VISIBLE);
             entryText.setVisibility(View.VISIBLE);
             entryText.setText(R.string.add);
@@ -59,7 +58,7 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
         schoolClass.setVisibility(View.VISIBLE);
         info.setVisibility(View.VISIBLE);
 
-        NewTimeTable.TimeTableDayEntry entry = Settings.settings.myNewTimeTable.getEntry(isAWeek ? Week.A : Week.B, dayOfWeek, position);
+        NewTimeTable.TimeTableDayEntry entry = Settings.settings.myNewTimeTable.getEntry(TimeTableFragment.week, dayOfWeek, position);
 
         if(entry.subject == null || entry.subject.isEmpty()){
             schoolClass.setText(R.string.item_empty);
@@ -78,8 +77,8 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
 
     @Override
     public int getItemCount() {
-        Log.wtf("getDaySize", "" + Settings.settings.myNewTimeTable.getDaySize(isAWeek ? Week.A : Week.B, dayOfWeek));
-        return Settings.settings.myNewTimeTable.getDaySize(isAWeek ? Week.A : Week.B, dayOfWeek) + 1;
+        Log.wtf("getDaySize", "" + Settings.settings.myNewTimeTable.getDaySize(TimeTableFragment.week, dayOfWeek));
+        return Settings.settings.myNewTimeTable.getDaySize(TimeTableFragment.week, dayOfWeek) + 1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

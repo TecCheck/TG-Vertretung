@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.activity.TimeTableEditActivity;
-import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
+import de.sematre.tg.Week;
 
 public class TimeTableFragment extends Fragment implements RecyclerItemClickListener.OnItemClickListener {
 
@@ -22,7 +22,9 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
     public static final String INDEX = "index";
     public int index;
     RecyclerView recyclerView;
-    boolean isAWeek;
+    TextView label;
+
+    public static Week week = null;
 
     public static TimeTableFragment newInstance(int sectionNumber) {
         Utils.printMethod("newInstance");
@@ -42,27 +44,28 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
 
         // Get the Views
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
-        TextView label = rootView.findViewById(R.id.label);
+        label = rootView.findViewById(R.id.label);
         TextView label2 = rootView.findViewById(R.id.label2);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
-        isAWeek = isAWeek();
 
         label.setClickable(true);
         label.setOnClickListener(v -> {
-            isAWeek = !isAWeek;
-            label.setText(getResources().getStringArray(R.array.days)[index] + " " + (isAWeek ? getString(R.string.week_a) : getString(R.string.week_b)));
+            if(week.equals(Week.A))
+                week = Week.B;
+            else
+                week = Week.A;
+            label.setText(getResources().getStringArray(R.array.days)[index] + " " + week.getLetter());
             TimeTableEntryAdapter adapter = (TimeTableEntryAdapter) recyclerView.getAdapter();
-            adapter.isAWeek = isAWeek;
             adapter.notifyDataSetChanged();
         });
 
         // Get index
         index = getArguments().getInt(INDEX);
 
-        Log.d("Week", "A: " + isAWeek);
+        Log.d("Week", "A: " + week);
 
-        label.setText(getResources().getStringArray(R.array.days)[index] + " " + (isAWeek ? getString(R.string.week_a) : getString(R.string.week_b)));
+        label.setText(getResources().getStringArray(R.array.days)[index] + " " + week.getLetter());
         label.setTextColor(getResources().getIntArray(R.array.day_of_week_color)[Math.min(index, 5)]);
         label2.setVisibility(View.INVISIBLE);
         label2.setHeight(14);
@@ -70,7 +73,6 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         TimeTableEntryAdapter adapter = new TimeTableEntryAdapter(index, getContext());
-        adapter.isAWeek = isAWeek;
         RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(getContext(), recyclerView, this);
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);
         recyclerView.setVisibility(View.VISIBLE);
@@ -80,15 +82,16 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         return rootView;
     }
 
-    boolean isAWeek() {
-        int i = Utils.getView(Settings.settings.timeTable, Settings.settings.timeTable.getTables().size() - 1);
-        try{
-            return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
 
-        }catch (ArrayIndexOutOfBoundsException e){
-            e.printStackTrace();
+        if(isVisibleToUser){
+            if(recyclerView != null && recyclerView.getAdapter() != null)
+                recyclerView.getAdapter().notifyDataSetChanged();
+            if(label != null)
+                label.setText(getResources().getStringArray(R.array.days)[index] + " " + week.getLetter());
         }
-        return true;
     }
 
     @Override

@@ -13,8 +13,11 @@ import android.widget.EditText;
 import java.util.Calendar;
 
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.adapter.TimeTableFragment;
 import de.coop.tgvertretung.adapter.TimeTablePagerAdapter;
 import de.coop.tgvertretung.utils.Settings;
+import de.coop.tgvertretung.utils.Utils;
+import de.sematre.tg.Week;
 
 public class TimeTableActivity extends AppCompatActivity {
 
@@ -29,6 +32,10 @@ public class TimeTableActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        if(TimeTableFragment.week == null){
+            TimeTableFragment.week = isAWeek() ? Week.A : Week.B;
+        }
+
         mPager = findViewById(R.id.container);
         PagerAdapter mPagerAdapter = new TimeTablePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -41,6 +48,17 @@ public class TimeTableActivity extends AppCompatActivity {
         }
 
         mPager.setCurrentItem(day);
+    }
+
+    boolean isAWeek() {
+        int i = Utils.getView(Settings.settings.timeTable, Settings.settings.timeTable.getTables().size() - 1);
+        try{
+            return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
+
+        }catch (ArrayIndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
