@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Utils.print("SwipeRefreshLayout");
         refreshLayout.setRefreshing(true);
 
-        if (!Downloader.download(2)) {
+        if (!Downloader.download(this)) {
             refreshLayout.setRefreshing(false);
         }
     }
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         new File(Utils.getUpdateDownloadFile(this)).delete();
         Utils.print(Utils.getUpdateDownloadFile(this));
-        Downloader.addLoadFinishedListener(this);
 
         //Load if Logged in
         if (Settings.settings.loggedIn) {
@@ -187,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onDestroy() {
-        Downloader.removeLoadFinishedListener(this);
         super.onDestroy();
     }
 
@@ -239,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void loadFinished(int status, int owner) {
+    public void loadFinished(int status) {
 
         Utils.print("Status: " + status);
 

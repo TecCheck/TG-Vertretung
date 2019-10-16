@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import de.sematre.tg.TG;
@@ -12,28 +11,16 @@ import de.sematre.tg.TG;
 public class Downloader extends Thread {
 
     private static Downloader dwdThread = null;
-    private static ArrayList<LoadFinishedListener> listeners = new ArrayList<>();
 
     private int status = 0;
-    private int owner = 0;
+    private LoadFinishedListener listener;
 
-    public static void addLoadFinishedListener(LoadFinishedListener listener) {
-        if (!listeners.contains(listener))
-            listeners.add(listener);
-    }
-
-    public static void removeLoadFinishedListener(LoadFinishedListener listener) {
-        if (!listeners.contains(listener))
-            listeners.remove(listener);
-    }
-
-    public static boolean download(int owner) {
+    public static boolean download(LoadFinishedListener listener) {
         Utils.printMethod("download");
 
         if (dwdThread == null || !dwdThread.isAlive()) {
             try {
-                dwdThread = new Downloader();
-                dwdThread.owner = owner;
+                dwdThread = new Downloader(listener);
                 dwdThread.start();
                 return true;
             } catch (Exception e) {
@@ -42,6 +29,10 @@ public class Downloader extends Thread {
         }
 
         return false;
+    }
+
+    private Downloader(LoadFinishedListener listener){
+        this.listener = listener;
     }
 
     @Override
@@ -71,9 +62,7 @@ public class Downloader extends Thread {
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
-            for (LoadFinishedListener listener : listeners) {
-                listener.loadFinished(status, owner);
-            }
+            listener.loadFinished(status);
             Utils.print("Runnable started");
         });
 
@@ -82,6 +71,6 @@ public class Downloader extends Thread {
     }
 
     public interface LoadFinishedListener {
-        void loadFinished(int status, int owner);
+        void loadFinished(int status);
     }
 }

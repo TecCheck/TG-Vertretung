@@ -44,13 +44,12 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
         isRunning = true;
         Log.d("BackgroundService", "Running");
 
-        Downloader.addLoadFinishedListener(this);
         Settings.prefs = getSharedPreferences("preferences", 0);
         Settings.load(context);
 
         handler = new Handler();
         runnable = () -> {
-            Downloader.download(1);
+            Downloader.download(this);
             if (!TEST)
                 handler.postDelayed(runnable, 600000);
             else
@@ -99,8 +98,8 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     }
 
     @Override
-    public void loadFinished(int status, int owner) {
-        if ((status == 0 && owner == 1) || TEST) {
+    public void loadFinished(int status) {
+        if (status == 0 || TEST) {
             Log.d("BackgroundService", "Download Status: " + status);
             makeNotification();
         }
