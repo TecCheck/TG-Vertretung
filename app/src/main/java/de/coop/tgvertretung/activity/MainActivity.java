@@ -1,6 +1,7 @@
 package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initUi() {
+        AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
 
         // Get views
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -108,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
         drawer.addDrawerListener(toggle);
         navigationView.getMenu().getItem(0).setChecked(true);
+        ColorStateList list0 = navigationView.getItemTextColor();
+        ColorStateList list1 = navigationView.getItemIconTintList();
+        navigationView.setItemTextColor(getResources().getColorStateList(R.color.nav_drawer_text));
+        navigationView.setItemIconTintList(getResources().getColorStateList(R.color.nav_drawer_icon));
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -133,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(i).getDate()));
             }
         });
-
-        AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
 
         startPagerView();
     }
