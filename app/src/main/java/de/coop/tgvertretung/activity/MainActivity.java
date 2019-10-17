@@ -139,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(i).getDate()));
             }
         });
-
-        startPagerView();
     }
 
     @Override
@@ -153,9 +151,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new File(Utils.getUpdateDownloadFile(this)).delete();
         Utils.print(Utils.getUpdateDownloadFile(this));
 
+        initUi();
+
         //Load if Logged in
         if (Settings.settings.loggedIn) {
-            initUi();
+            startPagerView();
             load();
 
             if (!BackgroundService.isRunning) {
@@ -173,19 +173,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Utils.print("OnResume-------------------------------------------------------------------------------");
         super.onResume();
 
-        /*
-
         if (Settings.settings.loggedIn) {
-            initUi();
+            startPagerView();
             load();
             if (!BackgroundService.isRunning) {
                 startService(new Intent(getApplicationContext(), BackgroundService.class));
             }
-        } else {
-            startPagerView();
         }
-
-        */
     }
 
     @Override
@@ -265,7 +259,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int i = mPager.getCurrentItem();
 
-        startPagerView();
+        PagerAdapter adapter = mPager.getAdapter();
+        if(adapter != null){
+            adapter.notifyDataSetChanged();
+        }
+
+        //startPagerView();
         Utils.print("Pager started!");
 
         if (firstPagerStart) {

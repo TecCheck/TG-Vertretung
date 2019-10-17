@@ -18,7 +18,7 @@ public class Settings implements Serializable {
     public static Settings settings = new Settings();
     public static SharedPreferences prefs = null;
 
-    public TimeTable timeTable = new TimeTable(new Date(System.currentTimeMillis()), new ArrayList<>());
+    public TimeTable timeTable = new TimeTable(new Date(0), new ArrayList<>());
     public Date lastClientRefresh = null;
 
     public String username = "";

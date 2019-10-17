@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.Date;
 
 import de.sematre.tg.TG;
+import de.sematre.tg.TimeTable;
 
 public class Downloader extends Thread {
 
@@ -44,13 +45,16 @@ public class Downloader extends Thread {
             Utils.print("Download started");
 
             Log.d("Download", "usr: " + Settings.settings.username + ", pw: " + Settings.settings.password);
-            Date date = Settings.settings.timeTable.getDate();
+
             TG tgv = new TG(Settings.settings.username, Settings.settings.password);
-            Settings.settings.timeTable = tgv.getTimeTable().summarize();
-            if (Settings.settings.timeTable.getDate().equals(date)) {
+            TimeTable timeTable = tgv.getTimeTable().summarize();
+
+            if (Settings.settings.timeTable.getDate().equals(timeTable.getDate())) {
                 // nothing new
                 status = 2;
             }
+
+            Settings.settings.timeTable = timeTable;
 
             Utils.print("ServerTime: " + Settings.settings.timeTable);
             Utils.print("Download finished");
