@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView lastServerRefresh = null;
     private SwipeRefreshLayout refreshLayout = null;
 
-
     private void showSnack(String text) {
         Snackbar.make(mPager, text, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void load() {
-
         Utils.print("SwipeRefreshLayout");
         refreshLayout.setRefreshing(true);
 
@@ -121,18 +119,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         refreshLayout.setOnRefreshListener(this::load);
         try {
             refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (IndexOutOfBoundsException e) {}
+
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-            }
+            public void onPageScrolled(int i, float v, int i1) {}
 
             @Override
-            public void onPageScrollStateChanged(int i) {
-            }
+            public void onPageScrollStateChanged(int i) {}
 
             @Override
             public void onPageSelected(int i) {
@@ -154,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initUi();
         startPagerView();
 
-        //Load if Logged in
+        // Load if Logged in
         if (Settings.settings.loggedIn) {
             //load();
             if (!BackgroundService.isRunning) {
@@ -187,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        //if the back button is pressed
+        // If the back button is pressed
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -243,9 +238,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         refreshLayout.setRefreshing(false);
         try {
             refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (IndexOutOfBoundsException e) {}
 
         if (status == 0) {
             showSnack(getString(R.string.connected));
@@ -258,9 +251,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int i = mPager.getCurrentItem();
 
         PagerAdapter adapter = mPager.getAdapter();
-        if(adapter != null){
-            adapter.notifyDataSetChanged();
-        }
+        if (adapter != null) adapter.notifyDataSetChanged();
 
         //startPagerView();
         Utils.print("Pager started!");

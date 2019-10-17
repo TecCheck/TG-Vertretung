@@ -104,7 +104,7 @@ public class Utils {
         return getView(timeTable, 0);
     }
 
-    public static String getUpdateDownloadFile(Context context){
+    public static String getUpdateDownloadFile(Context context) {
         return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/TGV.apk";
     }
 

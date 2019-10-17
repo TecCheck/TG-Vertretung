@@ -50,10 +50,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
         handler = new Handler();
         runnable = () -> {
             Downloader.download(this);
-            if (!TEST)
-                handler.postDelayed(runnable, 600000);
-            else
-                handler.postDelayed(runnable, 10000); //Test
+            handler.postDelayed(runnable, !TEST ? 600000 : 10000);
         };
 
         handler.postDelayed(runnable, 5000);
@@ -70,6 +67,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
@@ -81,12 +79,14 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
 
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
+
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(notificationId);
+
         notificationId = (int) new Random().nextLong();
         Notification notification = builder.build();
         notificationManager.notify(notificationId, notification);

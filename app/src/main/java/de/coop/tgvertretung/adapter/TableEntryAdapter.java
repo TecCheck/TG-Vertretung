@@ -16,6 +16,7 @@ import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 
 class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolder> {
+
     private Table table;
     private Context context;
 
@@ -64,16 +65,11 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
     }
 
     private String getEntryText(TableEntry entry, boolean extended) {
-
         String subject = Settings.settings.symbols.getSymbolName(entry.getSubject());
-        if(subject == null){
-            subject = entry.getSubject();
-        }
+        if (subject == null) subject = entry.getSubject();
 
         String replacementSubject = Settings.settings.symbols.getSymbolName(entry.getReplacementSubject());
-        if(replacementSubject == null){
-            replacementSubject = entry.getReplacementSubject();
-        }
+        if (replacementSubject == null) replacementSubject = entry.getReplacementSubject();
 
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
             return subject + (extended ? " in " + entry.getRoom() + " " : " ") + context.getString(R.string.no_class);

@@ -18,12 +18,12 @@ import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
-import de.sematre.tg.Week;
 
 public class TableFragment extends Fragment {
 
     private static final String INDEX = "index";
     public static ArgbEvaluator evaluator = null;
+
     private Table table = null;
 
     public static TableFragment newInstance(int sectionNumber) {
@@ -103,9 +103,7 @@ public class TableFragment extends Fragment {
 
     private String getLabelText() {
         String week = getContext().getString(R.string.week) + " ";
-        if (Settings.settings.showAB)
-            week += (table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B";
-        else week += table.getWeek().getLetter();
+        week += Settings.settings.showAB ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
 
         return Utils.getFormattedDate(table.getDate(), true, false) + " " + week;
     }
@@ -115,7 +113,7 @@ public class TableFragment extends Fragment {
     }
 
     private String getLabelTextSec() {
-        String week = Settings.settings.showAB ? ((table.getWeek() == Week.A || table.getWeek() == Week.C) ? "A" : "B") : table.getWeek().getLetter();
+        String week = Settings.settings.showAB ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
 
         String pattern = "dd.MM.yyyy";
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());

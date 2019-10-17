@@ -21,11 +21,12 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
 
     public static final String ENTRY_INDEX = "entry";
     public static final String INDEX = "index";
-    public int index;
-    RecyclerView recyclerView;
-    TextView label;
 
     public static Week week = null;
+    public int index;
+
+    private RecyclerView recyclerView;
+    private TextView label;
 
     public static TimeTableFragment newInstance(int sectionNumber) {
         Utils.printMethod("newInstance");
@@ -54,10 +55,12 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         layout2.setFocusable(true);
 
         layout2.setOnClickListener(v -> {
-            if(week.equals(Week.A))
+            if (week.equals(Week.A)) {
                 week = Week.B;
-            else
+            } else {
                 week = Week.A;
+            }
+
             label.setText(getResources().getStringArray(R.array.days)[index] + " " + week.getLetter());
             TimeTableEntryAdapter adapter = (TimeTableEntryAdapter) recyclerView.getAdapter();
             adapter.notifyDataSetChanged();
@@ -77,6 +80,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         TimeTableEntryAdapter adapter = new TimeTableEntryAdapter(index, getContext());
         RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(getContext(), recyclerView, this);
+
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);
         recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setLayoutManager(layoutManager);
@@ -88,12 +92,14 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser) return;
 
-        if(isVisibleToUser){
-            if(recyclerView != null && recyclerView.getAdapter() != null)
-                recyclerView.getAdapter().notifyDataSetChanged();
-            if(label != null)
-                label.setText(getResources().getStringArray(R.array.days)[index] + " " + week.getLetter());
+        if (recyclerView != null && recyclerView.getAdapter() != null) {
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
+
+        if (label != null) {
+            label.setText(getResources().getStringArray(R.array.days)[index] + " " + week.getLetter());
         }
     }
 
@@ -108,11 +114,10 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         Intent intent = new Intent(getContext(), TimeTableEditActivity.class);
         intent.putExtra(ENTRY_INDEX, position);
         intent.putExtra(INDEX, index);
+
         startActivity(intent);
     }
 
     @Override
-    public void onLongItemClick(View view, int position) {
-
-    }
+    public void onLongItemClick(View view, int position) {}
 }
