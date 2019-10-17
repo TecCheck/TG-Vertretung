@@ -152,12 +152,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Utils.print(Utils.getUpdateDownloadFile(this));
 
         initUi();
+        startPagerView();
 
         //Load if Logged in
         if (Settings.settings.loggedIn) {
-            startPagerView();
-            load();
-
+            //load();
             if (!BackgroundService.isRunning) {
                 startService(new Intent(getApplicationContext(), BackgroundService.class));
             }
@@ -174,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
         if (Settings.settings.loggedIn) {
-            startPagerView();
             load();
             if (!BackgroundService.isRunning) {
                 startService(new Intent(getApplicationContext(), BackgroundService.class));
