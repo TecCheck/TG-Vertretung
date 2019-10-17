@@ -34,6 +34,9 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
     public void onBindViewHolder(ViewHolder holder, int position) {
         CardView cardView = holder.cardView;
 
+        cardView.setClickable(true);
+        cardView.setFocusable(true);
+
         TextView schoolClass = cardView.findViewById(R.id.school_class);
         TextView hour = cardView.findViewById(R.id.hour);
         TextView entryText = cardView.findViewById(R.id.entry);

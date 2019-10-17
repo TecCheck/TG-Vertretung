@@ -3,6 +3,7 @@ package de.coop.tgvertretung.adapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,9 +49,11 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         TextView label2 = rootView.findViewById(R.id.label2);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
+        CardView layout2 = rootView.findViewById(R.id.layout2);
+        layout2.setClickable(true);
+        layout2.setFocusable(true);
 
-        label.setClickable(true);
-        label.setOnClickListener(v -> {
+        layout2.setOnClickListener(v -> {
             if(week.equals(Week.A))
                 week = Week.B;
             else
