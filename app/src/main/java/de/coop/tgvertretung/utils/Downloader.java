@@ -45,7 +45,7 @@ public class Downloader extends Thread {
             Log.d("Download", "usr: " + Settings.settings.username + ", pw: " + Settings.settings.password);
 
             TG tgv = new TG(Settings.settings.username, Settings.settings.password);
-            TimeTable timeTable = tgv.getTimeTable().summarize();
+            TimeTable timeTable = tgv.getTimeTable().summarize().sort();
 
             if (Settings.settings.timeTable.getDate().equals(timeTable.getDate())) {
                 // nothing new
