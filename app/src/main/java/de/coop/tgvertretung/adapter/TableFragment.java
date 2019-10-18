@@ -18,6 +18,7 @@ import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
+import de.sematre.tg.TimeTable;
 
 public class TableFragment extends Fragment {
 
@@ -51,10 +52,11 @@ public class TableFragment extends Fragment {
 
         // Filer the table if needed
         int index = getArguments().getInt(INDEX);
+        Table t = Settings.settings.timeTable.getTables().get(index);
         if (Settings.settings.useFilter) {
-            table = Utils.filterTable(Settings.settings.timeTable.getTables().get(index), Settings.settings.filter);
+            table = Utils.filterTable(t, Settings.settings.filter);
         } else {
-            table = Settings.settings.timeTable.getTables().get(index);
+            table = t;
         }
 
         if (evaluator == null) evaluator = new ArgbEvaluator();

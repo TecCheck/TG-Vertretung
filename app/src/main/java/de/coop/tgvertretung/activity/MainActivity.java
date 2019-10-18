@@ -108,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
         drawer.addDrawerListener(toggle);
         navigationView.getMenu().getItem(0).setChecked(true);
-        ColorStateList list0 = navigationView.getItemTextColor();
-        ColorStateList list1 = navigationView.getItemIconTintList();
         navigationView.setItemTextColor(getResources().getColorStateList(R.color.nav_drawer_text));
         navigationView.setItemIconTintList(getResources().getColorStateList(R.color.nav_drawer_icon));
         toggle.syncState();
@@ -119,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         refreshLayout.setOnRefreshListener(this::load);
         try {
             refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
-        } catch (IndexOutOfBoundsException e) {}
+        } catch (IndexOutOfBoundsException ignored) {}
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -168,7 +166,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
         if (Settings.settings.loggedIn) {
-            load();
+            //load();
+            startPagerView();
             if (!BackgroundService.isRunning) {
                 startService(new Intent(getApplicationContext(), BackgroundService.class));
             }
@@ -245,19 +244,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             showSnack(getString(R.string.nothing_new));
         }
 
-        int i = mPager.getCurrentItem();
+        int currentIndex = mPager.getCurrentItem();
+
 
         PagerAdapter adapter = mPager.getAdapter();
         if (adapter != null) adapter.notifyDataSetChanged();
-
         //startPagerView();
+
         Utils.print("Pager started!");
 
         if (firstPagerStart) {
             setTable(Utils.getView(Settings.settings.timeTable));
             firstPagerStart = false;
         } else {
-            setTable(i);
+            setTable(currentIndex);
         }
 
         Utils.print("Pager visible");

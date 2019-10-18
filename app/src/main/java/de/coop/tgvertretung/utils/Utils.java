@@ -50,15 +50,17 @@ public class Utils {
     public static Table filterTable(Table table, String filter) {
         ArrayList<TableEntry> entries = table.getTableEntries();
         ArrayList<TableEntry> filtered = new ArrayList<>();
-
         for (TableEntry entry : entries) {
             if (entry.getSchoolClass().toLowerCase().contains(filter.toLowerCase())) {
                 filtered.add(entry);
             }
         }
 
-        table.setTableEntries(filtered);
-        return table;
+        Table table1 = new Table();
+        table1.setDate(table.getDate());
+        table1.setWeek(table.getWeek());
+        table1.setTableEntries(filtered);
+        return table1;
     }
 
     public static void addRainbow(View view) {
