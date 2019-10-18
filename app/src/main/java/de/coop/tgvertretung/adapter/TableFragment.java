@@ -18,7 +18,6 @@ import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
-import de.sematre.tg.TimeTable;
 
 public class TableFragment extends Fragment {
 

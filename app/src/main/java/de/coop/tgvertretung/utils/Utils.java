@@ -23,10 +23,6 @@ public class Utils {
     private static final boolean SYSOUT = true;
     private static final boolean METHOD_SYSOUT = true;
 
-    public static int vertretungRGB = 0xff000000;
-    public static int nothingSize = 20;
-    public static int vertretungSize = 15;
-
     private static ArgbEvaluator evaluator = null;
 
     public static int getColor(Context context, Date date) {

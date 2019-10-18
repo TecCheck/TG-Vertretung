@@ -36,8 +36,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     private Button updateButton = null;
     private ProgressBar updateProgress = null;
 
-    private DownloadInfoTask downloadInfoTask = null;
-    private DownloadApkTask downloadApkTask = null;
     private boolean updateAvailable = false;
     private String updateUrl = "";
 
@@ -64,7 +62,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_checking);
         updateProgress.setIndeterminate(true);
-        downloadInfoTask = new DownloadInfoTask(this);
+        DownloadInfoTask downloadInfoTask = new DownloadInfoTask(this);
         downloadInfoTask.execute(getString(R.string.update_url));
     }
 
@@ -100,7 +98,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     private void downloadUpdate() {
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_downloading);
-        downloadApkTask = new DownloadApkTask(getApplicationContext(), this);
+        DownloadApkTask downloadApkTask = new DownloadApkTask(getApplicationContext(), this);
         downloadApkTask.execute(updateUrl);
     }
 
