@@ -236,9 +236,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Settings.save();
 
         refreshLayout.setRefreshing(false);
-        try {
-            refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
-        } catch (IndexOutOfBoundsException e) {}
 
         if (status == 0) {
             showSnack(getString(R.string.connected));
