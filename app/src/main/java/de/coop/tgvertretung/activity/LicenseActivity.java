@@ -35,9 +35,7 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         toolbar.addView(getButton());
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView text = findViewById(R.id.license_content_text);
 

@@ -21,44 +21,33 @@ import de.sematre.tg.Week;
 
 public class TimeTableActivity extends AppCompatActivity {
 
-    private ViewPager mPager = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if(TimeTableFragment.week == null){
+        if (TimeTableFragment.week == null) {
             TimeTableFragment.week = isAWeek() ? Week.A : Week.B;
         }
 
-        mPager = findViewById(R.id.container);
+        ViewPager mPager = findViewById(R.id.container);
         PagerAdapter mPagerAdapter = new TimeTablePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        day -= 2;
 
-        if(day < 0 || day > 4){
-            day = 0;
-        }
-
-        mPager.setCurrentItem(day);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
+        mPager.setCurrentItem((day >= 0 && day <= 4) ? day : 0);
     }
 
     boolean isAWeek() {
         int i = Utils.getView(Settings.settings.timeTable, Settings.settings.timeTable.getTables().size() - 1);
-        try{
+        try {
             return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
-
-        }catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
+            return true;
         }
-        return true;
     }
 
     @Override
@@ -73,7 +62,7 @@ public class TimeTableActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             super.onBackPressed();
             return true;
-        } else if(id == R.id.share){
+        } else if (id == R.id.share) {
             Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.dialog_share_time_table);
             dialog.setTitle(R.string.share);
@@ -81,7 +70,7 @@ public class TimeTableActivity extends AppCompatActivity {
             EditText editText = dialog.findViewById(R.id.editText);
             editText.setText(Settings.settings.myNewTimeTable.getJson().toString());
             dialog.show();
-        } else if(id == R.id.test){
+        } else if (id == R.id.test) {
             // reserved for testing
             //Settings.settings.myNewTimeTable.test();
         }

@@ -26,11 +26,11 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // current version
+        // Current version
         TextView versionNameTxt = findViewById(R.id.version_name_txt);
         versionNameTxt.setText(getVersion());
 
-        //set Link for GitHub website
+        // Set Link for GitHub website
         LinearLayout gitHub = findViewById(R.id.github);
         gitHub.setOnClickListener(v -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_url)));

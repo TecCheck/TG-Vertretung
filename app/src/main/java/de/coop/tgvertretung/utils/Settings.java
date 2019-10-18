@@ -52,6 +52,7 @@ public class Settings implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
         settings.initVariables();
     }
 
@@ -66,9 +67,10 @@ public class Settings implements Serializable {
         }
     }
 
-    public void initVariables(){
-        if(myNewTimeTable == null)
+    public void initVariables() {
+        if (myNewTimeTable == null) {
             myNewTimeTable = new NewTimeTable();
+        }
     }
 
     public static void print() {

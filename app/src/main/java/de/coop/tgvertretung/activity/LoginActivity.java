@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
                 status = 2;
             }
+
             final int i = status;
             Handler mainHandler = new Handler(Looper.getMainLooper());
             mainHandler.post(() -> loginFinished(i));
@@ -45,9 +46,9 @@ public class LoginActivity extends AppCompatActivity {
         loginThread.start();
     }
 
-    void loginFinished(int status){
+    void loginFinished(int status) {
         progressBar.setIndeterminate(false);
-        if(status == 0){
+        if (status == 0) {
             Settings.load(getApplicationContext());
             Settings.settings.password = pwText.getText().toString();
             Settings.settings.username = nmText.getText().toString();
@@ -55,11 +56,11 @@ public class LoginActivity extends AppCompatActivity {
             Settings.save();
             finish();
             //super.onBackPressed();
-        }else if(status == 1){
-            // credentials are incorrect
+        } else if (status == 1) {
+            // Credentials are incorrect
             Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        }else {
-            // phone is offline
+        } else {
+            // Phone is offline
             Snackbar.make(btn, getString(R.string.no_connection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
@@ -77,9 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         btn.setOnClickListener((view) -> login());
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
-        }
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
 
         Utils.print("ActionBar: " + actionBar);
     }

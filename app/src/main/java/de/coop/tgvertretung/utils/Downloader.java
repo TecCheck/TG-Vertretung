@@ -32,7 +32,7 @@ public class Downloader extends Thread {
         return false;
     }
 
-    private Downloader(LoadFinishedListener listener){
+    private Downloader(LoadFinishedListener listener) {
         this.listener = listener;
     }
 
