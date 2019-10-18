@@ -21,7 +21,7 @@ import de.coop.tgvertretung.utils.Utils;
 
 public class LicenseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static int toShow = 0;
+    public static final String EXTRA_TOSHOW = "toShow";
 
     private String url = "";
 
@@ -29,6 +29,8 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_license);
+
+        int toShow = getIntent().getIntExtra(EXTRA_TOSHOW, 0);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getStringArray(R.array.licenses)[toShow]);

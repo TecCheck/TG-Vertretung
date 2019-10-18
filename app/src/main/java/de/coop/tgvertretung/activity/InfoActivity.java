@@ -61,8 +61,9 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        LicenseActivity.toShow = i;
-        startActivity(new Intent(this, LicenseActivity.class));
+        Intent intent = new Intent(this, LicenseActivity.class);
+        intent.putExtra(LicenseActivity.EXTRA_TOSHOW, i);
+        startActivity(intent);
     }
 
     private String getVersion() {
