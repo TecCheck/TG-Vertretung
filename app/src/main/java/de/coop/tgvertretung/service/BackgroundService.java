@@ -32,7 +32,6 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     private Context context = this;
     private Handler handler = null;
 
-    private Downloader download = new Downloader();
     private int notificationId = 0;
 
     @Override
@@ -45,18 +44,13 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
         isRunning = true;
         Log.d("BackgroundService", "Running");
 
-        download.setLoadFinishedListener(this);
         Settings.prefs = getSharedPreferences("preferences", 0);
         Settings.load(context);
 
         handler = new Handler();
         runnable = () -> {
-            download = new Downloader(this);
-            download.download();
-            if (!TEST)
-                handler.postDelayed(runnable, 600000);
-            else
-                handler.postDelayed(runnable, 10000); //Test
+            Downloader.download(this);
+            handler.postDelayed(runnable, !TEST ? 600000 : 10000);
         };
 
         handler.postDelayed(runnable, 5000);
@@ -73,6 +67,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
@@ -84,12 +79,14 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
 
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
+
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(notificationId);
+
         notificationId = (int) new Random().nextLong();
         Notification notification = builder.build();
         notificationManager.notify(notificationId, notification);

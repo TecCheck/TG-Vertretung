@@ -15,8 +15,8 @@ The modern solution of substitution plan app.
 ## Versionen
 | Branch | Description | Build status |
 |:-:|:-:|:-:|
-| [Master](https://github.com/TecCheck/TG-Vertretung/tree/master) | Stable and faultless version. | [![MasterBuildStatus](https://img.shields.io/travis/TecCheck/TG-Vertretung/master.svg?style=flat-square)](https://travis-ci.com/TecCheck/TG-Vertretung/branches) |
-| [Development](https://github.com/TecCheck/TG-Vertretung/tree/development) | Always be up to date with the latest state of development. | [![DevelopmentBuildStatus](https://img.shields.io/travis/TecCheck/TG-Vertretung/development.svg?style=flat-square)](https://travis-ci.com/TecCheck/TG-Vertretung/branches) |
+| [Master](https://github.com/TecCheck/TG-Vertretung/tree/master) | Stable and faultless version. | [![MasterBuildStatus](https://img.shields.io/travis/com/TecCheck/TG-Vertretung/master?style=flat-square)](https://travis-ci.com/TecCheck/TG-Vertretung/branches) |
+| [Development](https://github.com/TecCheck/TG-Vertretung/tree/development) | Always be up to date with the latest state of development. | [![DevelopmentBuildStatus](https://img.shields.io/travis/com/TecCheck/TG-Vertretung/development?style=flat-square)](https://travis-ci.com/TecCheck/TG-Vertretung/branches) |
 
 ## Libraries
 - [Google Gson](https://github.com/google/gson) ([Apache 2 license](https://github.com/google/gson/blob/master/LICENSE)).

@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.adapter.TableFragment2;
+import de.coop.tgvertretung.adapter.TableFragment;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 import de.sematre.tg.TimeTable;
@@ -22,10 +22,6 @@ public class Utils {
 
     private static final boolean SYSOUT = true;
     private static final boolean METHOD_SYSOUT = true;
-
-    public static int vertretungRGB = 0xff000000;
-    public static int nothingSize = 20;
-    public static int vertretungSize = 15;
 
     private static ArgbEvaluator evaluator = null;
 
@@ -50,21 +46,23 @@ public class Utils {
     public static Table filterTable(Table table, String filter) {
         ArrayList<TableEntry> entries = table.getTableEntries();
         ArrayList<TableEntry> filtered = new ArrayList<>();
-
         for (TableEntry entry : entries) {
             if (entry.getSchoolClass().toLowerCase().contains(filter.toLowerCase())) {
                 filtered.add(entry);
             }
         }
 
-        table.setTableEntries(filtered);
-        return table;
+        Table table1 = new Table();
+        table1.setDate(table.getDate());
+        table1.setWeek(table.getWeek());
+        table1.setTableEntries(filtered);
+        return table1;
     }
 
     public static void addRainbow(View view) {
         if (evaluator == null) evaluator = new ArgbEvaluator();
 
-        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "textColor", TableFragment2.evaluator, 0xff0000ff, 0xffff0000, 0xff00ff00);
+        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "textColor", TableFragment.evaluator, 0xff0000ff, 0xffff0000, 0xff00ff00);
         colorFade.setRepeatMode(ObjectAnimator.REVERSE);
         colorFade.setRepeatCount(ObjectAnimator.INFINITE);
         colorFade.setDuration(1200);
@@ -81,7 +79,7 @@ public class Utils {
         return format.format(date);
     }
 
-    public static int getView(TimeTable timeTable) {
+    public static int getView(TimeTable timeTable, int defaultValue) {
         Utils.printMethod("getView");
 
         int i = 0;
@@ -97,10 +95,14 @@ public class Utils {
         }
 
         Utils.print("Date not found");
-        return 0;
+        return defaultValue;
     }
 
-    public static String getUpdateDownloadFile(Context context){
+    public static int getView(TimeTable timeTable) {
+        return getView(timeTable, 0);
+    }
+
+    public static String getUpdateDownloadFile(Context context) {
         return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/TGV.apk";
     }
 

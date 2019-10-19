@@ -1,6 +1,5 @@
 package de.coop.tgvertretung.activity;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -24,7 +23,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     private Preference showServerRefresh = null;
 
     private ListPreference themeMode = null;
-    private Preference useOldLayout = null;
     private Preference twoLineLabel = null;
     private Preference rainbow = null;
 
@@ -34,8 +32,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         ActionBar actionBar = AppCompatDelegate.create(this, null).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            if (Settings.settings.themeMode == 2)
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
         addPreferencesFromResource(R.xml.activity_settings);
@@ -49,7 +45,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh = findPreference("show_server_refresh");
 
         themeMode = (ListPreference) findPreference("theme_mode");
-        useOldLayout = findPreference("old_layout");
         twoLineLabel = findPreference("two_line_label");
         rainbow = findPreference("rainbow");
 
@@ -65,7 +60,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh.setOnPreferenceChangeListener(this);
 
         themeMode.setOnPreferenceChangeListener(this);
-        useOldLayout.setOnPreferenceChangeListener(this);
         twoLineLabel.setOnPreferenceChangeListener(this);
         rainbow.setOnPreferenceChangeListener(this);
 
@@ -79,7 +73,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
 
         themeMode.setDefaultValue(Settings.settings.themeMode);
-        useOldLayout.setDefaultValue(Settings.settings.useOldLayout);
         twoLineLabel.setDefaultValue(Settings.settings.twoLineLabel);
         rainbow.setDefaultValue(Settings.settings.rainbow);
 
@@ -118,13 +111,11 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.showServerRefresh = (boolean) value;
         } else if (preference.getKey().equals(showAB.getKey())) {
             Settings.settings.showAB = (boolean) value;
-        } else if (preference.getKey().equals(useOldLayout.getKey())) {
-            Settings.settings.useOldLayout = (boolean) value;
         } else if (preference.getKey().equals(rainbow.getKey())) {
             Settings.settings.rainbow = (boolean) value;
         } else if (preference.getKey().equals(twoLineLabel.getKey())) {
             Settings.settings.twoLineLabel = (boolean) value;
-        }else if(preference.getKey().equals(themeMode.getKey())){
+        } else if (preference.getKey().equals(themeMode.getKey())) {
             Settings.settings.themeMode = themeMode.findIndexOfValue((String) value);
             themeMode.setSummary(getResources().getStringArray(R.array.setting_theme_modes)[Settings.settings.themeMode]);
             AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);

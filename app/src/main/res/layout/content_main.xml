@@ -8,28 +8,8 @@
     tools:context="de.coop.tgvertretung.activity.MainActivity">
 
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/load_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="102dp"
-            android:layout_height="99dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
     <LinearLayout
-        android:id="@+id/stdView"
+        android:id="@+id/stdView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -48,8 +28,7 @@
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible">
-            </android.support.v4.view.ViewPager>
+                android:visibility="visible"></android.support.v4.view.ViewPager>
 
         </de.coop.tgvertretung.adapter.CustomSwipeRefreshLayout>
 

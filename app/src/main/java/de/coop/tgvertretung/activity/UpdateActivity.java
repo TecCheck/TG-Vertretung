@@ -3,7 +3,6 @@ package de.coop.tgvertretung.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,9 +26,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
-
 
 public class UpdateActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,8 +36,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     private Button updateButton = null;
     private ProgressBar updateProgress = null;
 
-    private DownloadInfoTask downloadInfoTask = null;
-    private DownloadApkTask downloadApkTask = null;
     private boolean updateAvailable = false;
     private String updateUrl = "";
 
@@ -49,12 +44,8 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        ActionBar actionBar = getDelegate().getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            if (Settings.settings.themeMode == 2)
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
-        }
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         updateStatus = findViewById(R.id.update_status);
         updateButton = findViewById(R.id.update_button);
@@ -64,7 +55,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         updateButton.setEnabled(false);
 
         PATH = Utils.getUpdateDownloadFile(this);
-
         searchForUpdate();
     }
 
@@ -72,13 +62,13 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_checking);
         updateProgress.setIndeterminate(true);
-        downloadInfoTask = new DownloadInfoTask(this);
+        DownloadInfoTask downloadInfoTask = new DownloadInfoTask(this);
         downloadInfoTask.execute(getString(R.string.update_url));
     }
 
     private void searchForUpdateFinished(int status, String version, String link) {
         updateProgress.setIndeterminate(false);
-        if (status == 0) {
+        if (status == 0 || version == null) {
             updateStatus.setText(R.string.update_status_failed);
             updateButton.setText(R.string.update_button_try_again);
             updateButton.setEnabled(true);
@@ -108,13 +98,12 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     private void downloadUpdate() {
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_downloading);
-        downloadApkTask = new DownloadApkTask(getApplicationContext(), this);
+        DownloadApkTask downloadApkTask = new DownloadApkTask(getApplicationContext(), this);
         downloadApkTask.execute(updateUrl);
     }
 
     private void downloadUpdateFinished(int status) {
-        if (status == 0)
-            return;
+        if (status == 0) return;
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(new File(PATH)), "application/vnd.android.package-archive");
@@ -154,9 +143,10 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     static class DownloadInfoTask extends AsyncTask<String, Integer, String> {
-        String version;
-        String link;
-        UpdateActivity activity;
+
+        private String version;
+        private String link;
+        private UpdateActivity activity;
 
         DownloadInfoTask(UpdateActivity activity) {
             this.activity = activity;
@@ -184,7 +174,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
     static class DownloadApkTask extends AsyncTask<String, Integer, String> {
 
-        UpdateActivity activity;
+        private UpdateActivity activity;
         private Context context;
         private PowerManager.WakeLock mWakeLock;
 
@@ -195,7 +185,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         protected String doInBackground(String... sUrl) {
-
             InputStream input = null;
             OutputStream output = null;
             HttpURLConnection connection = null;
@@ -205,18 +194,17 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
-                // expect HTTP 200 OK, so we don't mistakenly save error report
+                // Expect HTTP 200 OK, so we don't mistakenly save error report
                 // instead of the file
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return "Server returned HTTP " + connection.getResponseCode()
-                            + " " + connection.getResponseMessage();
+                    return "Server returned HTTP " + connection.getResponseCode() + " " + connection.getResponseMessage();
                 }
 
-                // this will be useful to display download percentage
+                // This will be useful to display download percentage
                 // might be -1: server did not report the length
                 int fileLength = connection.getContentLength();
 
-                // download the file
+                // Download the file
                 input = connection.getInputStream();
                 output = new FileOutputStream(PATH);
 
@@ -256,11 +244,11 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // take CPU lock to prevent CPU from going off if the user
+
+            // Take CPU lock to prevent CPU from going off if the user
             // presses the power button during download
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                    getClass().getName());
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
             mWakeLock.acquire(12000);
             activity.updateProgress.setIndeterminate(false);
         }
@@ -268,7 +256,8 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
-            // if we get here, length is known, now set indeterminate to false
+
+            // If we get here, length is known, now set indeterminate to false
             activity.updateProgress.setIndeterminate(false);
             activity.updateProgress.setMax(100);
             activity.updateProgress.setProgress(progress[0]);
@@ -278,10 +267,11 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         protected void onPostExecute(String result) {
             mWakeLock.release();
             activity.downloadUpdateFinished(1);
-            if (result != null)
+            if (result != null) {
                 Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
-            else
+            } else {
                 Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

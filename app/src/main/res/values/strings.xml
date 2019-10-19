@@ -6,18 +6,21 @@
     <string name="title_activity_license">OpenSource-License</string>
     <string name="title_activity_update">Update</string>
     <string name="title_activity_info">Über</string>
-    <string name="title_notification">TG-Vertretung</string>
+    <string name="title_activity_symbols">Kürzel</string>
+    <string name="title_activity_time_table">Stundenplan</string>
+    <string name="title_activity_time_table_edit">Stunde bearbeiten</string>
 
     <!-- Snack Strings -->
-    <string name="connected">Daten aktualisiert</string>
-    <string name="no_connection">Keine Verbindung!</string>
     <string name="nothing_new">Nichts neues gefunden</string>
-
-    <!-- Exit Message -->
     <string name="exit_title">Wirklich Beenden?</string>
     <string name="exit_message">Willst du die App wirklich beenden?</string>
 
+    <!-- Exit Message -->
+    <string name="connected">Daten aktualisiert</string>
+    <string name="no_connection">Keine Verbindung!</string>
+
     <!-- Notification -->
+    <string name="title_notification">TG-Vertretung</string>
     <string name="channel_name">TG-Vertretung</string>
     <string name="channel_description">Neue Vertretungspläne</string>
     <string name="new_content">Neuer Vertretungsplan verfügbar</string>
@@ -32,9 +35,11 @@
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_info">Über</string>
     <string name="nav_login">Anmelden</string>
-    <string name="nav_update">Update</string>
 
     <!-- Main Activity content -->
+    <string name="nav_update">Update</string>
+    <string name="nav_symbols">Kürzel</string>
+    <string name="nav_time_table">Stundenplan</string>
     <string name="none">Das solltest du nicht sehen :(</string>
     <string name="nothing_saved">Nichts gespeichert!</string>
     <string name="nothing">Keine Vertretungen</string>
@@ -59,6 +64,7 @@
     <string name="setting_two_line_label">Label in zwei Zeilen aufteilen</string>
     <string name="setting_requires_restart">Neustart der App erforderlich</string>
     <string name="setting_rainbow">RAINBOW!</string>
+
     <array name="setting_theme_modes">
         <item>Standard</item>
         <item>Light</item>
@@ -76,6 +82,7 @@
     <string name="christoph" translatable="false">Christoph</string>
     <string name="licenses_name">OpenSource-Lizenzen</string>
     <string name="licenses_txt">OpenSource Lizenzen anzeigen</string>
+
     <array name="licenses">
         <item>Gson</item>
         <item>Jsoup</item>
@@ -88,7 +95,7 @@
     </array>
 
     <!-- Update Activity content -->
-    <string name="update_url">https://raw.githubusercontent.com/TecCheck/TG-Vertretung/development/Update.txt</string>
+    <string name="update_url">https://gist.githubusercontent.com/TecCheck/d5dfdb74a5f7418d97e0ac9d28513fcb/raw/</string>
     <string name="update_status_checking">Suche nach Update</string>
     <string name="update_status_available">Update verfügbar</string>
     <string name="update_status_newest">Neueste Version installiert</string>
@@ -103,4 +110,34 @@
     <string name="action_sign_in">Anmelden</string>
     <string name="action_sign_in_short">Anmelden</string>
     <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
+
+    <!-- Subject Symbols Activity -->
+    <string name="symbol">Kürzel</string>
+    <string name="symbol_name">Name</string>
+    <string name="add_symbol">Kürzel Hinzufügen</string>
+    <string name="please_add_text">Bitte gib etwas in beide Felder ein.</string>
+
+    <!-- Timetable Activity-->
+    <string name="item_empty">Frei</string>
+    <string name="subject">Fach</string>
+    <string name="room">Raum</string>
+    <string name="teacher">Lehrer/in</string>
+    <string name="share">Teilen</string>
+
+    <!-- TimeTableEdit Activity -->
+    <string name="week_a">Woche A</string>
+    <string name="week_b">Woche B</string>
+    <string name="empty">Frei</string>
+
+    <!-- Misc -->
+    <string name="remove">Entfernen</string>
+    <string name="add">Hinzufügen</string>
+    <string name="double_class">Doppelstunde</string>
+    <string-array name="days">
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+    </string-array>
 </resources>

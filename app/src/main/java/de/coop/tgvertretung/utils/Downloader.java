@@ -4,34 +4,23 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import java.util.Date;
-
 import de.sematre.tg.TG;
+import de.sematre.tg.TimeTable;
 
 public class Downloader extends Thread {
 
     private static Downloader dwdThread = null;
 
-    private LoadFinishedListener listener = null;
     private int status = 0;
+    private LoadFinishedListener listener;
 
-    public Downloader(LoadFinishedListener listener) {
-        this.listener = listener;
-    }
-
-    public Downloader() {}
-
-    public void setLoadFinishedListener(LoadFinishedListener listener) {
-        this.listener = listener;
-    }
-
-    public boolean download() {
+    public static boolean download(LoadFinishedListener listener) {
         Utils.printMethod("download");
 
         if (dwdThread == null || !dwdThread.isAlive()) {
             try {
-                dwdThread = this;
-                start();
+                dwdThread = new Downloader(listener);
+                dwdThread.start();
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -39,6 +28,10 @@ public class Downloader extends Thread {
         }
 
         return false;
+    }
+
+    private Downloader(LoadFinishedListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -50,13 +43,16 @@ public class Downloader extends Thread {
             Utils.print("Download started");
 
             Log.d("Download", "usr: " + Settings.settings.username + ", pw: " + Settings.settings.password);
-            Date date = Settings.settings.timeTable.getDate();
+
             TG tgv = new TG(Settings.settings.username, Settings.settings.password);
-            Settings.settings.timeTable = tgv.getTimeTable().summarize();
-            if (Settings.settings.timeTable.getDate().equals(date)) {
+            TimeTable timeTable = tgv.getTimeTable().summarize().sort();
+
+            if (Settings.settings.timeTable.getDate().equals(timeTable.getDate())) {
                 // nothing new
                 status = 2;
             }
+
+            Settings.settings.timeTable = timeTable;
 
             Utils.print("ServerTime: " + Settings.settings.timeTable);
             Utils.print("Download finished");
@@ -68,8 +64,7 @@ public class Downloader extends Thread {
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
-            if (listener != null)
-                listener.loadFinished(status);
+            listener.loadFinished(status);
             Utils.print("Runnable started");
         });
 

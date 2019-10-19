@@ -1,10 +1,10 @@
 package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -17,12 +17,11 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
 
 public class LicenseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static int toShow = 0;
+    public static final String EXTRA_TOSHOW = "toShow";
 
     private String url = "";
 
@@ -31,21 +30,14 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_license);
 
+        int toShow = getIntent().getIntExtra(EXTRA_TOSHOW, 0);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
-        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
-        CollapsingToolbarLayout toolbarLayout = findViewById(R.id.toolbar_layout);
         toolbar.setTitle(getResources().getStringArray(R.array.licenses)[toShow]);
         toolbar.addView(getButton());
-        if (Settings.settings.themeMode == 2) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
-            appBarLayout.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
-            toolbarLayout.setBackgroundColor(getResources().getColor(R.color.toolbarDark));
-            toolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.toolbarDark));
-            toolbarLayout.setContentScrimColor(getResources().getColor(R.color.toolbarDark));
-        }
-
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         TextView text = findViewById(R.id.license_content_text);
 
@@ -73,11 +65,13 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
 
     private ImageButton getButton() {
         ImageButton button = new ImageButton(getApplicationContext());
-        button.setImageDrawable(getResources().getDrawable(R.drawable.ic_github));
+        Drawable d = getResources().getDrawable(R.drawable.ic_github);
+        d.setTint(getResources().getColor(R.color.icon_light));
+        button.setImageDrawable(d);
         button.setElevation(0.3f);
         button.setBackgroundColor(0x00000000);
 
-        Toolbar.LayoutParams params = new Toolbar.LayoutParams(100, 100, Gravity.END | Gravity.BOTTOM);
+        Toolbar.LayoutParams params = new Toolbar.LayoutParams(100, 100, Gravity.END | Gravity.CENTER_VERTICAL);
         button.setLayoutParams(params);
         button.setOnClickListener(this);
 

@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.sematre.tg.Table;
 import de.sematre.tg.TimeTable;
 
 public class Settings implements Serializable {
@@ -19,7 +18,7 @@ public class Settings implements Serializable {
     public static Settings settings = new Settings();
     public static SharedPreferences prefs = null;
 
-    public TimeTable timeTable = new TimeTable(new Date(System.currentTimeMillis()), new ArrayList<>());
+    public TimeTable timeTable = new TimeTable(new Date(0), new ArrayList<>());
     public Date lastClientRefresh = null;
 
     public String username = "";
@@ -36,9 +35,11 @@ public class Settings implements Serializable {
     public boolean showServerRefresh = true;
 
     public int themeMode = 0;
-    public boolean useOldLayout = false;
     public boolean rainbow = false;
     public boolean twoLineLabel = false;
+
+    public ClassSymbols symbols = new ClassSymbols();
+    public NewTimeTable myNewTimeTable = new NewTimeTable();
 
     public static void load(Context context) {
         settings = new Settings();
@@ -47,11 +48,12 @@ public class Settings implements Serializable {
         try {
             String settingsString = prefs.getString(PREFS_KEY, ObjectSerializer.serialize(settings));
             settings = (Settings) ObjectSerializer.deserialize(settingsString);
-
             print();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        settings.initVariables();
     }
 
     public static void save() {
@@ -62,6 +64,12 @@ public class Settings implements Serializable {
             editor.apply();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void initVariables() {
+        if (myNewTimeTable == null) {
+            myNewTimeTable = new NewTimeTable();
         }
     }
 

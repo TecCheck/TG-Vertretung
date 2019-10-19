@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
@@ -15,6 +16,7 @@ import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 
 class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolder> {
+
     private Table table;
     private Context context;
 
@@ -25,7 +27,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
 
     @Override
     public TableEntryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_item, parent, false);
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.table_entry_item, parent, false);
         return new ViewHolder(cardView);
     }
 
@@ -38,7 +40,9 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         TextView hour = cardView.findViewById(R.id.hour);
         TextView entryText = cardView.findViewById(R.id.entry);
         TextView info = cardView.findViewById(R.id.info_text);
+        ImageView imageView = cardView.findViewById(R.id.imageView2);
 
+        imageView.setVisibility(View.GONE);
         schoolClass.setText(entry.getSchoolClass());
         hour.setText(entry.getTime());
         entryText.setText(getEntryText(entry, Settings.settings.extended));
@@ -61,11 +65,17 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
     }
 
     private String getEntryText(TableEntry entry, boolean extended) {
+        String subject = Settings.settings.symbols.getSymbolName(entry.getSubject());
+        if (subject == null) subject = entry.getSubject();
+
+        String replacementSubject = Settings.settings.symbols.getSymbolName(entry.getReplacementSubject());
+        if (replacementSubject == null) replacementSubject = entry.getReplacementSubject();
+
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
-            return entry.getSubject() + (extended ? " in " + entry.getRoom() + " " : " ") + context.getString(R.string.no_class);
+            return subject + (extended ? " in " + entry.getRoom() + " " : " ") + context.getString(R.string.no_class);
         }
 
-        return entry.getReplacementSubject() + " in " + entry.getReplacementRoom() + (extended ? (" statt " + entry.getSubject() + " in " + entry.getRoom()) : "");
+        return replacementSubject + " in " + entry.getReplacementRoom() + (extended ? (" statt " + subject + " in " + entry.getRoom()) : "");
     }
 
     @Override

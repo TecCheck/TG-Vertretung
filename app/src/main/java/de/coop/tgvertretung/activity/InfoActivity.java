@@ -3,7 +3,6 @@ package de.coop.tgvertretung.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -14,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.Settings;
 
 public class InfoActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
 
@@ -23,18 +21,16 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
 
-        ActionBar actionBar = getDelegate().getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            if (Settings.settings.themeMode == 2)
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
         }
 
-        // current version
+        // Current version
         TextView versionNameTxt = findViewById(R.id.version_name_txt);
         versionNameTxt.setText(getVersion());
 
-        //set Link for GitHub website
+        // Set Link for GitHub website
         LinearLayout gitHub = findViewById(R.id.github);
         gitHub.setOnClickListener(v -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_url)));
@@ -65,8 +61,9 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        LicenseActivity.toShow = i;
-        startActivity(new Intent(this, LicenseActivity.class));
+        Intent intent = new Intent(this, LicenseActivity.class);
+        intent.putExtra(LicenseActivity.EXTRA_TOSHOW, i);
+        startActivity(intent);
     }
 
     private String getVersion() {

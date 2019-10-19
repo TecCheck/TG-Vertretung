@@ -1,14 +1,16 @@
 package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
@@ -18,38 +20,35 @@ import de.sematre.dsbmobile.DSBMobile;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static boolean firstTime = true;
     private Button btn = null;
     private EditText pwText = null;
     private EditText nmText = null;
+    private ProgressBar progressBar = null;
 
     private void login() {
-        Boolean[] success = {false};
+        progressBar.setIndeterminate(true);
         Thread loginThread = new Thread(() -> {
+            int status;
             try {
                 new DSBMobile(nmText.getText().toString(), pwText.getText().toString());
-                success[0] = true;
+                status = 0;
             } catch (IllegalArgumentException e) {
-                success[0] = false;
+                status = 1;
             } catch (Exception e) {
                 e.printStackTrace();
-                success[0] = null;
+                status = 2;
             }
+
+            final int i = status;
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            mainHandler.post(() -> loginFinished(i));
         }, "Login-Thread");
+        loginThread.start();
+    }
 
-        try {
-            loginThread.start();
-            loginThread.join();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-        if (success[0] == null) {
-            // phone is offline
-            Snackbar.make(btn, getString(R.string.no_connection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        } else if (success[0]) {
-            // credentials are correct
+    void loginFinished(int status) {
+        progressBar.setIndeterminate(false);
+        if (status == 0) {
             Settings.load(getApplicationContext());
             Settings.settings.password = pwText.getText().toString();
             Settings.settings.username = nmText.getText().toString();
@@ -57,9 +56,12 @@ public class LoginActivity extends AppCompatActivity {
             Settings.save();
             finish();
             //super.onBackPressed();
-        } else {
-            // credentials are incorrect
+        } else if (status == 1) {
+            // Credentials are incorrect
             Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        } else {
+            // Phone is offline
+            Snackbar.make(btn, getString(R.string.no_connection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
@@ -70,36 +72,21 @@ public class LoginActivity extends AppCompatActivity {
 
         pwText = findViewById(R.id.password);
         nmText = findViewById(R.id.username);
+        progressBar = findViewById(R.id.login_progress);
 
         btn = findViewById(R.id.sign_in_button);
         btn.setOnClickListener((view) -> login());
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(!firstTime);
-            if (Settings.settings.themeMode == 2)
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.toolbarDark)));
-        }
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
 
         Utils.print("ActionBar: " + actionBar);
     }
 
     @Override
     public void onBackPressed() {
-        if (firstTime) {
+        if (!Settings.settings.loggedIn) {
             Utils.print("EXIT-------------------------------------------------------------------------");
-            /*
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.exit_title)
-                    .setMessage(R.string.exit_message)
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            System.exit(1);
-                        }
-                    }).create().show();
-                    */
             Intent homeIntent = new Intent(Intent.ACTION_MAIN);
             homeIntent.addCategory(Intent.CATEGORY_HOME);
             homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -112,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!firstTime) {
+        if (Settings.settings.loggedIn) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 super.onBackPressed();
