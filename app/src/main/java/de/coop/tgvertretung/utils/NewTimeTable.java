@@ -1,9 +1,6 @@
 package de.coop.tgvertretung.utils;
 
-import android.util.Log;
-
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +15,10 @@ public class NewTimeTable implements Serializable {
 
     public NewTimeTable() {
         init();
+    }
+
+    public NewTimeTable(HashMap<Week, ArrayList<ArrayList<TimeTableDayEntry>>> weeks){
+        this.weeks = weeks;
     }
 
     private void init() {
@@ -69,88 +70,7 @@ public class NewTimeTable implements Serializable {
     }
 
     public JsonArray getJson() {
-        return getJsonTimeTable(weeks.get(Week.A), weeks.get(Week.B));
-    }
-
-    public static JsonObject getJsonEntry(TimeTableDayEntry entry, TimeTableDayEntry entryB) {
-        JsonObject jsonObject = new JsonObject();
-        if (notEmpty(entry.subject)) {
-            jsonObject.addProperty("s", entry.subject);
-
-            if (notEmpty(entry.room)) jsonObject.addProperty("r", entry.room);
-            if (notEmpty(entry.teacher)) jsonObject.addProperty("t", entry.teacher);
-        }
-
-        if (entryB != null) {
-            if (!entry.subject.equals(entryB.subject))
-                jsonObject.addProperty("sB", entryB.subject);
-            if (!entry.room.equals(entryB.room))
-                jsonObject.addProperty("rB", entryB.room);
-            if (!entry.teacher.equals(entryB.teacher))
-                jsonObject.addProperty("tB", entryB.teacher);
-        }
-
-        Log.d("getJsonEntry", jsonObject.toString());
-        return jsonObject;
-    }
-
-    public static JsonArray getJsonDay(ArrayList<TimeTableDayEntry> day, ArrayList<TimeTableDayEntry> dayB) {
-        JsonArray jsonArray = new JsonArray();
-        ArrayList<JsonObject> objects = new ArrayList<>();
-        for (int i = 0; i < day.size(); i++) {
-            objects.add(getJsonEntry(day.get(i), dayB.get(i)));
-        }
-
-        for (int i = 0; i < objects.size(); i++) {
-            JsonObject jsonObject1 = objects.get(i);
-
-            if (!(i + 1 >= objects.size())) {
-                JsonObject jsonObject2 = objects.get(i + 1);
-                if (equalJson(jsonObject1, jsonObject2)) {
-                    jsonArray.add(jsonObject1);
-                    Log.d("Equals", jsonObject1 + ", " + jsonObject2);
-                    i++;
-                } else {
-                    Log.d("Not Equals", jsonObject1 + ", " + jsonObject2);
-
-                    jsonObject1.addProperty("d", false);
-                    jsonArray.add(jsonObject1);
-                }
-            } else {
-                jsonObject1.addProperty("d", false);
-                jsonArray.add(jsonObject1);
-            }
-        }
-
-        Log.d("getJsonDay", jsonArray.toString());
-        return jsonArray;
-    }
-
-    public static JsonArray getJsonTimeTable(ArrayList<ArrayList<TimeTableDayEntry>> timeTable, ArrayList<ArrayList<TimeTableDayEntry>> timeTableB) {
-        Log.d("getJsonTimeTable", "Size: " + timeTable.size());
-
-        JsonArray jsonArray = new JsonArray();
-        for (int i = 0; i < timeTable.size(); i++) {
-            Log.d("getJsonTimeTable", "Index: " + i);
-            jsonArray.add(getJsonDay(timeTable.get(i), timeTableB.get(i)));
-        }
-
-        Log.d("getJsonTimeTable", jsonArray.toString());
-        return jsonArray;
-    }
-
-    public static boolean notEmpty(String string) {
-        return !(string == null || string.isEmpty());
-    }
-
-    public static boolean equalJson(JsonObject jsonObject1, JsonObject jsonObject2) {
-        if (!(jsonObject1 == null || jsonObject2 == null)) {
-            return (jsonObject1.toString().equals(jsonObject2.toString()));
-        } else if (jsonObject1 == null && jsonObject2 == null) {
-            return true;
-        }
-
-        return false;
+        return NewTimeTableSerializer.getJsonTimeTable(weeks.get(Week.A), weeks.get(Week.B));
     }
 
     public static class TimeTableDayEntry implements Serializable {

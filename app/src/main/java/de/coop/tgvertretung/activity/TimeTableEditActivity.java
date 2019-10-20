@@ -22,6 +22,7 @@ import android.widget.TextView;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.TimeTableFragment;
 import de.coop.tgvertretung.utils.NewTimeTable;
+import de.coop.tgvertretung.utils.NewTimeTableSerializer;
 import de.coop.tgvertretung.utils.Settings;
 import de.sematre.tg.Week;
 
@@ -165,7 +166,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
             return;
         }
 
-        boolean emptyA = !NewTimeTable.notEmpty(entryA.subject);
+        boolean emptyA = !NewTimeTableSerializer.notEmpty(entryA.subject);
         spinnerA.setSelection(emptyA ? 0 : (Settings.settings.symbols.getSymbolIndex(entryA.subject) + 1));
 
         editRoomA.setText(entryA.room);
@@ -173,7 +174,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
         if (entryB == null) return;
 
-        boolean emptyB = !NewTimeTable.notEmpty(entryB.subject);
+        boolean emptyB = !NewTimeTableSerializer.notEmpty(entryB.subject);
         spinnerB.setSelection(emptyB ? 0 : (Settings.settings.symbols.getSymbolIndex(entryB.subject) + 1));
 
         editRoomB.setText(entryB.room);
