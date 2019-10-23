@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Load if Logged in
         if (Settings.settings.loggedIn) {
-            //load();
+            load();
             if (!BackgroundService.isRunning) {
                 startService(new Intent(getApplicationContext(), BackgroundService.class));
             }
@@ -246,9 +246,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int currentIndex = mPager.getCurrentItem();
 
 
-        PagerAdapter adapter = mPager.getAdapter();
-        if (adapter != null) adapter.notifyDataSetChanged();
-        //startPagerView();
+        //PagerAdapter adapter = mPager.getAdapter();
+        //if (adapter != null) adapter.notifyDataSetChanged();
+        startPagerView();
 
         Utils.print("Pager started!");
 
