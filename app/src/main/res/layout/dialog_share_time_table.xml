@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:scaleType="fitStart"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_gradient_black_24dp" />
 
     <View

@@ -88,14 +88,19 @@ public class TimeTableActivity extends AppCompatActivity {
             button.setOnClickListener(v -> {
                 String s = editText.getText().toString();
                 JsonParser parser = new JsonParser();
-                JsonArray jsonArray = parser.parse(s).getAsJsonArray();
-                NewTimeTable timeTable = NewTimeTableSerializer.getTimeTable(jsonArray);
-                Settings.settings.myNewTimeTable = timeTable;
-                PagerAdapter adapter = mPager.getAdapter();
-                if(adapter != null){
-                    adapter.notifyDataSetChanged();
+                try{
+                    JsonArray jsonArray = parser.parse(s).getAsJsonArray();
+                    NewTimeTable timeTable = NewTimeTableSerializer.getTimeTable(jsonArray);
+                    Settings.settings.myNewTimeTable = timeTable;
+                    PagerAdapter adapter = mPager.getAdapter();
+                    if(adapter != null){
+                        adapter.notifyDataSetChanged();
+                    }
+                    dialog.dismiss();
+                }catch (Exception e){
+                    editText.setError(getString(R.string.wrong_json));
+                    e.printStackTrace();
                 }
-                dialog.dismiss();
             });
             dialog.show();
         }else if (id == R.id.test) {

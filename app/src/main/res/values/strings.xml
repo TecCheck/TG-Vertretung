@@ -121,6 +121,7 @@
     <string name="item_empty">Frei</string>
     <string name="share">Teilen</string>
     <string name="receive">Empfangen</string>
+    <string name="wrong_json">Text ist fehlerhaft</string>
 
     <!-- TimeTableEdit Activity -->
     <string name="week_a">Woche A</string>
