@@ -38,7 +38,7 @@ public class Settings implements Serializable {
     public boolean rainbow = false;
     public boolean twoLineLabel = false;
 
-    public ClassSymbols symbols = new ClassSymbols();
+    public SubjectSymbols symbols = new SubjectSymbols();
     public NewTimeTable myNewTimeTable = new NewTimeTable();
 
     public static void load(Context context) {

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.RecyclerItemClickListener;
-import de.coop.tgvertretung.utils.ClassSymbols;
+import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.coop.tgvertretung.utils.Settings;
 
 public class SubjectSymbolsActivity extends AppCompatActivity implements View.OnClickListener, RecyclerItemClickListener.OnItemClickListener {
@@ -40,7 +41,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         if (Settings.settings.symbols == null) {
-            Settings.settings.symbols = new ClassSymbols();
+            Settings.settings.symbols = new SubjectSymbols();
         }
 
         Adapter adapter = new Adapter();
@@ -103,9 +104,13 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         if (id == android.R.id.home) {
             super.onBackPressed();
             return true;
+        } else if (id == R.id.share) {
+            share();
+        } else if(id == R.id.receive) {
+            receive();
         }
 
-        return super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -124,7 +129,43 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_time_table_menu, menu);
+        return true;
+    }
+
+    @Override
     public void onLongItemClick(View view, int position) {}
+
+    public void share(){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_share_time_table);
+        dialog.setTitle(R.string.share);
+        dialog.setCancelable(true);
+        EditText editText = dialog.findViewById(R.id.editText);
+        editText.setText(Settings.settings.symbols.getJson());
+        dialog.show();
+    }
+
+    public void receive(){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_receive_time_table);
+        dialog.setTitle(R.string.receive);
+        dialog.setCancelable(true);
+        EditText editText = dialog.findViewById(R.id.editText);
+        Button button = dialog.findViewById(R.id.button);
+        button.setOnClickListener(v -> {
+            String s = editText.getText().toString();
+            try{
+                Settings.settings.symbols.readJson(s);
+                dialog.dismiss();
+            }catch (Exception e){
+                editText.setError(getString(R.string.wrong_json));
+                e.printStackTrace();
+            }
+        });
+        dialog.show();
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
