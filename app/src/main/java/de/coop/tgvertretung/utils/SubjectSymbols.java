@@ -1,9 +1,11 @@
 package de.coop.tgvertretung.utils;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class ClassSymbols implements Serializable {
+public class SubjectSymbols implements Serializable {
 
     private static final long serialVersionUID = -5263223032432580842L;
 
@@ -18,7 +20,9 @@ public class ClassSymbols implements Serializable {
     }
 
     public String getSymbolName(String symbol) {
-        return symbols.get(symbol);
+        if(symbols.containsKey(symbol))
+            return symbols.get(symbol);
+        return symbol;
     }
 
     public String getSymbolName(int index) {
@@ -53,5 +57,15 @@ public class ClassSymbols implements Serializable {
 
     public int getCount() {
         return symbols.size();
+    }
+
+    public String getJson(){
+        Gson gson = new Gson();
+        return gson.toJson(symbols);
+    }
+
+    public void readJson(String json){
+        Gson gson = new Gson();
+        symbols = gson.fromJson(json, new HashMap<String, String>().getClass());
     }
 }

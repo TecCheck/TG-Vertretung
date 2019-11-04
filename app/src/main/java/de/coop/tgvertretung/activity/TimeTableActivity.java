@@ -71,44 +71,52 @@ public class TimeTableActivity extends AppCompatActivity {
             super.onBackPressed();
             return true;
         } else if (id == R.id.share) {
-            Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.dialog_share_time_table);
-            dialog.setTitle(R.string.share);
-            dialog.setCancelable(true);
-            EditText editText = dialog.findViewById(R.id.editText);
-            editText.setText(Settings.settings.myNewTimeTable.getJson().toString());
-            dialog.show();
+            share();
         } else if(id == R.id.receive){
-            Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.dialog_receive_time_table);
-            dialog.setTitle(R.string.receive);
-            dialog.setCancelable(true);
-            EditText editText = dialog.findViewById(R.id.editText);
-            Button button = dialog.findViewById(R.id.button);
-            button.setOnClickListener(v -> {
-                String s = editText.getText().toString();
-                JsonParser parser = new JsonParser();
-                try{
-                    JsonArray jsonArray = parser.parse(s).getAsJsonArray();
-                    NewTimeTable timeTable = NewTimeTableSerializer.getTimeTable(jsonArray);
-                    Settings.settings.myNewTimeTable = timeTable;
-                    PagerAdapter adapter = mPager.getAdapter();
-                    if(adapter != null){
-                        adapter.notifyDataSetChanged();
-                    }
-                    dialog.dismiss();
-                }catch (Exception e){
-                    editText.setError(getString(R.string.wrong_json));
-                    e.printStackTrace();
-                }
-            });
-            dialog.show();
-        }else if (id == R.id.test) {
+            receive();
+        } else if (id == R.id.test) {
             // reserved for testing
             //Settings.settings.myNewTimeTable.test();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void share(){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_share_time_table);
+        dialog.setTitle(R.string.share);
+        dialog.setCancelable(true);
+        EditText editText = dialog.findViewById(R.id.editText);
+        editText.setText(Settings.settings.myNewTimeTable.getJson().toString());
+        dialog.show();
+    }
+
+    public void receive(){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_receive_time_table);
+        dialog.setTitle(R.string.receive);
+        dialog.setCancelable(true);
+        EditText editText = dialog.findViewById(R.id.editText);
+        Button button = dialog.findViewById(R.id.button);
+        button.setOnClickListener(v -> {
+            String s = editText.getText().toString();
+            JsonParser parser = new JsonParser();
+            try{
+                JsonArray jsonArray = parser.parse(s).getAsJsonArray();
+                NewTimeTable timeTable = NewTimeTableSerializer.getTimeTable(jsonArray);
+                Settings.settings.myNewTimeTable = timeTable;
+                PagerAdapter adapter = mPager.getAdapter();
+                if(adapter != null){
+                    adapter.notifyDataSetChanged();
+                }
+                dialog.dismiss();
+            }catch (Exception e){
+                editText.setError(getString(R.string.wrong_json));
+                e.printStackTrace();
+            }
+        });
+        dialog.show();
     }
 
     @Override
