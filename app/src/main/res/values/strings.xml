@@ -136,6 +136,7 @@
     <string name="remove">Entfernen</string>
     <string name="add">Hinzufügen</string>
     <string name="double_class">Doppelstunde</string>
+    <string name="no_infos">[Keine Infos]</string>
     <string-array name="days">
         <item>Montag</item>
         <item>Dienstag</item>

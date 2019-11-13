@@ -106,6 +106,12 @@ public class Utils {
         return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/TGV.apk";
     }
 
+    public static String checkEmptyString(String string, Context context){
+        if(string.isEmpty() || string.equals(""))
+            return context.getString(R.string.no_infos);
+        return string;
+    }
+
     public static void print(String text) {
         if (SYSOUT) System.out.println(text);
     }
