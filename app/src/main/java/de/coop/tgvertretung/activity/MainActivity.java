@@ -85,27 +85,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 lastReload = findViewById(R.id.last_reload);
                 lastServerRefresh = findViewById(R.id.last_reload2);
 
-                if(Settings.settings.timeTable == null){
-                    lastReload.setVisibility(View.GONE);
-                    lastServerRefresh.setVisibility(View.GONE);
-                    return;
-                }
+                try{
+                    if (Settings.settings.showClientRefresh) {
+                        lastReload.setVisibility(View.VISIBLE);
+                        String s = Utils.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
+                        lastReload.setText(s);
+                    } else {
+                        lastReload.setVisibility(View.GONE);
+                    }
 
-                Settings.print();
-                if (Settings.settings.showClientRefresh) {
-                    lastReload.setVisibility(View.VISIBLE);
-                    String s = getString(R.string.last_reload) + " " + Utils.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
-                    lastReload.setText(s);
-                } else {
-                    lastReload.setVisibility(View.GONE);
-                }
-
-                if (Settings.settings.showServerRefresh) {
-                    lastServerRefresh.setVisibility(View.VISIBLE);
-                    String s = getString(R.string.last_server_refresh) + Utils.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
-                    lastServerRefresh.setText(s);
-                } else {
-                    lastServerRefresh.setVisibility(View.GONE);
+                    if (Settings.settings.showServerRefresh) {
+                        lastServerRefresh.setVisibility(View.VISIBLE);
+                        String s = Utils.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
+                        lastServerRefresh.setText(s);
+                    } else {
+                        lastServerRefresh.setVisibility(View.GONE);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    lastReload.setText(getString(R.string.last_reload_none));
+                    lastServerRefresh.setText(getString(R.string.last_reload_none));
                 }
 
                 super.onDrawerOpened(drawerView);

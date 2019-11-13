@@ -30,6 +30,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="last_server_refresh">Letzte Änderung:</string>
     <string name="last_reload">Zul. Aktualisiert:</string>
+    <string name="last_reload_none">---</string>
     <string name="never">nie</string>
     <string name="nav_main">Tabelle</string>
     <string name="nav_settings">Einstellungen</string>
