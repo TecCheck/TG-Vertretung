@@ -85,21 +85,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 lastReload = findViewById(R.id.last_reload);
                 lastServerRefresh = findViewById(R.id.last_reload2);
 
+                TextView title1 = findViewById(R.id.textView5);
+                TextView title2 = findViewById(R.id.textView6);
+
                 try{
                     if (Settings.settings.showClientRefresh) {
                         lastReload.setVisibility(View.VISIBLE);
+                        title1.setVisibility(View.VISIBLE);
                         String s = Utils.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
                         lastReload.setText(s);
                     } else {
                         lastReload.setVisibility(View.GONE);
+                        title1.setVisibility(View.GONE);
                     }
 
                     if (Settings.settings.showServerRefresh) {
                         lastServerRefresh.setVisibility(View.VISIBLE);
+                        title2.setVisibility(View.VISIBLE);
                         String s = Utils.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
                         lastServerRefresh.setText(s);
                     } else {
                         lastServerRefresh.setVisibility(View.GONE);
+                        title2.setVisibility(View.GONE);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
