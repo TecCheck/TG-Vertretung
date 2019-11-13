@@ -1,9 +1,9 @@
 package de.coop.tgvertretung.activity;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +27,7 @@ import de.coop.tgvertretung.utils.Settings;
 public class SubjectSymbolsActivity extends AppCompatActivity implements View.OnClickListener, RecyclerItemClickListener.OnItemClickListener {
 
     private RecyclerView recyclerView = null;
-    private Dialog dialog = null;
+    private AppCompatDialog dialog = null;
     private Button button = null;
     private Button removeButton = null;
 
@@ -50,8 +50,8 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);
-
-        dialog = new Dialog(this);
+        
+        dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_symbol_add);
         dialog.setTitle(R.string.add_symbol);
         dialog.setCancelable(true);
@@ -138,31 +138,32 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
     public void onLongItemClick(View view, int position) {}
 
     public void share(){
-        Dialog dialog = new Dialog(this);
+        AppCompatDialog dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_share_time_table);
         dialog.setTitle(R.string.share);
         dialog.setCancelable(true);
+        Button ok = dialog.findViewById(R.id.button);
+        ok.setOnClickListener(v -> dialog.dismiss());
         EditText editText = dialog.findViewById(R.id.editText);
         editText.setText(Settings.settings.symbols.getJson());
         dialog.show();
     }
 
     public void receive(){
-        Dialog dialog = new Dialog(this);
+        AppCompatDialog dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_receive_time_table);
         dialog.setTitle(R.string.receive);
         dialog.setCancelable(true);
         EditText editText = dialog.findViewById(R.id.editText);
         Button button = dialog.findViewById(R.id.button);
+        Button cancel = dialog.findViewById(R.id.button2);
+        cancel.setOnClickListener(v -> dialog.dismiss());
         button.setOnClickListener(v -> {
             String s = editText.getText().toString();
-            try{
-                Settings.settings.symbols.readJson(s);
+            if(Settings.settings.symbols.readJson(s))
                 dialog.dismiss();
-            }catch (Exception e){
+            else
                 editText.setError(getString(R.string.wrong_json));
-                e.printStackTrace();
-            }
         });
         dialog.show();
     }

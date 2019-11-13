@@ -1,11 +1,11 @@
 package de.coop.tgvertretung.activity;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -83,22 +83,26 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     public void share(){
-        Dialog dialog = new Dialog(this);
+        AppCompatDialog dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_share_time_table);
         dialog.setTitle(R.string.share);
         dialog.setCancelable(true);
+        Button ok = dialog.findViewById(R.id.button);
+        ok.setOnClickListener(v -> dialog.dismiss());
         EditText editText = dialog.findViewById(R.id.editText);
         editText.setText(Settings.settings.myNewTimeTable.getJson().toString());
         dialog.show();
     }
 
     public void receive(){
-        Dialog dialog = new Dialog(this);
+        AppCompatDialog dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_receive_time_table);
         dialog.setTitle(R.string.receive);
         dialog.setCancelable(true);
         EditText editText = dialog.findViewById(R.id.editText);
         Button button = dialog.findViewById(R.id.button);
+        Button cancel = dialog.findViewById(R.id.button2);
+        cancel.setOnClickListener(v -> dialog.dismiss());
         button.setOnClickListener(v -> {
             String s = editText.getText().toString();
             JsonParser parser = new JsonParser();

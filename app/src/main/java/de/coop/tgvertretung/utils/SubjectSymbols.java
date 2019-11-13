@@ -20,7 +20,7 @@ public class SubjectSymbols implements Serializable {
     }
 
     public String getSymbolName(String symbol) {
-        if(symbols.containsKey(symbol))
+        if(symbols != null && symbols.containsKey(symbol))
             return symbols.get(symbol);
         return symbol;
     }
@@ -64,8 +64,12 @@ public class SubjectSymbols implements Serializable {
         return gson.toJson(symbols);
     }
 
-    public void readJson(String json){
+    public boolean readJson(String json){
         Gson gson = new Gson();
-        symbols = gson.fromJson(json, new HashMap<String, String>().getClass());
+        HashMap<String, String> sym = gson.fromJson(json, new HashMap<String, String>().getClass());
+        if(sym == null)
+            return false;
+        symbols = sym;
+        return true;
     }
 }
