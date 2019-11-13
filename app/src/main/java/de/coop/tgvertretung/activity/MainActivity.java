@@ -170,7 +170,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
         if (Settings.settings.loggedIn) {
-            //load();
+            if(LoginActivity.recentLogin){
+                load();
+                LoginActivity.recentLogin = false;
+            }
             startPagerView();
             if (!BackgroundService.isRunning) {
                 startService(new Intent(getApplicationContext(), BackgroundService.class));

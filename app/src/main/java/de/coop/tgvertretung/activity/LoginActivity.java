@@ -20,6 +20,8 @@ import de.sematre.dsbmobile.DSBMobile;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static boolean recentLogin = false;
+
     private Button btn = null;
     private EditText pwText = null;
     private EditText nmText = null;
@@ -54,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
             Settings.settings.username = nmText.getText().toString();
             Settings.settings.loggedIn = true;
             Settings.save();
+            recentLogin = true;
             finish();
             //super.onBackPressed();
         } else if (status == 1) {
