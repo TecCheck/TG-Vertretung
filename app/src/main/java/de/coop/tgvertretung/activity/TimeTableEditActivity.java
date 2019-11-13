@@ -79,7 +79,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         removeButton = findViewById(R.id.buttonRemove);
 
         layoutB = findViewById(R.id.layoutB);
-        dividerB = findViewById(R.id.linearLayout5);
+        dividerB = findViewById(R.id.headerB);
         expander = findViewById(R.id.imageView3);
         layoutB.setVisibility(View.GONE);
         dividerB.setOnClickListener(v -> {
