@@ -74,10 +74,14 @@
 
     <!-- Info Activity content -->
     <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
+    <string name="version">Version</string>
     <string name="version_name">Versionsname</string>
+    <string name="version_id">Versionsnummer</string>
+    <string name="build_date">Build-Datum</string>
     <string name="github_name" translatable="false">GitHub</string>
     <string name="github_txt">Besuche die GitHub Site.</string>
     <string name="github_url" translatable="false">https://github.com/TecCheck/TG-Vertretung/</string>
+    <string name="devs_url" translatable="false">https://github.com/TecCheck/TG-Vertretung/graphs/contributors</string>
     <string name="devs_name">Entwickler</string>
     <string name="tobias" translatable="false">Tobias</string>
     <string name="christoph" translatable="false">Christoph</string>
