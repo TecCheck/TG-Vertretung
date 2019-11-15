@@ -27,7 +27,7 @@ import de.sematre.tg.Week;
 
 public class TimeTableActivity extends AppCompatActivity {
 
-    ViewPager mPager;
+    private ViewPager mPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +48,6 @@ public class TimeTableActivity extends AppCompatActivity {
         mPager.setCurrentItem((day >= 0 && day <= 4) ? day : 0);
     }
 
-    boolean isAWeek() {
-        int i = Utils.getView(Settings.settings.timeTable, Settings.settings.timeTable.getTables().size() - 1);
-        try {
-            return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return true;
-        }
-    }
-
     @Override
     public void onResume() {
         //mPager.setAdapter(new TimeTablePagerAdapter(getSupportFragmentManager()));
@@ -72,7 +62,7 @@ public class TimeTableActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.share) {
             share();
-        } else if(id == R.id.receive){
+        } else if (id == R.id.receive) {
             receive();
         } else if (id == R.id.test) {
             // reserved for testing
@@ -82,7 +72,7 @@ public class TimeTableActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void share(){
+    public void share() {
         AppCompatDialog dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_share_time_table);
         dialog.setTitle(R.string.share);
@@ -94,7 +84,7 @@ public class TimeTableActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void receive(){
+    public void receive() {
         AppCompatDialog dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_receive_time_table);
         dialog.setTitle(R.string.receive);
@@ -106,16 +96,17 @@ public class TimeTableActivity extends AppCompatActivity {
         button.setOnClickListener(v -> {
             String s = editText.getText().toString();
             JsonParser parser = new JsonParser();
-            try{
+            try {
                 JsonArray jsonArray = parser.parse(s).getAsJsonArray();
                 NewTimeTable timeTable = NewTimeTableSerializer.getTimeTable(jsonArray);
                 Settings.settings.myNewTimeTable = timeTable;
                 PagerAdapter adapter = mPager.getAdapter();
-                if(adapter != null){
+                if (adapter != null) {
                     adapter.notifyDataSetChanged();
                 }
+
                 dialog.dismiss();
-            }catch (Exception e){
+            } catch (Exception e) {
                 editText.setError(getString(R.string.wrong_json));
                 e.printStackTrace();
             }
@@ -133,5 +124,15 @@ public class TimeTableActivity extends AppCompatActivity {
     public void onBackPressed() {
         Settings.save();
         super.onBackPressed();
+    }
+
+    private boolean isAWeek() {
+        int i = Utils.getView(Settings.settings.timeTable, Settings.settings.timeTable.getTables().size() - 1);
+        try {
+            return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            return true;
+        }
     }
 }

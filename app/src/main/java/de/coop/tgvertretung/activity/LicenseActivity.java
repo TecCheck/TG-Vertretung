@@ -63,6 +63,12 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         text.setText(content.toString());
     }
 
+    @Override
+    public void onClick(View view) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
     private ImageButton getButton() {
         ImageButton button = new ImageButton(getApplicationContext());
         Drawable d = getResources().getDrawable(R.drawable.ic_github);
@@ -87,11 +93,5 @@ public class LicenseActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
     }
 }

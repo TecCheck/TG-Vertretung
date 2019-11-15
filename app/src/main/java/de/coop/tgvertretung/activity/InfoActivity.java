@@ -41,6 +41,13 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
         licenses.setOnClickListener(v -> makeLicenseDialog());
     }
 
+    @Override
+    public void onClick(DialogInterface dialogInterface, int i) {
+        Intent intent = new Intent(this, LicenseActivity.class);
+        intent.putExtra(LicenseActivity.EXTRA_TOSHOW, i);
+        startActivity(intent);
+    }
+
     private void makeLicenseDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.licenses_name);
@@ -57,13 +64,6 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(DialogInterface dialogInterface, int i) {
-        Intent intent = new Intent(this, LicenseActivity.class);
-        intent.putExtra(LicenseActivity.EXTRA_TOSHOW, i);
-        startActivity(intent);
     }
 
     private String getVersion() {

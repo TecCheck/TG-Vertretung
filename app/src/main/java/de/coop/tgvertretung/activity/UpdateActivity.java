@@ -142,7 +142,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    static class DownloadInfoTask extends AsyncTask<String, Integer, String> {
+    private static class DownloadInfoTask extends AsyncTask<String, Integer, String> {
 
         private String version;
         private String link;
@@ -172,7 +172,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    static class DownloadApkTask extends AsyncTask<String, Integer, String> {
+    private static class DownloadApkTask extends AsyncTask<String, Integer, String> {
 
         private UpdateActivity activity;
         private Context context;

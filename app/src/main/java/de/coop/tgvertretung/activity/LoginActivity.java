@@ -27,6 +27,24 @@ public class LoginActivity extends AppCompatActivity {
     private EditText nmText = null;
     private ProgressBar progressBar = null;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        pwText = findViewById(R.id.password);
+        nmText = findViewById(R.id.username);
+        progressBar = findViewById(R.id.login_progress);
+
+        btn = findViewById(R.id.sign_in_button);
+        btn.setOnClickListener((view) -> login());
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
+
+        Utils.print("ActionBar: " + actionBar);
+    }
+
     private void login() {
         progressBar.setIndeterminate(true);
         Thread loginThread = new Thread(() -> {
@@ -69,21 +87,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (Settings.settings.loggedIn) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                super.onBackPressed();
+                return true;
+            }
+        }
 
-        pwText = findViewById(R.id.password);
-        nmText = findViewById(R.id.username);
-        progressBar = findViewById(R.id.login_progress);
-
-        btn = findViewById(R.id.sign_in_button);
-        btn.setOnClickListener((view) -> login());
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
-
-        Utils.print("ActionBar: " + actionBar);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -98,18 +111,5 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (Settings.settings.loggedIn) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                super.onBackPressed();
-                return true;
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

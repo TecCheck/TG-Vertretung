@@ -137,24 +137,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
         init();
     }
 
-    @Override
-    public void onBackPressed() {
-        Log.d("test", "back");
-        Settings.save();
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            super.onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void init() {
         // Set Values
         // New
@@ -179,6 +161,24 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
         editRoomB.setText(entryB.room);
         editTeacherB.setText(entryB.teacher);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("test", "back");
+        Settings.save();
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void save() {
@@ -224,7 +224,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         }
     }
 
-    class SpinnerAdapter implements android.widget.SpinnerAdapter {
+    private class SpinnerAdapter implements android.widget.SpinnerAdapter {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {

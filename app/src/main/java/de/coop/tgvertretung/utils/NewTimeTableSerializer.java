@@ -157,5 +157,4 @@ public class NewTimeTableSerializer {
 
         return new NewTimeTable(weeks);
     }
-
 }

@@ -83,17 +83,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            super.onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
         if (preference.getKey().equals(filter.getKey())) {
             Settings.settings.filter = (String) value;
@@ -123,5 +112,16 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
         Settings.save();
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

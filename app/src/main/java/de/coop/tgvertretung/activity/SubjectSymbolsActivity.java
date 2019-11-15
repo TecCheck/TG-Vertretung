@@ -92,13 +92,6 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    public void onBackPressed() {
-        Log.d("test", "back");
-        Settings.save();
-        super.onBackPressed();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
@@ -110,32 +103,8 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
             receive();
         }
 
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        if (Settings.settings.symbols.getCount() == position) {
-            dialog.show();
-            removeButton.setVisibility(View.GONE);
-        } else {
-            EditText name = dialog.findViewById(R.id.editTextName);
-            EditText symbol = dialog.findViewById(R.id.editTextSymbol);
-            name.setText(Settings.settings.symbols.getSymbolName(position));
-            symbol.setText(Settings.settings.symbols.getSymbol(position));
-            removeButton.setVisibility(View.VISIBLE);
-            dialog.show();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_time_table_menu, menu);
-        return true;
-    }
-
-    @Override
-    public void onLongItemClick(View view, int position) {}
 
     public void share(){
         AppCompatDialog dialog = new AppCompatDialog(this);
@@ -166,6 +135,37 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
                 editText.setError(getString(R.string.wrong_json));
         });
         dialog.show();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        if (Settings.settings.symbols.getCount() == position) {
+            dialog.show();
+            removeButton.setVisibility(View.GONE);
+        } else {
+            EditText name = dialog.findViewById(R.id.editTextName);
+            EditText symbol = dialog.findViewById(R.id.editTextSymbol);
+            name.setText(Settings.settings.symbols.getSymbolName(position));
+            symbol.setText(Settings.settings.symbols.getSymbol(position));
+            removeButton.setVisibility(View.VISIBLE);
+            dialog.show();
+        }
+    }
+
+    @Override
+    public void onLongItemClick(View view, int position) {}
+
+    @Override
+    public void onBackPressed() {
+        Log.d("test", "back");
+        Settings.save();
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_time_table_menu, menu);
+        return true;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
