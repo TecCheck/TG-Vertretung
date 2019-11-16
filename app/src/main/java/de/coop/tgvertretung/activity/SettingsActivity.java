@@ -72,7 +72,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showClientRefresh.setDefaultValue(Settings.settings.showClientRefresh);
         showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
 
-        themeMode.setDefaultValue(Settings.settings.themeMode);
+        themeMode.setValueIndex(Settings.settings.themeMode);
         twoLineLabel.setDefaultValue(Settings.settings.twoLineLabel);
         rainbow.setDefaultValue(Settings.settings.rainbow);
 
