@@ -14,7 +14,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="Update Status"
-        android:textSize="18sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="@dimen/text_size_secondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
