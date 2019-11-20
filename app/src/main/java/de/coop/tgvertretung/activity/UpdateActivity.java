@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -102,11 +104,18 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         downloadApkTask.execute(updateUrl);
     }
 
+    private Uri getFileUri(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            return FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", new File(PATH));
+        }
+        return Uri.fromFile(new File(PATH));
+    }
+
     private void downloadUpdateFinished(int status) {
         if (status == 0) return;
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(new File(PATH)), "application/vnd.android.package-archive");
+        intent.setDataAndType(getFileUri(), "application/vnd.android.package-archive");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
