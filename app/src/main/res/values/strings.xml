@@ -32,14 +32,14 @@
     <string name="last_reload">Zul. Aktualisiert:</string>
     <string name="last_reload_none">---</string>
     <string name="never">nie</string>
-    <string name="nav_main">Tabelle</string>
+    <string name="nav_main">Vertretungsplan</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_info">Über</string>
     <string name="nav_login">Anmelden</string>
-
-    <!-- Main Activity content -->
     <string name="nav_update">Update</string>
     <string name="nav_symbols">Kürzel</string>
+
+    <!-- Main Activity content -->
     <string name="nav_time_table">Stundenplan</string>
     <string name="none">Das solltest du nicht sehen :(</string>
     <string name="nothing_saved">Nichts gespeichert!</string>
