@@ -33,6 +33,7 @@ public class Settings implements Serializable {
     public boolean showAB = false;
     public boolean showClientRefresh = true;
     public boolean showServerRefresh = true;
+    public boolean relativeTime = true;
 
     public int themeMode = 0;
     public boolean rainbow = false;
@@ -86,6 +87,7 @@ public class Settings implements Serializable {
         out += ", showText: " + settings.showText;
         out += ", showClientRefresh: " + settings.showClientRefresh;
         out += ", showServerRefresh: " + settings.showServerRefresh;
+        out += ", relativeTime: " + settings.relativeTime;
         out += ", showAB" + settings.showAB;
 
         Utils.print(out);

@@ -8,6 +8,7 @@ import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -77,6 +78,45 @@ public class Utils {
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
         format.setTimeZone(TimeZone.getDefault());
         return format.format(date);
+    }
+
+    public static String getRelativeFormattedTime(Date date, Date referenceDate) {
+        Long difference = referenceDate.getTime() - date.getTime();
+        if (difference < 0) { // Future
+            return App.getAppResources().getString(R.string.time_future);
+        } else if (difference < (1L * 60L * 1000L)) { // 1 Minute
+            return App.getAppResources().getString(R.string.time_lessThenAMinute);
+        } else if (difference < (2L * 60L * 1000L)) { // 2 Minutes
+            return App.getAppResources().getString(R.string.time_aMinuteAgo);
+        } else if (difference < (60L * 60L * 1000L)) { // 60 Minutes
+            return String.format(App.getAppResources().getString(R.string.time_nMinutesAgo), String.valueOf((difference / 1000L / 60L)));
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        Calendar calendarToday = Calendar.getInstance();
+        Calendar calendarYesterday = Calendar.getInstance();
+        Calendar calendarWeekAgo = Calendar.getInstance();
+
+        calendar.setTime(date);
+        calendarToday.setTime(referenceDate);
+        calendarYesterday.setTime(referenceDate);
+        calendarWeekAgo.setTime(referenceDate);
+
+        calendarYesterday.add(Calendar.DAY_OF_YEAR, -1);
+        calendarWeekAgo.add(Calendar.DAY_OF_YEAR, -6);
+
+        String prefix = null;
+        if ((calendar.get(Calendar.YEAR) == calendarToday.get(Calendar.YEAR)) && (calendar.get(Calendar.DAY_OF_YEAR) == calendarToday.get(Calendar.DAY_OF_YEAR))) {
+            prefix = App.getAppResources().getString(R.string.time_today);
+        } else if ((calendar.get(Calendar.YEAR) == calendarYesterday.get(Calendar.YEAR)) && (calendar.get(Calendar.DAY_OF_YEAR) == calendarYesterday.get(Calendar.DAY_OF_YEAR))) {
+            prefix = App.getAppResources().getString(R.string.time_yesterday);
+        } else if (calendar.after(calendarWeekAgo)) {
+            prefix = new SimpleDateFormat("EEEE", Locale.getDefault()).format(date);
+        } else {
+            prefix = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(date);
+        }
+
+        return prefix + ", " + new SimpleDateFormat("HH:mm", Locale.getDefault()).format(date);
     }
 
     public static int getView(TimeTable timeTable, int defaultValue) {

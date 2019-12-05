@@ -113,8 +113,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (Settings.settings.showClientRefresh) {
                         lastReload.setVisibility(View.VISIBLE);
                         title1.setVisibility(View.VISIBLE);
-                        String s = Utils.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
-                        lastReload.setText(s);
+
+                        String date = null;
+                        if (Settings.settings.relativeTime) date = Utils.getRelativeFormattedTime(Settings.settings.lastClientRefresh, new Date(System.currentTimeMillis()));
+                        else date = Utils.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
+                        lastReload.setText(date);
                     } else {
                         lastReload.setVisibility(View.GONE);
                         title1.setVisibility(View.GONE);
@@ -123,8 +126,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (Settings.settings.showServerRefresh) {
                         lastServerRefresh.setVisibility(View.VISIBLE);
                         title2.setVisibility(View.VISIBLE);
-                        String s = Utils.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
-                        lastServerRefresh.setText(s);
+
+                        String date = null;
+                        if (Settings.settings.relativeTime) date = Utils.getRelativeFormattedTime(Settings.settings.timeTable.getDate(), new Date(System.currentTimeMillis()));
+                        else date = Utils.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
+                        lastServerRefresh.setText(date);
                     } else {
                         lastServerRefresh.setVisibility(View.GONE);
                         title2.setVisibility(View.GONE);

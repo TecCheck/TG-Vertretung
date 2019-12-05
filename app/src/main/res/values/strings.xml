@@ -61,6 +61,8 @@
     <string name="setting_unnecessary_menu_title">Unnötig</string>
     <string name="setting_show_server_refresh">Letzte Änderung anzeigen</string>
     <string name="setting_show_client_refresh">Letzte Aktualisierung anzeigen</string>
+    <string name="setting_relative_time">Relative Zeiten verwenden</string>
+    <string name="setting_relative_time_summary">z.B. vor 42 Minuten</string>
     <string name="setting_use_old_layout">Altes Layout benutzen</string>
     <string name="setting_two_line_label">Label in zwei Zeilen aufteilen</string>
     <string name="setting_requires_restart">Neustart der App erforderlich</string>
@@ -135,6 +137,14 @@
     <string name="subject">Fach</string>
     <string name="room">Raum</string>
     <string name="teacher">Lehrer/in</string>
+
+    <!-- Time formatting -->
+    <string name="time_future">In der Zukunft</string>
+    <string name="time_lessThenAMinute">Gerade eben</string>
+    <string name="time_aMinuteAgo">vor 1 Minute</string>
+    <string name="time_nMinutesAgo">vor %s Minuten</string>
+    <string name="time_today">Heute</string>
+    <string name="time_yesterday">Gestern</string>
 
     <!-- Misc -->
     <string name="remove">Entfernen</string>
