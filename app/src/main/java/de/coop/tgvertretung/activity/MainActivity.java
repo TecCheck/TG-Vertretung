@@ -1,6 +1,7 @@
 package de.coop.tgvertretung.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -87,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initUi() {
+        if(Settings.settings.themeMode == 0 && Build.VERSION.SDK_INT >= 29)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        else
         AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
 
         // Get views
