@@ -10,13 +10,16 @@
     <color name="icon_light">@android:color/primary_text_dark</color>
     <color name="icon_dark">@android:color/primary_text_light</color>
 
-    <color name="green">#7db931</color>
-    <color name="blue">#02a1dc</color>
-    <color name="pink">#dc4c8a</color>
+    <color name="green">#6CCB6E</color>
+    <color name="blue">#4CB9D6</color>
+    <color name="pink">#F26190</color>
     <color name="orange">#e68625</color>
     <color name="yellow">#edb322</color>
-    <color name="purple">#8e6dac</color>
-    <color name="red">#DD5143</color>
+    <color name="purple">#C269BC</color>
+    <color name="red">#F92D72</color>
+
+    <color name="dark_background">#1A2026</color>
+    <color name="dark_foreground">#FFFFFF</color>
 
     <array name="day_of_week_color">
         <item>@color/yellow</item>
