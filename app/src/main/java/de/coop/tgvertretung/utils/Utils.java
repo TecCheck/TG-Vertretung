@@ -81,10 +81,10 @@ public class Utils {
     }
 
     public static String getRelativeFormattedTime(Date date, Date referenceDate) {
-        Long difference = referenceDate.getTime() - date.getTime();
+        long difference = referenceDate.getTime() - date.getTime();
         if (difference < 0) { // Future
             return App.getAppResources().getString(R.string.time_future);
-        } else if (difference < (1L * 60L * 1000L)) { // 1 Minute
+        } else if (difference < (60L * 1000L)) { // 1 Minute
             return App.getAppResources().getString(R.string.time_lessThenAMinute);
         } else if (difference < (2L * 60L * 1000L)) { // 2 Minutes
             return App.getAppResources().getString(R.string.time_aMinuteAgo);
@@ -146,10 +146,8 @@ public class Utils {
         return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + "/TGV.apk";
     }
 
-    public static String checkEmptyString(String string, Context context){
-        if(string.isEmpty() || string.equals(""))
-            return context.getString(R.string.no_infos);
-        return string;
+    public static String checkEmptyString(String string) {
+        return (string != null && string.isEmpty()) ? App.getAppResources().getString(R.string.no_infos) : string;
     }
 
     public static void print(String text) {

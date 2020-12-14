@@ -43,8 +43,8 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         ImageView imageView = cardView.findViewById(R.id.imageView2);
 
         imageView.setVisibility(View.GONE);
-        schoolClass.setText(Utils.checkEmptyString(entry.getSchoolClass(), context));
-        hour.setText(Utils.checkEmptyString(entry.getTime(), context));
+        schoolClass.setText(Utils.checkEmptyString(entry.getSchoolClass()));
+        hour.setText(Utils.checkEmptyString(entry.getTime()));
         entryText.setText(getEntryText(entry, Settings.settings.extended));
         if (Settings.settings.showText && !entry.getText().equals("")) {
             info.setVisibility(View.VISIBLE);
@@ -66,10 +66,10 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
 
     private String getEntryText(TableEntry entry, boolean extended) {
         String subject = Settings.settings.symbols.getSymbolName(entry.getSubject());
-        subject = Utils.checkEmptyString(subject, context);
+        subject = Utils.checkEmptyString(subject);
 
         String replacementSubject = Settings.settings.symbols.getSymbolName(entry.getReplacementSubject());
-        replacementSubject = Utils.checkEmptyString(replacementSubject, context);
+        replacementSubject = Utils.checkEmptyString(replacementSubject);
 
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {
             return subject + (extended ? " in " + entry.getRoom() + " " : " ") + context.getString(R.string.no_class);
