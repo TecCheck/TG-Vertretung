@@ -30,15 +30,16 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="last_server_refresh">Letzte Änderung:</string>
     <string name="last_reload">Zul. Aktualisiert:</string>
+    <string name="last_reload_none">---</string>
     <string name="never">nie</string>
-    <string name="nav_main">Tabelle</string>
+    <string name="nav_main">Vertretungsplan</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_info">Über</string>
     <string name="nav_login">Anmelden</string>
-
-    <!-- Main Activity content -->
     <string name="nav_update">Update</string>
     <string name="nav_symbols">Kürzel</string>
+
+    <!-- Main Activity content -->
     <string name="nav_time_table">Stundenplan</string>
     <string name="none">Das solltest du nicht sehen :(</string>
     <string name="nothing_saved">Nichts gespeichert!</string>
@@ -60,6 +61,8 @@
     <string name="setting_unnecessary_menu_title">Unnötig</string>
     <string name="setting_show_server_refresh">Letzte Änderung anzeigen</string>
     <string name="setting_show_client_refresh">Letzte Aktualisierung anzeigen</string>
+    <string name="setting_relative_time">Relative Zeiten verwenden</string>
+    <string name="setting_relative_time_summary">z.B. vor 42 Minuten</string>
     <string name="setting_use_old_layout">Altes Layout benutzen</string>
     <string name="setting_two_line_label">Label in zwei Zeilen aufteilen</string>
     <string name="setting_requires_restart">Neustart der App erforderlich</string>
@@ -73,10 +76,14 @@
 
     <!-- Info Activity content -->
     <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
+    <string name="version">Version</string>
     <string name="version_name">Versionsname</string>
+    <string name="version_id">Versionsnummer</string>
+    <string name="build_date">Build-Datum</string>
     <string name="github_name" translatable="false">GitHub</string>
     <string name="github_txt">Besuche die GitHub Site.</string>
     <string name="github_url" translatable="false">https://github.com/TecCheck/TG-Vertretung/</string>
+    <string name="devs_url" translatable="false">https://github.com/TecCheck/TG-Vertretung/graphs/contributors</string>
     <string name="devs_name">Entwickler</string>
     <string name="tobias" translatable="false">Tobias</string>
     <string name="christoph" translatable="false">Christoph</string>
@@ -119,20 +126,31 @@
 
     <!-- Timetable Activity-->
     <string name="item_empty">Frei</string>
-    <string name="subject">Fach</string>
-    <string name="room">Raum</string>
-    <string name="teacher">Lehrer/in</string>
     <string name="share">Teilen</string>
+    <string name="receive">Empfangen</string>
+    <string name="wrong_json">Text ist fehlerhaft</string>
 
     <!-- TimeTableEdit Activity -->
     <string name="week_a">Woche A</string>
     <string name="week_b">Woche B</string>
     <string name="empty">Frei</string>
+    <string name="subject">Fach</string>
+    <string name="room">Raum</string>
+    <string name="teacher">Lehrer/in</string>
+
+    <!-- Time formatting -->
+    <string name="time_future">In der Zukunft</string>
+    <string name="time_lessThenAMinute">Gerade eben</string>
+    <string name="time_aMinuteAgo">vor 1 Minute</string>
+    <string name="time_nMinutesAgo">vor %s Minuten</string>
+    <string name="time_today">Heute</string>
+    <string name="time_yesterday">Gestern</string>
 
     <!-- Misc -->
     <string name="remove">Entfernen</string>
     <string name="add">Hinzufügen</string>
     <string name="double_class">Doppelstunde</string>
+    <string name="no_infos">[Keine Infos]</string>
     <string-array name="days">
         <item>Montag</item>
         <item>Dienstag</item>

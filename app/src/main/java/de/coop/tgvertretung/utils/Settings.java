@@ -33,12 +33,13 @@ public class Settings implements Serializable {
     public boolean showAB = false;
     public boolean showClientRefresh = true;
     public boolean showServerRefresh = true;
+    public boolean relativeTime = true;
 
     public int themeMode = 0;
     public boolean rainbow = false;
     public boolean twoLineLabel = false;
 
-    public ClassSymbols symbols = new ClassSymbols();
+    public SubjectSymbols symbols = new SubjectSymbols();
     public NewTimeTable myNewTimeTable = new NewTimeTable();
 
     public static void load(Context context) {
@@ -86,6 +87,7 @@ public class Settings implements Serializable {
         out += ", showText: " + settings.showText;
         out += ", showClientRefresh: " + settings.showClientRefresh;
         out += ", showServerRefresh: " + settings.showServerRefresh;
+        out += ", relativeTime: " + settings.relativeTime;
         out += ", showAB" + settings.showAB;
 
         Utils.print(out);

@@ -21,6 +21,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     private Preference showAB = null;
     private Preference showClientRefresh = null;
     private Preference showServerRefresh = null;
+    private Preference relativeTime = null;
 
     private ListPreference themeMode = null;
     private Preference twoLineLabel = null;
@@ -43,6 +44,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showAB = findPreference("show_ab");
         showClientRefresh = findPreference("show_client_refresh");
         showServerRefresh = findPreference("show_server_refresh");
+        relativeTime = findPreference("relative_time");
 
         themeMode = (ListPreference) findPreference("theme_mode");
         twoLineLabel = findPreference("two_line_label");
@@ -58,6 +60,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showAB.setOnPreferenceChangeListener(this);
         showClientRefresh.setOnPreferenceChangeListener(this);
         showServerRefresh.setOnPreferenceChangeListener(this);
+        relativeTime.setOnPreferenceChangeListener(this);
 
         themeMode.setOnPreferenceChangeListener(this);
         twoLineLabel.setOnPreferenceChangeListener(this);
@@ -71,8 +74,9 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         showAB.setDefaultValue(Settings.settings.showAB);
         showClientRefresh.setDefaultValue(Settings.settings.showClientRefresh);
         showServerRefresh.setDefaultValue(Settings.settings.showServerRefresh);
+        relativeTime.setDefaultValue(Settings.settings.relativeTime);
 
-        themeMode.setDefaultValue(Settings.settings.themeMode);
+        themeMode.setValueIndex(Settings.settings.themeMode);
         twoLineLabel.setDefaultValue(Settings.settings.twoLineLabel);
         rainbow.setDefaultValue(Settings.settings.rainbow);
 
@@ -80,17 +84,6 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         themeMode.setSummary(getResources().getStringArray(R.array.setting_theme_modes)[Settings.settings.themeMode]);
         //filter.setSummary(settings.getInt(FILTER_KEY, filterInt));
         filter.setEnabled(Settings.settings.useFilter);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            super.onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -109,6 +102,8 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             Settings.settings.showClientRefresh = (boolean) value;
         } else if (preference.getKey().equals(showServerRefresh.getKey())) {
             Settings.settings.showServerRefresh = (boolean) value;
+        } else if (preference.getKey().equals(relativeTime.getKey())) {
+            Settings.settings.relativeTime = (boolean) value;
         } else if (preference.getKey().equals(showAB.getKey())) {
             Settings.settings.showAB = (boolean) value;
         } else if (preference.getKey().equals(rainbow.getKey())) {
@@ -123,5 +118,16 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
         Settings.save();
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -6,8 +6,9 @@ android {
         applicationId 'de.coop.tgvertretung'
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 240
-        versionName "Beta 1.10.7"
+        versionCode 246
+        versionName "Beta 1.11.4"
+        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -34,6 +35,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'de.sematre.tg:TG-API:1.8'
+    implementation 'de.sematre.tg:TG-API:1.11'
     implementation 'com.android.support:cardview-v7:28.0.0'
 }

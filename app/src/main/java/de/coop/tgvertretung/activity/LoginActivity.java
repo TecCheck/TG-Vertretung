@@ -20,10 +20,30 @@ import de.sematre.dsbmobile.DSBMobile;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static boolean recentLogin = false;
+
     private Button btn = null;
     private EditText pwText = null;
     private EditText nmText = null;
     private ProgressBar progressBar = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        pwText = findViewById(R.id.password);
+        nmText = findViewById(R.id.username);
+        progressBar = findViewById(R.id.login_progress);
+
+        btn = findViewById(R.id.sign_in_button);
+        btn.setOnClickListener((view) -> login());
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
+
+        Utils.print("ActionBar: " + actionBar);
+    }
 
     private void login() {
         progressBar.setIndeterminate(true);
@@ -54,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             Settings.settings.username = nmText.getText().toString();
             Settings.settings.loggedIn = true;
             Settings.save();
+            recentLogin = true;
             finish();
             //super.onBackPressed();
         } else if (status == 1) {
@@ -62,38 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // Phone is offline
             Snackbar.make(btn, getString(R.string.no_connection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        pwText = findViewById(R.id.password);
-        nmText = findViewById(R.id.username);
-        progressBar = findViewById(R.id.login_progress);
-
-        btn = findViewById(R.id.sign_in_button);
-        btn.setOnClickListener((view) -> login());
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
-
-        Utils.print("ActionBar: " + actionBar);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!Settings.settings.loggedIn) {
-            Utils.print("EXIT-------------------------------------------------------------------------");
-            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-            homeIntent.addCategory(Intent.CATEGORY_HOME);
-            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(homeIntent);
-            //System.exit(1);
-        } else {
-            super.onBackPressed();
         }
     }
 
@@ -108,5 +97,19 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!Settings.settings.loggedIn) {
+            Utils.print("EXIT-------------------------------------------------------------------------");
+            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+            homeIntent.addCategory(Intent.CATEGORY_HOME);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(homeIntent);
+            //System.exit(1);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

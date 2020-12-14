@@ -53,7 +53,6 @@
         android:key="two_line_label"
         android:title="@string/setting_two_line_label" />
     <ListPreference
-        android:defaultValue="0"
         android:entries="@array/setting_theme_modes"
         android:entryValues="@array/setting_theme_modes"
         android:key="theme_mode"
@@ -69,6 +68,13 @@
         android:defaultValue="true"
         android:key="show_client_refresh"
         android:title="@string/setting_show_client_refresh" />
+    <SwitchPreference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:defaultValue="true"
+        android:key="relative_time"
+        android:summary="@string/setting_relative_time_summary"
+        android:title="@string/setting_relative_time" />
     <PreferenceCategory android:title="@string/setting_unnecessary_menu_title">
 
     </PreferenceCategory>
