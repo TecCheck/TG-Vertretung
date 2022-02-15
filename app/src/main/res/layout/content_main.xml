@@ -9,15 +9,10 @@
 
 
     <LinearLayout
-        android:id="@+id/stdView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_gravity="top" />
+        android:orientation="vertical"
+        android:paddingTop="55dp">
 
         <de.coop.tgvertretung.adapter.CustomSwipeRefreshLayout
             android:id="@+id/refresh_layout"

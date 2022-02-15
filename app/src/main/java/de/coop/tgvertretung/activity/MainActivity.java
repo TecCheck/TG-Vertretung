@@ -3,9 +3,13 @@ package de.coop.tgvertretung.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.GravityCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -15,6 +19,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +37,7 @@ import de.coop.tgvertretung.utils.Utils;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.LoadFinishedListener {
 
     private static boolean firstPagerStart = true;
+    private DrawerLayout drawer;
     private ViewPager mPager = null;
     private TextView lastReload = null;
     private TextView lastServerRefresh = null;
@@ -39,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utils.print("OnCreate-------------------------------------------------------------------------------");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Settings.load(getApplicationContext());
@@ -59,13 +64,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             startActivity(new Intent(this, LoginActivity.class));
         }
-
-        Utils.print("onCreate finished");
     }
 
     @Override
     protected void onResume() {
-        Utils.print("OnResume-------------------------------------------------------------------------------");
         super.onResume();
 
         if (Settings.settings.loggedIn) {
@@ -86,16 +88,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initUi() {
-        if(Settings.settings.themeMode == 0 && Build.VERSION.SDK_INT >= 29)
+        if (Settings.settings.themeMode == 0 && Build.VERSION.SDK_INT >= 29)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         else
-        AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
+            AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
 
-        // Get views
         Toolbar toolbar = findViewById(R.id.toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
+        drawer = findViewById(R.id.drawer_layout);
         mPager = findViewById(R.id.container);
         refreshLayout = findViewById(R.id.refresh_layout);
 
@@ -116,9 +117,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         lastReload.setVisibility(View.VISIBLE);
                         title1.setVisibility(View.VISIBLE);
 
-                        String date = null;
-                        if (Settings.settings.relativeTime) date = Utils.getRelativeFormattedTime(Settings.settings.lastClientRefresh, new Date(System.currentTimeMillis()));
-                        else date = Utils.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
+                        String date;
+                        if (Settings.settings.relativeTime)
+                            date = Utils.getRelativeFormattedTime(Settings.settings.lastClientRefresh, new Date(System.currentTimeMillis()));
+                        else
+                            date = Utils.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
                         lastReload.setText(date);
                     } else {
                         lastReload.setVisibility(View.GONE);
@@ -129,9 +132,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         lastServerRefresh.setVisibility(View.VISIBLE);
                         title2.setVisibility(View.VISIBLE);
 
-                        String date = null;
-                        if (Settings.settings.relativeTime) date = Utils.getRelativeFormattedTime(Settings.settings.timeTable.getDate(), new Date(System.currentTimeMillis()));
-                        else date = Utils.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
+                        String date;
+                        if (Settings.settings.relativeTime)
+                            date = Utils.getRelativeFormattedTime(Settings.settings.timeTable.getDate(), new Date(System.currentTimeMillis()));
+                        else
+                            date = Utils.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
                         lastServerRefresh.setText(date);
                     } else {
                         lastServerRefresh.setVisibility(View.GONE);
@@ -148,8 +153,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
         drawer.addDrawerListener(toggle);
         navigationView.getMenu().getItem(0).setChecked(true);
-        navigationView.setItemTextColor(getResources().getColorStateList(R.color.nav_drawer_text));
-        navigationView.setItemIconTintList(getResources().getColorStateList(R.color.nav_drawer_icon));
+
+        navigationView.setItemTextColor(AppCompatResources.getColorStateList(this, R.color.nav_drawer_text));
+        navigationView.setItemIconTintList(AppCompatResources.getColorStateList(this, R.color.nav_drawer_icon));
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -157,15 +163,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         refreshLayout.setOnRefreshListener(this::load);
         try {
             refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(0).getDate()));
-        } catch (IndexOutOfBoundsException ignored) {}
+        } catch (IndexOutOfBoundsException ignored) {
+        }
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void onPageScrolled(int i, float v, int i1) {}
+            public void onPageScrolled(int i, float v, int i1) {
+            }
 
             @Override
-            public void onPageScrollStateChanged(int i) {}
+            public void onPageScrollStateChanged(int i) {
+            }
 
             @Override
             public void onPageSelected(int i) {
@@ -185,19 +194,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void load() {
-        Utils.print("SwipeRefreshLayout");
-        refreshLayout.setRefreshing(true);
-
-        if (!Downloader.download(this)) {
-            refreshLayout.setRefreshing(false);
-        }
+        boolean success = Downloader.download(this);
+        refreshLayout.setRefreshing(success);
     }
 
     @Override
     public void loadFinished(int status) {
-
-        Utils.print("Status: " + status);
-
         if (status != 1) Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
         Settings.save();
 
@@ -212,13 +214,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         int currentIndex = mPager.getCurrentItem();
-
-
-        //PagerAdapter adapter = mPager.getAdapter();
-        //if (adapter != null) adapter.notifyDataSetChanged();
         startPagerView();
-
-        Utils.print("Pager started!");
 
         if (firstPagerStart) {
             setTable(Utils.getView(Settings.settings.timeTable));
@@ -226,8 +222,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             setTable(currentIndex);
         }
-
-        Utils.print("Pager visible");
     }
 
     @Override
@@ -247,20 +241,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(this, InfoActivity.class));
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return false;
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            Utils.print("EXIT-------------------------------------------------------------------------");
+        else
             super.onBackPressed();
-        }
     }
 
     private void setTable(int index) {
