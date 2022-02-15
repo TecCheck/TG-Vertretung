@@ -10,7 +10,6 @@
 
     <application
         android:name=".utils.App"
-        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -30,9 +29,8 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,14 +41,12 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".activity.InfoActivity"
             android:label="@string/title_activity_info"
-            android:parentActivityName=".activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.LicenseActivity"
             android:label="@string/title_activity_license"
@@ -61,13 +57,11 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.SubjectSymbolsActivity"
             android:label="@string/title_activity_symbols"
-            android:parentActivityName=".activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.TimeTableActivity"
             android:label="@string/title_activity_time_table" />
@@ -77,7 +71,8 @@
 
         <receiver
             android:name=".service.AutoStart"
-            android:label="AutoStart">
+            android:label="AutoStart"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
