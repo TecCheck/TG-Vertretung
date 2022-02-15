@@ -55,31 +55,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initUi();
         startPagerView();
 
-        // Load if Logged in
-        if (Settings.settings.loggedIn) {
-            load();
-            if (!BackgroundService.isRunning) {
-                startService(new Intent(getApplicationContext(), BackgroundService.class));
-            }
-        } else {
-            startActivity(new Intent(this, LoginActivity.class));
+        load();
+        if (!BackgroundService.isRunning) {
+            startService(new Intent(getApplicationContext(), BackgroundService.class));
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (Settings.settings.loggedIn) {
-            if (LoginActivity.recentLogin) {
-                load();
-                LoginActivity.recentLogin = false;
-            }
-            startPagerView();
-            if (!BackgroundService.isRunning) {
-                startService(new Intent(getApplicationContext(), BackgroundService.class));
-            }
-        }
     }
 
     @Override
@@ -232,7 +216,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_login) {
-            startActivity(new Intent(this, LoginActivity.class));
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra(LoginActivity.EXTRA_RELOGIN, true);
+            startActivity(intent);
         } else if (id == R.id.nav_symbols) {
             startActivity(new Intent(this, SubjectSymbolsActivity.class));
         } else if (id == R.id.nav_update) {

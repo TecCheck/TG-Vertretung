@@ -7,6 +7,7 @@ import android.os.Looper;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,22 +15,27 @@ import android.widget.ProgressBar;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
-import de.coop.tgvertretung.utils.Utils;
 import de.sematre.dsbmobile.DSBMobile;
-
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static boolean recentLogin = false;
+    public static String EXTRA_RELOGIN = "relogin";
 
-    private Button btn = null;
-    private EditText pwText = null;
-    private EditText nmText = null;
-    private ProgressBar progressBar = null;
+    private Button btn;
+    private EditText pwText;
+    private EditText nmText;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Settings.load(this);
+
+        if (Settings.settings.loggedIn && !getIntent().getBooleanExtra(EXTRA_RELOGIN, false)) {
+            startMainActivity();
+        }
+
         setContentView(R.layout.activity_login);
 
         pwText = findViewById(R.id.password);
@@ -39,10 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         btn = findViewById(R.id.sign_in_button);
         btn.setOnClickListener((view) -> login());
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
-
-        Utils.print("ActionBar: " + actionBar);
+        if (Settings.settings.loggedIn) {
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
+        }
     }
 
     private void login() {
@@ -55,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
             } catch (IllegalArgumentException e) {
                 status = 1;
             } catch (Exception e) {
-                e.printStackTrace();
                 status = 2;
             }
 
@@ -74,9 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             Settings.settings.username = nmText.getText().toString();
             Settings.settings.loggedIn = true;
             Settings.save();
-            recentLogin = true;
-            finish();
-            //super.onBackPressed();
+            goToMainActivity();
         } else if (status == 1) {
             // Credentials are incorrect
             Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -86,30 +89,27 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (Settings.settings.loggedIn) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                super.onBackPressed();
-                return true;
-            }
+    private void goToMainActivity() {
+        if (getIntent().getBooleanExtra(EXTRA_RELOGIN, false)) {
+            finish();
+        } else {
+            startMainActivity();
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
-    public void onBackPressed() {
-        if (!Settings.settings.loggedIn) {
-            Utils.print("EXIT-------------------------------------------------------------------------");
-            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-            homeIntent.addCategory(Intent.CATEGORY_HOME);
-            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(homeIntent);
-            //System.exit(1);
-        } else {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (Settings.settings.loggedIn && item.getItemId() == android.R.id.home) {
             super.onBackPressed();
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 }
