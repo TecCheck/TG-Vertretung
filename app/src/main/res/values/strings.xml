@@ -77,7 +77,7 @@
     <!-- Info Activity content -->
     <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
     <string name="version">Version</string>
-    <string name="version_name">Versionsname</string>
+    <string name="version_name">Version</string>
     <string name="version_id">Versionsnummer</string>
     <string name="build_date">Build-Datum</string>
     <string name="github_name" translatable="false">GitHub</string>
@@ -87,7 +87,7 @@
     <string name="devs_name">Entwickler</string>
     <string name="tobias" translatable="false">Tobias</string>
     <string name="christoph" translatable="false">Christoph</string>
-    <string name="licenses_name">OpenSource-Lizenzen</string>
+    <string name="licenses_name">Lizenzen</string>
     <string name="licenses_txt">OpenSource Lizenzen anzeigen</string>
 
     <array name="licenses">
