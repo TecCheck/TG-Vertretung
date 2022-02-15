@@ -1,8 +1,10 @@
 package de.coop.tgvertretung.adapter;
 
 import android.content.Context;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +13,21 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
+import de.coop.tgvertretung.utils.SettingsWrapper;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 
 class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolder> {
 
-    private Table table;
-    private Context context;
+    private final Table table;
+    private final Context context;
+    private final SettingsWrapper settings;
 
-    TableEntryAdapter(Table table, Context context) {
+    TableEntryAdapter(Table table, Context context, SettingsWrapper settings) {
         this.table = table;
         this.context = context;
+        this.settings = settings;
     }
 
     @Override
@@ -45,8 +50,8 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         imageView.setVisibility(View.GONE);
         schoolClass.setText(Utils.checkEmptyString(entry.getSchoolClass()));
         hour.setText(Utils.checkEmptyString(entry.getTime()));
-        entryText.setText(getEntryText(entry, Settings.settings.extended));
-        if (Settings.settings.showText && !entry.getText().equals("")) {
+        entryText.setText(getEntryText(entry, settings.getExtended()));
+        if (settings.getShowText() && !entry.getText().equals("")) {
             info.setVisibility(View.VISIBLE);
             info.setText(entry.getText());
         } else {
@@ -54,7 +59,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
             info.setText("");
         }
 
-        if (Settings.settings.rainbow) {
+        if (settings.getRainbow()) {
             Utils.addRainbow(schoolClass);
             Utils.addRainbow(hour);
         } else {

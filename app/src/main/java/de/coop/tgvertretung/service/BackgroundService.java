@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
 import android.util.Log;
 
 import java.util.Random;
@@ -20,6 +22,7 @@ import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.utils.Downloader;
+import de.coop.tgvertretung.utils.SettingsWrapper;
 
 public class BackgroundService extends Service implements Downloader.LoadFinishedListener {
 
@@ -47,9 +50,11 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
         Settings.prefs = getSharedPreferences("preferences", 0);
         Settings.load(context);
 
+        SettingsWrapper settings = new SettingsWrapper(this);
+
         handler = new Handler();
         runnable = () -> {
-            Downloader.download(this);
+            Downloader.download(this, settings);
             handler.postDelayed(runnable, !TEST ? 600000 : 10000);
         };
 

@@ -32,6 +32,7 @@ import de.coop.tgvertretung.adapter.ScreenSlidePagerAdapter;
 import de.coop.tgvertretung.service.BackgroundService;
 import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.Settings;
+import de.coop.tgvertretung.utils.SettingsWrapper;
 import de.coop.tgvertretung.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.LoadFinishedListener {
@@ -42,12 +43,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView lastReload = null;
     private TextView lastServerRefresh = null;
     private SwipeRefreshLayout refreshLayout = null;
+    private SettingsWrapper settings;
+    SettingsWrapper.SettingsWriter settingsWriter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Settings.load(getApplicationContext());
+
+        settings = new SettingsWrapper(this);
+        settingsWriter = new SettingsWrapper.SettingsWriter(this);
 
         new File(Utils.getUpdateDownloadFile(this)).delete();
         Utils.print(Utils.getUpdateDownloadFile(this));
@@ -62,10 +67,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initUi() {
-        if (Settings.settings.themeMode == 0 && Build.VERSION.SDK_INT >= 29)
+        int themeMode = settings.getThemeMode();
+        if (themeMode == 0 && Build.VERSION.SDK_INT >= 29)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         else
-            AppCompatDelegate.setDefaultNightMode(Settings.settings.themeMode);
+            AppCompatDelegate.setDefaultNightMode(themeMode);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -87,31 +93,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 TextView title2 = findViewById(R.id.textView6);
 
                 try {
-                    if (Settings.settings.showClientRefresh) {
+                    if (settings.getShowClientRefresh()) {
                         lastReload.setVisibility(View.VISIBLE);
                         title1.setVisibility(View.VISIBLE);
-
-                        String date;
-                        if (Settings.settings.relativeTime)
-                            date = Utils.getRelativeFormattedTime(Settings.settings.lastClientRefresh, new Date(System.currentTimeMillis()));
-                        else
-                            date = Utils.getFormattedDate(Settings.settings.lastClientRefresh, false, true);
-                        lastReload.setText(date);
+                        showTime(lastServerRefresh, new Date(settings.getLastClientRefresh()), settings.getShowRelativeTime());
                     } else {
                         lastReload.setVisibility(View.GONE);
                         title1.setVisibility(View.GONE);
                     }
 
-                    if (Settings.settings.showServerRefresh) {
+                    if (settings.getShowServerRefresh()) {
                         lastServerRefresh.setVisibility(View.VISIBLE);
                         title2.setVisibility(View.VISIBLE);
-
-                        String date;
-                        if (Settings.settings.relativeTime)
-                            date = Utils.getRelativeFormattedTime(Settings.settings.timeTable.getDate(), new Date(System.currentTimeMillis()));
-                        else
-                            date = Utils.getFormattedDate(Settings.settings.timeTable.getDate(), false, true);
-                        lastServerRefresh.setText(date);
+                        showTime(lastServerRefresh, Settings.settings.timeTable.getDate(), settings.getShowRelativeTime());
                     } else {
                         lastServerRefresh.setVisibility(View.GONE);
                         title2.setVisibility(View.GONE);
@@ -157,25 +151,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    private void showTime(TextView textView, Date date, boolean relativeTime) {
+        if (relativeTime)
+            textView.setText(Utils.getRelativeFormattedTime(date, new Date(System.currentTimeMillis())));
+        else
+            textView.setText(Utils.getFormattedDate(date, false, true));
+    }
+
     private void startPagerView() {
         int index = Utils.getView(Settings.settings.timeTable);
         if (mPager != null) index = mPager.getCurrentItem();
 
-        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), settings);
         mPager = findViewById(R.id.container);
         mPager.setAdapter(mPagerAdapter);
         if (index >= 0) mPager.setCurrentItem(index);
     }
 
     private void load() {
-        boolean success = Downloader.download(this);
+        boolean success = Downloader.download(this, settings);
         refreshLayout.setRefreshing(success);
     }
 
     @Override
     public void loadFinished(int status) {
-        if (status != 1) Settings.settings.lastClientRefresh = new Date(System.currentTimeMillis());
-        Settings.save();
+        if (status != 1) settingsWriter.setLastClientRefresh(System.currentTimeMillis());
+        settingsWriter.writeEditsAsync();
 
         refreshLayout.setRefreshing(false);
 

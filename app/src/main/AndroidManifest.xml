@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings2" />
 
         <provider
             android:name=".utils.UpdateFileProvider"
@@ -24,20 +28,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/update_file_provider"/>
+                android:resource="@xml/update_file_provider" />
         </provider>
 
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme" />
-
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.InfoActivity"
             android:label="@string/title_activity_info"
@@ -51,10 +48,11 @@
             android:label="@string/title_activity_update" />
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -65,18 +63,19 @@
         <activity
             android:name=".activity.TimeTableActivity"
             android:label="@string/title_activity_time_table" />
-
-        <activity android:name=".activity.TimeTableEditActivity"
-            android:label="@string/title_activity_time_table_edit"/>
+        <activity
+            android:name=".activity.TimeTableEditActivity"
+            android:label="@string/title_activity_time_table_edit" />
 
         <receiver
             android:name=".service.AutoStart"
-            android:label="AutoStart"
-            android:exported="false">
+            android:exported="false"
+            android:label="AutoStart">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <service
             android:name=".service.BackgroundService"
             android:enabled="true" />

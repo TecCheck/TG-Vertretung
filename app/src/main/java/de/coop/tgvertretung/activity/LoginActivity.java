@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.Settings;
+import de.coop.tgvertretung.utils.SettingsWrapper;
 import de.sematre.dsbmobile.DSBMobile;
 
 public class LoginActivity extends AppCompatActivity {
@@ -25,14 +27,15 @@ public class LoginActivity extends AppCompatActivity {
     private EditText pwText;
     private EditText nmText;
     private ProgressBar progressBar;
+    private SettingsWrapper settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Settings.load(this);
+        settings = new SettingsWrapper(this);
 
-        if (Settings.settings.loggedIn && !getIntent().getBooleanExtra(EXTRA_RELOGIN, false)) {
+        if (settings.isLoggedIn() && !getIntent().getBooleanExtra(EXTRA_RELOGIN, false)) {
             startMainActivity();
         }
 
@@ -45,18 +48,21 @@ public class LoginActivity extends AppCompatActivity {
         btn = findViewById(R.id.sign_in_button);
         btn.setOnClickListener((view) -> login());
 
-        if (Settings.settings.loggedIn) {
+        if (settings.isLoggedIn()) {
             ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(Settings.settings.loggedIn);
+            if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
     private void login() {
         progressBar.setIndeterminate(true);
         Thread loginThread = new Thread(() -> {
+            final String password = pwText.getText().toString();
+            final String username = nmText.getText().toString();
+
             int status;
             try {
-                new DSBMobile(nmText.getText().toString(), pwText.getText().toString());
+                new DSBMobile(username, password);
                 status = 0;
             } catch (IllegalArgumentException e) {
                 status = 1;
@@ -66,19 +72,18 @@ public class LoginActivity extends AppCompatActivity {
 
             final int i = status;
             Handler mainHandler = new Handler(Looper.getMainLooper());
-            mainHandler.post(() -> loginFinished(i));
+            mainHandler.post(() -> loginFinished(i, username, password));
         }, "Login-Thread");
         loginThread.start();
     }
 
-    void loginFinished(int status) {
+    void loginFinished(int status, String username, String password) {
         progressBar.setIndeterminate(false);
         if (status == 0) {
-            Settings.load(getApplicationContext());
-            Settings.settings.password = pwText.getText().toString();
-            Settings.settings.username = nmText.getText().toString();
-            Settings.settings.loggedIn = true;
-            Settings.save();
+            SettingsWrapper.SettingsWriter writer = new SettingsWrapper.SettingsWriter(this);
+            writer.setUsername(username);
+            writer.setPassword(password);
+            writer.writeEdits();
             goToMainActivity();
         } else if (status == 1) {
             // Credentials are incorrect
@@ -105,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (Settings.settings.loggedIn && item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
             return true;
         }

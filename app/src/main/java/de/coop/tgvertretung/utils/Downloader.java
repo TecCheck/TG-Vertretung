@@ -12,14 +12,15 @@ public class Downloader extends Thread {
     private static Downloader dwdThread = null;
 
     private int status = 0;
-    private LoadFinishedListener listener;
+    private final LoadFinishedListener listener;
+    private SettingsWrapper settings;
 
-    public static boolean download(LoadFinishedListener listener) {
+    public static boolean download(LoadFinishedListener listener, SettingsWrapper settings) {
         Utils.printMethod("download");
 
         if (dwdThread == null || !dwdThread.isAlive()) {
             try {
-                dwdThread = new Downloader(listener);
+                dwdThread = new Downloader(listener, settings);
                 dwdThread.start();
                 return true;
             } catch (Exception e) {
@@ -30,8 +31,9 @@ public class Downloader extends Thread {
         return false;
     }
 
-    private Downloader(LoadFinishedListener listener) {
+    private Downloader(LoadFinishedListener listener, SettingsWrapper settings) {
         this.listener = listener;
+        this.settings = settings;
     }
 
     @Override
@@ -42,9 +44,9 @@ public class Downloader extends Thread {
         try {
             Utils.print("Download started");
 
-            Log.d("Download", "usr: " + Settings.settings.username + ", pw: " + Settings.settings.password);
+            Log.d("Download", "usr: " + settings.getUsername() + ", pw: " + settings.getPassword());
 
-            TG tgv = new TG(Settings.settings.username, Settings.settings.password);
+            TG tgv = new TG(settings.getUsername(), settings.getPassword());
             TimeTable timeTable = tgv.getTimeTable().summarize().sort();
 
             if (Settings.settings.timeTable.getDate().equals(timeTable.getDate())) {

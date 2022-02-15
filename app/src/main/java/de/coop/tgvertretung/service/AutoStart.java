@@ -4,16 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import de.coop.tgvertretung.utils.Settings;
+import de.coop.tgvertretung.utils.SettingsWrapper;
 
 public class AutoStart extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Settings.prefs = context.getSharedPreferences("preferences", 0);
-        Settings.load(context);
+        SettingsWrapper settings = new SettingsWrapper(context);
 
-        if (Settings.settings.loggedIn && !BackgroundService.isRunning) {
+        if (settings.isLoggedIn() && !BackgroundService.isRunning) {
             context.startService(new Intent(context, BackgroundService.class));
         }
     }

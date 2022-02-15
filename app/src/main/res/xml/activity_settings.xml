@@ -1,85 +1,75 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <PreferenceCategory android:title="@string/setting_filter_title"/>
+    <PreferenceCategory android:title="@string/setting_filter_title">
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:key="filter_enabled"
+            android:title="@string/setting_filter_switch" />
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:dependency="filter_enabled"
+            android:inputType="textFilter"
+            android:key="filter"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:title="@string/setting_filter_pref"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 
-    <SwitchPreference
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:key="filter_switch"
-        android:title="@string/setting_filter_switch" />
-    <EditTextPreference
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:capitalize="words"
-        android:enabled="true"
-        android:inputType="textCapWords"
-        android:key="filter"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/setting_filter_pref" /><![CDATA[
-
-    ListPreference
-        android:defaultValue="-1"
-        android:entries="@array/classes"
-        android:entryValues="@array/classes_key"
-        android:key="filterPref"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/setting_filterPref" />
-    ]]>
     <PreferenceCategory android:title="@string/setting_view_title">
-
+        <SwitchPreference
+            android:key="two_line_label"
+            android:title="@string/setting_two_line_label"
+            android:defaultValue="false"/>
+        <ListPreference
+            android:entries="@array/setting_theme_modes"
+            android:entryValues="@array/setting_theme_modes_values"
+            android:key="theme_mode"
+            android:title="@string/setting_theme"
+            android:defaultValue="default"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            android:key="show_ab"
+            android:summary="@string/setting_show_ab_summary"
+            android:title="@string/setting_show_ab"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="show_text"
+            android:title="@string/setting_show_text" />
+        <SwitchPreference
+            android:key="extended_view"
+            android:title="@string/setting_extended_view"
+            android:defaultValue="false"/>
     </PreferenceCategory>
-    <SwitchPreference
-        android:key="show_ab"
-        android:summary="@string/setting_show_ab_summary"
-        android:title="@string/setting_show_ab" />
-    <SwitchPreference
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:enabled="true"
-        android:focusable="false"
-        android:key="extended_view"
-        android:title="@string/setting_extended_view" />
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="show_text"
-        android:title="@string/setting_show_text" />
-    <SwitchPreference
-        android:key="two_line_label"
-        android:title="@string/setting_two_line_label" />
-    <ListPreference
-        android:entries="@array/setting_theme_modes"
-        android:entryValues="@array/setting_theme_modes"
-        android:key="theme_mode"
-        android:title="Theme" />
+
     <PreferenceCategory android:title="@string/setting_context_menu_title">
-
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="show_server_refresh"
+            android:title="@string/setting_show_server_refresh" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="show_client_refresh"
+            android:title="@string/setting_show_client_refresh" />
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="true"
+            android:key="relative_time"
+            android:summary="@string/setting_relative_time_summary"
+            android:title="@string/setting_relative_time" />
     </PreferenceCategory>
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="show_server_refresh"
-        android:title="@string/setting_show_server_refresh" />
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="show_client_refresh"
-        android:title="@string/setting_show_client_refresh" />
-    <SwitchPreference
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:defaultValue="true"
-        android:key="relative_time"
-        android:summary="@string/setting_relative_time_summary"
-        android:title="@string/setting_relative_time" />
+
     <PreferenceCategory android:title="@string/setting_unnecessary_menu_title">
-
+        <SwitchPreference
+            android:key="rainbow"
+            android:title="@string/setting_rainbow" />
     </PreferenceCategory>
-    <SwitchPreference
-        android:key="rainbow"
-        android:title="@string/setting_rainbow" />
-
 </PreferenceScreen>
