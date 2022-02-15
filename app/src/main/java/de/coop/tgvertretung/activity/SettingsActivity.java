@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatDelegate;
 import android.view.MenuItem;
 
 import de.coop.tgvertretung.R;
