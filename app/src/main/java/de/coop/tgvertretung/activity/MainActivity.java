@@ -12,7 +12,6 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -32,7 +31,6 @@ import de.coop.tgvertretung.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.LoadFinishedListener {
 
-    private static final boolean CLOSE_WARNING = false;
     private static boolean firstPagerStart = true;
     private ViewPager mPager = null;
     private TextView lastReload = null;
@@ -256,26 +254,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        // If the back button is pressed
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Utils.print("EXIT-------------------------------------------------------------------------");
-            if (CLOSE_WARNING) {
-                AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle(R.string.exit_title)
-                        .setMessage(R.string.exit_message)
-                        .setNegativeButton(android.R.string.no, null)
-                        .setPositiveButton(android.R.string.yes, (arg0, arg1) -> {
-                            MainActivity.super.onBackPressed();
-                            System.exit(1);
-                        }).create();
-                dialog.show();
-            }
-
             super.onBackPressed();
-            System.exit(1);
         }
     }
 
