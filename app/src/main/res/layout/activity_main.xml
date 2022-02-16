@@ -30,12 +30,12 @@
             android:theme="@style/AppTheme.AppBarOverlay"
             app:expanded="false">
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                android:background="@color/toolbar_background_color"
+                app:title="@string/app_name" />
         </com.google.android.material.appbar.AppBarLayout>
 
 
