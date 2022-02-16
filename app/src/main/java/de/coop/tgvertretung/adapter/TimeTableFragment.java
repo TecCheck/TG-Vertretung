@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.activity.TimeTableEditActivity;
-import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Week;
 
 public class TimeTableFragment extends Fragment implements RecyclerItemClickListener.OnItemClickListener {
@@ -42,7 +41,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Get the Views
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_table, container, false);
         label = rootView.findViewById(R.id.label);
         TextView label2 = rootView.findViewById(R.id.label2);
         recyclerView = rootView.findViewById(R.id.recycler_view);

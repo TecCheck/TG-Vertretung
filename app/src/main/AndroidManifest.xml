@@ -19,17 +19,7 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:exported="false"
-            android:label="@string/title_activity_settings2" />
-
-        <provider
-            android:name=".utils.UpdateFileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/update_file_provider" />
-        </provider>
+            android:label="@string/title_activity_settings" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -78,6 +68,16 @@
         <service
             android:name=".service.BackgroundService"
             android:enabled="true" />
+
+        <provider
+            android:name=".utils.UpdateFileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/update_file_provider" />
+        </provider>
     </application>
 
 </manifest>

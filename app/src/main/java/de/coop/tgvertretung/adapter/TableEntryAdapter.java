@@ -32,7 +32,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
 
     @Override
     public TableEntryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.table_entry_item, parent, false);
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_table_entry, parent, false);
         return new ViewHolder(cardView);
     }
 
@@ -45,7 +45,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
         TextView hour = cardView.findViewById(R.id.hour);
         TextView entryText = cardView.findViewById(R.id.entry);
         TextView info = cardView.findViewById(R.id.info_text);
-        ImageView imageView = cardView.findViewById(R.id.imageView2);
+        ImageView imageView = cardView.findViewById(R.id.icon);
 
         imageView.setVisibility(View.GONE);
         schoolClass.setText(Utils.checkEmptyString(entry.getSchoolClass()));

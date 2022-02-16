@@ -183,7 +183,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.symbol_entry_item, viewGroup, false);
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_symbol_entry, viewGroup, false);
             return new ViewHolder(v);
         }
 

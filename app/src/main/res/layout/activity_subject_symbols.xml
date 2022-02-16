@@ -19,5 +19,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="5"
-        tools:listitem="@layout/symbol_entry_item" />
+        tools:listitem="@layout/item_symbol_entry" />
 </androidx.constraintlayout.widget.ConstraintLayout>

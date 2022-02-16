@@ -39,7 +39,7 @@ public class TableFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Get the Views
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_table, container, false);
         TextView label = rootView.findViewById(R.id.label);
         TextView label2 = rootView.findViewById(R.id.label2);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);

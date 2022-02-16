@@ -26,7 +26,7 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
 
     @Override
     public TimeTableEntryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.table_entry_item, parent, false);
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_table_entry, parent, false);
         return new ViewHolder(cardView);
     }
 
@@ -41,7 +41,7 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
         TextView hour = cardView.findViewById(R.id.hour);
         TextView entryText = cardView.findViewById(R.id.entry);
         TextView info = cardView.findViewById(R.id.info_text);
-        ImageView imageView = cardView.findViewById(R.id.imageView2);
+        ImageView imageView = cardView.findViewById(R.id.icon);
         if (position == Settings.settings.myNewTimeTable.getDaySize(TimeTableFragment.week, dayOfWeek)) {
             imageView.setVisibility(View.VISIBLE);
             entryText.setVisibility(View.VISIBLE);
