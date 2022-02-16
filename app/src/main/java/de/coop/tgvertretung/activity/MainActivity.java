@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +38,7 @@ import de.sematre.tg.Table;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.LoadFinishedListener {
 
-    private ViewPager pager;
+    private ViewPager2 pager;
     private DrawerLayout drawer;
     private SwipeRefreshLayout refreshLayout;
 
@@ -94,19 +95,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemIconTintList(AppCompatResources.getColorStateList(this, R.color.nav_drawer_icon));
         navigationView.setNavigationItemSelectedListener(this);
 
-        pager.setAdapter(new ScreenSlidePagerAdapter(getSupportFragmentManager(), settings));
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        pager.setAdapter(new ScreenSlidePagerAdapter(this, settings));
+        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                refreshLayout.setColorSchemeColors(Utils.getColor(getApplicationContext(), Settings.settings.timeTable.getTables().get(i).getDate()));
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                int color = Utils.getColor(MainActivity.this, Settings.settings.timeTable.getTables().get(position).getDate());
+                refreshLayout.setColorSchemeColors(color);
             }
         });
 
@@ -115,6 +110,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         load();
         startBackgroundService();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Settings.save();
+        super.onDestroy();
     }
 
     @Override

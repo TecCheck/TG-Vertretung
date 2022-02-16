@@ -46,7 +46,7 @@
     <string name="nothing">Keine Vertretungen</string>
     <string name="no_class">Entfall</string>
     <string name="loading">Laden…</string>
-    <string name="week">Woche</string>
+    <string name="week">%s Woche</string>
 
     <!-- Settings Activity content -->
     <string name="setting_filter_title">Filter</string>

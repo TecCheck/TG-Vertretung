@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,8 @@ import de.sematre.tg.Table;
 
 public class TableFragment extends Fragment {
 
-    private static final String INDEX = "index";
     public static ArgbEvaluator evaluator = null;
 
-    private Table table;
     private final int index;
     private final SettingsWrapper settings;
 
@@ -38,7 +37,6 @@ public class TableFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Utils.printMethod("onCreateView");
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Get the Views
@@ -49,32 +47,26 @@ public class TableFragment extends Fragment {
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
 
         // Filer the table if needed
-        Table t = Settings.settings.timeTable.getTables().get(index);
-        if (settings.getFilterEnabled()) {
+        Table table = Settings.settings.timeTable.getTables().get(index);
+
+        if (settings.getFilterEnabled())
             table = Utils.filterTable(table, settings.getFilter());
-        } else {
-            table = t;
-        }
 
         if (evaluator == null) evaluator = new ArgbEvaluator();
 
+        boolean isEmpty = table.getTableEntries().isEmpty();
+        nothing.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        recyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+
         // Show nothing if table is empty
-        if (table.getTableEntries().isEmpty()) {
+        if (isEmpty) {
             if (settings.getRainbow())
                 Utils.addRainbow(nothing);
             else
                 nothing.setTextColor(Utils.getColor(getContext(), table.getDate()));
-
-            nothing.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
         } else {
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            RecyclerView.Adapter<TableEntryAdapter.ViewHolder> adapter = new TableEntryAdapter(table, getContext(), settings);
-
-            nothing.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(new TableEntryAdapter(table, getContext(), settings));
         }
 
         // Add a rainbow effect to the label
@@ -89,11 +81,11 @@ public class TableFragment extends Fragment {
 
         // Show the label
         if (settings.getTwoLineLabel()) {
-            label.setText(getLabelTextPrim());
+            label.setText(getLabelTextPrim(table));
             label2.setVisibility(View.VISIBLE);
-            label2.setText(getLabelTextSec());
+            label2.setText(getLabelTextSec(table));
         } else {
-            label.setText(getLabelText());
+            label.setText(getLabelText(table));
             label2.setVisibility(View.INVISIBLE);
             label2.setHeight(14);
         }
@@ -101,23 +93,22 @@ public class TableFragment extends Fragment {
         return rootView;
     }
 
-    private String getLabelText() {
-        String week = getContext().getString(R.string.week) + " ";
-        week += settings.getShowAb() ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
-
+    private String getLabelText(Table table) {
+        String abcd = settings.getShowAb() ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
+        String week = getContext().getString(R.string.week, abcd);
         return Utils.getFormattedDate(table.getDate(), true, false) + " " + week;
     }
 
-    private String getLabelTextPrim() {
+    private String getLabelTextPrim(Table table) {
         return new SimpleDateFormat("EEEE", Locale.getDefault()).format(table.getDate());
     }
 
-    private String getLabelTextSec() {
+    private String getLabelTextSec(Table table) {
         String week = settings.getShowAb() ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
 
         String pattern = "dd.MM.yyyy";
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
         format.setTimeZone(TimeZone.getDefault());
-        return format.format(table.getDate()) + " " + (week + " " + getContext().getString(R.string.week));
+        return format.format(table.getDate()) + " " + getContext().getString(R.string.week, week);
     }
 }
