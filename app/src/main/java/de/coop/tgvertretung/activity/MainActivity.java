@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -88,10 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        navigationView.getMenu().getItem(0).setChecked(true);
-        navigationView.setItemTextColor(AppCompatResources.getColorStateList(this, R.color.nav_drawer_text));
-        navigationView.setItemIconTintList(AppCompatResources.getColorStateList(this, R.color.nav_drawer_icon));
         navigationView.setNavigationItemSelectedListener(this);
 
         pager.setAdapter(new ScreenSlidePagerAdapter(this, settings));

@@ -37,8 +37,7 @@
             android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.LicenseActivity"
-            android:label="@string/title_activity_license"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_license" />
         <activity
             android:name=".activity.UpdateActivity"
             android:label="@string/title_activity_update" />

@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,14 +31,11 @@ public class LicenseActivity extends AppCompatActivity {
 
         int toShow = getIntent().getIntExtra(EXTRA_TO_SHOW, 0);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        TextView text = findViewById(R.id.license_content_text);
-
-        toolbar.setTitle(getResources().getStringArray(R.array.licenses)[toShow]);
-        setSupportActionBar(toolbar);
+        setTitle(getResources().getStringArray(R.array.licenses)[toShow]);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
+        TextView text = findViewById(R.id.license_content_text);
         url = getResources().getStringArray(R.array.licenses_urls)[toShow];
         text.setText(readFile(files[toShow]));
     }
