@@ -4,66 +4,62 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import java.util.Date;
+
 import de.sematre.tg.TG;
 import de.sematre.tg.TimeTable;
 
-public class Downloader extends Thread {
+public class Downloader {
 
-    private static Downloader dwdThread = null;
-
-    private int status = 0;
     private final LoadFinishedListener listener;
     private final SettingsWrapper settings;
 
-    public static boolean download(LoadFinishedListener listener, SettingsWrapper settings) {
-        if (dwdThread == null || !dwdThread.isAlive()) {
-            try {
-                dwdThread = new Downloader(listener, settings);
-                dwdThread.start();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    private Thread downloadThread = null;
 
-        return false;
-    }
-
-    private Downloader(LoadFinishedListener listener, SettingsWrapper settings) {
+    public Downloader(LoadFinishedListener listener, SettingsWrapper settings) {
         this.listener = listener;
         this.settings = settings;
     }
 
-    @Override
-    public void run() {
-        // online
-        status = 0;
+    public boolean download(Date currentNewestDate) {
+        if (downloadThread != null && downloadThread.isAlive())
+            return false;
 
-        try {
-            Log.d("Download", "usr: " + settings.getUsername() + ", pw: " + settings.getPassword());
+        downloadThread = new Thread("downloader") {
+            @Override
+            public void run() {
+                DownloadResult result = DownloadResult.FAILED;
+                TimeTable timeTable = null;
 
-            TG tgv = new TG(settings.getUsername(), settings.getPassword());
-            TimeTable timeTable = tgv.getTimeTable().summarize().sort();
+                try {
+                    TG tgv = new TG(settings.getUsername(), settings.getPassword());
+                    timeTable = tgv.getTimeTable().summarize().sort();
+                    result = DownloadResult.SUCCESS;
 
-            if (Settings.settings.timeTable.getDate().equals(timeTable.getDate())) {
-                // nothing new
-                status = 2;
+                    if (currentNewestDate.equals(timeTable.getDate()))
+                        result = DownloadResult.NOTHING_NEW;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                final DownloadResult finalResult = result;
+                final TimeTable finalTimeTable = timeTable;
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(() -> listener.loadFinished(finalResult, finalTimeTable));
             }
+        };
 
-            Settings.settings.timeTable = timeTable;
-        } catch (Exception e) {
-            // offline
-            e.printStackTrace();
-            status = 1;
-        }
-
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        mainHandler.post(() -> listener.loadFinished(status));
-
-        interrupt();
+        downloadThread.start();
+        return true;
     }
 
     public interface LoadFinishedListener {
-        void loadFinished(int status);
+        void loadFinished(DownloadResult result, TimeTable timeTable);
+    }
+
+    public enum DownloadResult {
+        SUCCESS,
+        NOTHING_NEW,
+        FAILED
     }
 }

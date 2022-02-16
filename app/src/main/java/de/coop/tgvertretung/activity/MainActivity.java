@@ -33,6 +33,7 @@ import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.SettingsWrapper;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
+import de.sematre.tg.TimeTable;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.LoadFinishedListener {
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SettingsWrapper settings;
     private SettingsWrapper.SettingsWriter settingsWriter;
+    private Downloader downloader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Settings.load(this);
         settingsWriter = new SettingsWrapper.SettingsWriter(this);
+        downloader = new Downloader(this, settings);
 
         refreshLayout = findViewById(R.id.refresh_layout);
         drawer = findViewById(R.id.drawer_layout);
@@ -142,19 +145,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void loadFinished(int status) {
-        if (status != 1)
+    public void loadFinished(Downloader.DownloadResult result, TimeTable timeTable) {
+        if (result != Downloader.DownloadResult.FAILED){
             settingsWriter.setLastClientRefresh(System.currentTimeMillis());
-        settingsWriter.writeEditsAsync();
+            settingsWriter.writeEditsAsync();
+            Settings.settings.timeTable = timeTable;
+        }
 
         refreshLayout.setRefreshing(false);
 
-        if (status == 0) {
+        if (result == Downloader.DownloadResult.SUCCESS) {
             showSnack(getString(R.string.connected));
             pager.getAdapter().notifyDataSetChanged();
-        } else if (status == 1) {
+        } else if (result == Downloader.DownloadResult.FAILED) {
             showSnack(getString(R.string.no_connection));
-        } else if (status == 2) {
+        } else if (result == Downloader.DownloadResult.NOTHING_NEW) {
             showSnack(getString(R.string.nothing_new));
         }
     }
@@ -190,13 +195,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void startBackgroundService() {
         // TODO: Better implementation
-        if (!BackgroundService.isRunning) {
+        if (!BackgroundService.isRunning(this)) {
             startService(new Intent(getApplicationContext(), BackgroundService.class));
         }
     }
 
     private void load() {
-        refreshLayout.setRefreshing(Downloader.download(this, settings));
+        refreshLayout.setRefreshing(downloader.download(Settings.settings.timeTable.getDate()));
     }
 
     private void setPage(int index) {

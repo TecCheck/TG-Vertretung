@@ -1,5 +1,6 @@
 package de.coop.tgvertretung.service;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,24 +18,23 @@ import androidx.core.app.NotificationManagerCompat;
 import android.util.Log;
 
 import java.util.Random;
+import java.util.Set;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.SettingsWrapper;
+import de.sematre.tg.TimeTable;
 
 public class BackgroundService extends Service implements Downloader.LoadFinishedListener {
 
     private static final String CHANNEL_ID = "TGV";
     private static final boolean TEST = false;
 
-    private static Runnable runnable = null;
-    public static boolean isRunning;
-
-    private final Context context = this;
-    private Handler handler = null;
-
+    private Downloader downloader;
+    private Runnable runnable;
+    private Handler handler;
     private int notificationId = 0;
 
     @Override
@@ -44,17 +44,13 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
 
     @Override
     public void onCreate() {
-        isRunning = true;
-        Log.d("BackgroundService", "Running");
-
-        Settings.prefs = getSharedPreferences("preferences", 0);
-        Settings.load(context);
-
+        Settings.load(this);
         SettingsWrapper settings = new SettingsWrapper(this);
+        downloader = new Downloader(this, settings);
 
         handler = new Handler();
         runnable = () -> {
-            Downloader.download(this, settings);
+            downloader.download(Settings.settings.timeTable.getDate());
             handler.postDelayed(runnable, !TEST ? 600000 : 10000);
         };
 
@@ -62,7 +58,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     }
 
     private void makeNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_icon_small);
         builder.setContentTitle(getString(R.string.title_notification));
         builder.setContentText(getString(R.string.new_content));
@@ -95,7 +91,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(notificationId);
 
-        notificationId = (int) new Random().nextLong();
+        notificationId = new Random().nextInt();
         Notification notification = builder.build();
         notificationManager.notify(notificationId, notification);
     }
@@ -106,10 +102,22 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     }
 
     @Override
-    public void loadFinished(int status) {
-        if (status == 0 || TEST) {
-            Log.d("BackgroundService", "Download Status: " + status);
+    public void loadFinished(Downloader.DownloadResult result, TimeTable timeTable) {
+        if (result == Downloader.DownloadResult.SUCCESS || TEST) {
+            Log.d("BackgroundService", "DownloadResult: " + result);
+            Settings.settings.timeTable = timeTable;
+            Settings.save();
             makeNotification();
         }
+    }
+
+    public static boolean isRunning(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (BackgroundService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

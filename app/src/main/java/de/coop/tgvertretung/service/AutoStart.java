@@ -15,7 +15,7 @@ public class AutoStart extends BroadcastReceiver {
 
         SettingsWrapper settings = new SettingsWrapper(context);
 
-        if (settings.isLoggedIn() && !BackgroundService.isRunning) {
+        if (settings.isLoggedIn() && !BackgroundService.isRunning(context)) {
             context.startService(new Intent(context, BackgroundService.class));
         }
     }
