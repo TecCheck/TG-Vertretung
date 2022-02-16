@@ -49,14 +49,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         settings = new SettingsWrapper(this);
+        if (!settings.isLoggedIn()) {
+            startLoginActivity(false);
+            return;
+        }
+
         settingsWriter = new SettingsWrapper.SettingsWriter(this);
-
-        new File(Utils.getUpdateDownloadFile(this)).delete();
-        Utils.print(Utils.getUpdateDownloadFile(this));
-
+        setContentView(R.layout.activity_main);
         initUi();
         startPagerView();
 
@@ -64,6 +65,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!BackgroundService.isRunning) {
             startService(new Intent(getApplicationContext(), BackgroundService.class));
         }
+
+        new File(Utils.getUpdateDownloadFile(this)).delete();
+        Utils.print(Utils.getUpdateDownloadFile(this));
+    }
+
+    private void startLoginActivity(boolean reLogin) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(LoginActivity.EXTRA_RE_LOGIN, reLogin);
+        if (!reLogin)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void initUi() {
@@ -207,9 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_login) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra(LoginActivity.EXTRA_RELOGIN, true);
-            startActivity(intent);
+            startLoginActivity(true);
         } else if (id == R.id.nav_symbols) {
             startActivity(new Intent(this, SubjectSymbolsActivity.class));
         } else if (id == R.id.nav_update) {

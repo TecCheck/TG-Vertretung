@@ -21,24 +21,17 @@ import de.sematre.dsbmobile.DSBMobile;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static String EXTRA_RELOGIN = "relogin";
+    public static String EXTRA_RE_LOGIN = "re_login";
 
     private Button btn;
     private EditText pwText;
     private EditText nmText;
     private ProgressBar progressBar;
-    private SettingsWrapper settings;
+    private boolean reLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        settings = new SettingsWrapper(this);
-
-        if (settings.isLoggedIn() && !getIntent().getBooleanExtra(EXTRA_RELOGIN, false)) {
-            startMainActivity();
-        }
-
         setContentView(R.layout.activity_login);
 
         pwText = findViewById(R.id.password);
@@ -46,9 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.login_progress);
 
         btn = findViewById(R.id.sign_in_button);
-        btn.setOnClickListener((view) -> login());
+        btn.setOnClickListener(view -> login());
 
-        if (settings.isLoggedIn()) {
+        reLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
+
+        if (reLogin) {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -60,42 +55,41 @@ public class LoginActivity extends AppCompatActivity {
             final String password = pwText.getText().toString();
             final String username = nmText.getText().toString();
 
-            int status;
+            LoginResult result;
             try {
                 new DSBMobile(username, password);
-                status = 0;
+                result = LoginResult.SUCCESS;
             } catch (IllegalArgumentException e) {
-                status = 1;
+                result = LoginResult.WRONG_CREDENTIALS;
             } catch (Exception e) {
-                status = 2;
+                result = LoginResult.NO_CONNECTION;
             }
 
-            final int i = status;
+            final LoginResult res = result;
             Handler mainHandler = new Handler(Looper.getMainLooper());
-            mainHandler.post(() -> loginFinished(i, username, password));
+            mainHandler.post(() -> loginFinished(res, username, password));
         }, "Login-Thread");
         loginThread.start();
     }
 
-    void loginFinished(int status, String username, String password) {
+    void loginFinished(LoginResult result, String username, String password) {
         progressBar.setIndeterminate(false);
-        if (status == 0) {
+
+        if (result == LoginResult.SUCCESS) {
             SettingsWrapper.SettingsWriter writer = new SettingsWrapper.SettingsWriter(this);
             writer.setUsername(username);
             writer.setPassword(password);
             writer.writeEdits();
             goToMainActivity();
-        } else if (status == 1) {
-            // Credentials are incorrect
+        } else if (result == LoginResult.WRONG_CREDENTIALS) {
             Snackbar.make(btn, getString(R.string.error_incorrect_password), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
-            // Phone is offline
             Snackbar.make(btn, getString(R.string.no_connection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
     private void goToMainActivity() {
-        if (getIntent().getBooleanExtra(EXTRA_RELOGIN, false)) {
+        if (reLogin) {
             finish();
         } else {
             startMainActivity();
@@ -116,5 +110,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private enum LoginResult {
+        SUCCESS,
+        WRONG_CREDENTIALS,
+        NO_CONNECTION
     }
 }
