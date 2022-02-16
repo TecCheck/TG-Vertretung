@@ -28,8 +28,8 @@
     <!-- Main Activity Menu -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="last_server_refresh">Letzte Änderung:</string>
-    <string name="last_reload">Zul. Aktualisiert:</string>
+    <string name="last_server_refresh">Letzte Änderung: %s</string>
+    <string name="last_client_refresh">Zul. Aktualisiert: %s</string>
     <string name="last_reload_none">---</string>
     <string name="never">nie</string>
     <string name="nav_main">Vertretungsplan</string>
