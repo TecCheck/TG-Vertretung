@@ -21,14 +21,9 @@ import de.sematre.tg.TimeTable;
 
 public class Utils {
 
-    private static final boolean SYSOUT = true;
-    private static final boolean METHOD_SYSOUT = true;
-
     private static ArgbEvaluator evaluator = null;
 
     public static int getColor(Context context, Date date) {
-        Utils.printMethod("setColor");
-
         int dayOfWeek = date.getDay() - 1;
         return context.getResources().getIntArray(R.array.day_of_week_color)[Math.min(dayOfWeek, 5)];
     }
@@ -120,8 +115,6 @@ public class Utils {
     }
 
     public static int getView(TimeTable timeTable, int defaultValue) {
-        Utils.printMethod("getView");
-
         int i = 0;
         for (Table table : timeTable.getTables()) {
             Date today = new Date(System.currentTimeMillis());
@@ -129,12 +122,8 @@ public class Utils {
             if (today.getDay() == tableDate.getDay() && today.getMonth() == tableDate.getMonth() && today.getYear() == tableDate.getYear()) {
                 return i;
             }
-
-            Utils.print(table.getDate().toString());
             i++;
         }
-
-        Utils.print("Date not found");
         return defaultValue;
     }
 
@@ -148,13 +137,5 @@ public class Utils {
 
     public static String checkEmptyString(String string) {
         return (string != null && string.isEmpty()) ? App.getAppResources().getString(R.string.no_infos) : string;
-    }
-
-    public static void print(String text) {
-        if (SYSOUT) System.out.println(text);
-    }
-
-    public static void printMethod(String name) {
-        if (METHOD_SYSOUT) System.out.println(name + "();");
     }
 }

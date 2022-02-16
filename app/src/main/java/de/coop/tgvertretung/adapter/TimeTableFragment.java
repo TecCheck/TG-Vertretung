@@ -29,8 +29,6 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
     private TextView label;
 
     public static TimeTableFragment newInstance(int sectionNumber) {
-        Utils.printMethod("newInstance");
-
         Bundle args = new Bundle();
         args.putInt(INDEX, sectionNumber);
 
@@ -41,7 +39,6 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Utils.printMethod("onCreateView");
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Get the Views

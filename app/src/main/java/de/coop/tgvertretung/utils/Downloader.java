@@ -16,8 +16,6 @@ public class Downloader extends Thread {
     private SettingsWrapper settings;
 
     public static boolean download(LoadFinishedListener listener, SettingsWrapper settings) {
-        Utils.printMethod("download");
-
         if (dwdThread == null || !dwdThread.isAlive()) {
             try {
                 dwdThread = new Downloader(listener, settings);
@@ -42,8 +40,6 @@ public class Downloader extends Thread {
         status = 0;
 
         try {
-            Utils.print("Download started");
-
             Log.d("Download", "usr: " + settings.getUsername() + ", pw: " + settings.getPassword());
 
             TG tgv = new TG(settings.getUsername(), settings.getPassword());
@@ -55,9 +51,6 @@ public class Downloader extends Thread {
             }
 
             Settings.settings.timeTable = timeTable;
-
-            Utils.print("ServerTime: " + Settings.settings.timeTable);
-            Utils.print("Download finished");
         } catch (Exception e) {
             // offline
             e.printStackTrace();
@@ -67,10 +60,8 @@ public class Downloader extends Thread {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
             listener.loadFinished(status);
-            Utils.print("Runnable started");
         });
 
-        Utils.print("Download Thread closed");
         interrupt();
     }
 

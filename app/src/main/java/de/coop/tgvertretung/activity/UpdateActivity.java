@@ -92,9 +92,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
             updateButton.setText(R.string.update_button_try_again);
             updateButton.setEnabled(true);
         }
-
-        Utils.print("Version: " + versionCode);
-        Utils.print("Link: " + updateUrl);
     }
 
     private void downloadUpdate() {
