@@ -41,7 +41,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/prompt_username"
-                android:inputType="textEmailAddress" />
+                android:inputType="text"
+                android:autofillHints="username" />
 
             <Space
                 android:layout_width="match_parent"
@@ -53,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/prompt_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:autofillHints="password" />
 
             <Space
                 android:layout_width="match_parent"

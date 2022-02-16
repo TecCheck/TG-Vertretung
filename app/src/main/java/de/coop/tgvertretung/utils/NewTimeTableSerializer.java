@@ -116,8 +116,7 @@ public class NewTimeTableSerializer {
         if(jsonObject.has("tB")) entryB.teacher = jsonObject.get("tB").getAsString();
         else entryB.teacher = entryA.teacher;
 
-        NewTimeTable.TimeTableDayEntry[] ret = {entryA, entryB};
-        return ret;
+        return new NewTimeTable.TimeTableDayEntry[]{entryA, entryB};
     }
 
     public static ArrayList<NewTimeTable.TimeTableDayEntry>[] getTimeTableDay(JsonArray jsonArray){

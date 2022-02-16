@@ -12,8 +12,6 @@
 
     <!-- Snack Strings -->
     <string name="nothing_new">Nichts neues gefunden</string>
-    <string name="exit_title">Wirklich Beenden?</string>
-    <string name="exit_message">Willst du die App wirklich beenden?</string>
 
     <!-- Exit Message -->
     <string name="connected">Daten aktualisiert</string>
@@ -31,7 +29,6 @@
     <string name="last_server_refresh">Letzte Änderung: %s</string>
     <string name="last_client_refresh">Zul. Aktualisiert: %s</string>
     <string name="last_reload_none">---</string>
-    <string name="never">nie</string>
     <string name="nav_main">Vertretungsplan</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_info">Über</string>
@@ -41,11 +38,7 @@
 
     <!-- Main Activity content -->
     <string name="nav_time_table">Stundenplan</string>
-    <string name="none">Das solltest du nicht sehen :(</string>
-    <string name="nothing_saved">Nichts gespeichert!</string>
-    <string name="nothing">Keine Vertretungen</string>
     <string name="no_class">Entfall</string>
-    <string name="loading">Laden…</string>
     <string name="week">%s Woche</string>
 
     <!-- Settings Activity content -->
@@ -64,9 +57,7 @@
     <string name="setting_show_client_refresh">Letzte Aktualisierung anzeigen</string>
     <string name="setting_relative_time">Relative Zeiten verwenden</string>
     <string name="setting_relative_time_summary">z.B. vor 42 Minuten</string>
-    <string name="setting_use_old_layout">Altes Layout benutzen</string>
     <string name="setting_two_line_label">Label in zwei Zeilen aufteilen</string>
-    <string name="setting_requires_restart">Neustart der App erforderlich</string>
     <string name="setting_rainbow">RAINBOW!</string>
 
     <array name="setting_theme_modes">
@@ -82,20 +73,17 @@
     </array>
 
     <!-- Info Activity content -->
-    <string name="info_content">Programmiert von\n-Tobias\n-Christoph\n\nBei Fragen einfach Christoph fragen.</string>
     <string name="version">Version</string>
     <string name="version_name">Version</string>
     <string name="version_id">Versionsnummer</string>
     <string name="build_date">Build-Datum</string>
     <string name="github_name" translatable="false">GitHub</string>
-    <string name="github_txt">Besuche die GitHub Site.</string>
     <string name="github_url" translatable="false">https://github.com/TecCheck/TG-Vertretung/</string>
     <string name="devs_url" translatable="false">https://github.com/TecCheck/TG-Vertretung/graphs/contributors</string>
     <string name="devs_name">Entwickler</string>
     <string name="tobias" translatable="false">Tobias</string>
     <string name="christoph" translatable="false">Christoph</string>
     <string name="licenses_name">Lizenzen</string>
-    <string name="licenses_txt">OpenSource Lizenzen anzeigen</string>
 
     <array name="licenses">
         <item>Gson</item>
@@ -116,13 +104,11 @@
     <string name="update_status_failed">Suche nach Update fehlgeschlagen</string>
     <string name="update_status_downloading">Update wird herruntergeladen</string>
     <string name="update_button_try_again">Erneut suchen</string>
-    <string name="update_button_download">Update Herrunterladen</string>
 
     <!-- Login Activity content -->
     <string name="prompt_username">Kennung</string>
     <string name="prompt_password">Passwort</string>
     <string name="action_sign_in">Anmelden</string>
-    <string name="action_sign_in_short">Anmelden</string>
     <string name="error_incorrect_password">Passwort oder Kennung sind falsch</string>
 
     <!-- Subject Symbols Activity -->

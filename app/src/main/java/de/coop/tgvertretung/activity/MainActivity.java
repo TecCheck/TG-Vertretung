@@ -12,7 +12,6 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.viewpager.widget.ViewPager;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -157,13 +156,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (status == 0) {
             showSnack(getString(R.string.connected));
+            pager.getAdapter().notifyDataSetChanged();
         } else if (status == 1) {
             showSnack(getString(R.string.no_connection));
         } else if (status == 2) {
             showSnack(getString(R.string.nothing_new));
         }
-
-        pager.getAdapter().notifyDataSetChanged();
     }
 
     private void startLoginActivity(boolean reLogin) {

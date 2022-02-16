@@ -7,9 +7,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -70,7 +72,7 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
         builder.show();
     }
 
-    private void makeVersionDialog(){
+    private void makeVersionDialog() {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_about_version);
         dialog.setTitle(R.string.version);
@@ -104,18 +106,19 @@ public class InfoActivity extends AppCompatActivity implements DialogInterface.O
         }
     }
 
-    private String getVersionID(){
+    private String getVersionID() {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-                return String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).getLongVersionCode());
-            return String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
+                return String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+            return String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).getLongVersionCode());
+
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private String getBuildDate(){
+    private String getBuildDate() {
         String s;
         DateFormat format = DateFormat.getDateInstance();
         s = format.format(new Date(BuildConfig.TIMESTAMP));

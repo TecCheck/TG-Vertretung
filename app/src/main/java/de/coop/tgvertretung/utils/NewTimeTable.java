@@ -95,13 +95,8 @@ public class NewTimeTable implements Serializable {
             }
 
             if (entry.teacher != null) {
-                if (!entry.teacher.equals(teacher))
-                    return false;
-            } else if (teacher != null) {
-                return false;
-            }
-
-            return true;
+                return entry.teacher.equals(teacher);
+            } else return teacher == null;
         }
     }
 }

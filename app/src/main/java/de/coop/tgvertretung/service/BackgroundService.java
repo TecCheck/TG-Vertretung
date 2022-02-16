@@ -32,7 +32,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     private static Runnable runnable = null;
     public static boolean isRunning;
 
-    private Context context = this;
+    private final Context context = this;
     private Handler handler = null;
 
     private int notificationId = 0;
@@ -73,7 +73,10 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        int flag = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
+            flag = PendingIntent.FLAG_IMMUTABLE;
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, flag);
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
 

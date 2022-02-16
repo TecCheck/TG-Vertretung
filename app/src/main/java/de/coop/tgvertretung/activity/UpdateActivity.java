@@ -152,7 +152,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
         private String version;
         private String link;
-        private UpdateActivity activity;
+        private final UpdateActivity activity;
 
         DownloadInfoTask(UpdateActivity activity) {
             this.activity = activity;
@@ -180,8 +180,8 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
     private static class DownloadApkTask extends AsyncTask<String, Integer, String> {
 
-        private UpdateActivity activity;
-        private Context context;
+        private final UpdateActivity activity;
+        private final Context context;
         private PowerManager.WakeLock mWakeLock;
 
         DownloadApkTask(Context context, UpdateActivity activity) {

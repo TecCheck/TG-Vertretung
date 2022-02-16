@@ -89,7 +89,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
+        final CardView cardView;
 
         ViewHolder(CardView view) {
             super(view);

@@ -13,7 +13,7 @@ public class Downloader extends Thread {
 
     private int status = 0;
     private final LoadFinishedListener listener;
-    private SettingsWrapper settings;
+    private final SettingsWrapper settings;
 
     public static boolean download(LoadFinishedListener listener, SettingsWrapper settings) {
         if (dwdThread == null || !dwdThread.isAlive()) {
@@ -58,9 +58,7 @@ public class Downloader extends Thread {
         }
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
-        mainHandler.post(() -> {
-            listener.loadFinished(status);
-        });
+        mainHandler.post(() -> listener.loadFinished(status));
 
         interrupt();
     }

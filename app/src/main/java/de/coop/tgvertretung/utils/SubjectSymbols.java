@@ -66,7 +66,7 @@ public class SubjectSymbols implements Serializable {
 
     public boolean readJson(String json){
         Gson gson = new Gson();
-        HashMap<String, String> sym = gson.fromJson(json, new HashMap<String, String>().getClass());
+        HashMap<String, String> sym = gson.fromJson(json, HashMap.class);
         if(sym == null)
             return false;
         symbols = sym;

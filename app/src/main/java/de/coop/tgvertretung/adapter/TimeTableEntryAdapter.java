@@ -16,8 +16,8 @@ import de.coop.tgvertretung.utils.Settings;
 
 class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.ViewHolder> {
 
-    private Context context;
-    private int dayOfWeek;
+    private final Context context;
+    private final int dayOfWeek;
 
     public TimeTableEntryAdapter(int dayOfWeek, Context context) {
         this.dayOfWeek = dayOfWeek;
@@ -68,7 +68,6 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
             hour.setText("");
 
             entryText.setVisibility(View.GONE);
-            info.setVisibility(View.GONE);
         } else {
             String subject = Settings.settings.symbols.getSymbolName(entry.subject);
             schoolClass.setText(subject);
@@ -77,8 +76,8 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
             entryText.setText(entry.teacher);
 
             entryText.setVisibility(View.VISIBLE);
-            info.setVisibility(View.GONE);
         }
+        info.setVisibility(View.GONE);
     }
 
     @Override
@@ -88,7 +87,7 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
+        final CardView cardView;
 
         ViewHolder(CardView view) {
             super(view);

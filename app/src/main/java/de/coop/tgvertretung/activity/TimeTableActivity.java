@@ -6,6 +6,8 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialog;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -19,7 +21,6 @@ import java.util.Calendar;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.TimeTableFragment;
 import de.coop.tgvertretung.adapter.TimeTablePagerAdapter;
-import de.coop.tgvertretung.utils.NewTimeTable;
 import de.coop.tgvertretung.utils.NewTimeTableSerializer;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.Utils;
@@ -65,8 +66,7 @@ public class TimeTableActivity extends AppCompatActivity {
         } else if (id == R.id.receive) {
             receive();
         } else if (id == R.id.test) {
-            // reserved for testing
-            //Settings.settings.myNewTimeTable.test();
+            Log.d(getLocalClassName(), "Test 123");
         }
 
         return super.onOptionsItemSelected(item);
@@ -98,8 +98,7 @@ public class TimeTableActivity extends AppCompatActivity {
             JsonParser parser = new JsonParser();
             try {
                 JsonArray jsonArray = parser.parse(s).getAsJsonArray();
-                NewTimeTable timeTable = NewTimeTableSerializer.getTimeTable(jsonArray);
-                Settings.settings.myNewTimeTable = timeTable;
+                Settings.settings.myNewTimeTable = NewTimeTableSerializer.getTimeTable(jsonArray);
                 PagerAdapter adapter = mPager.getAdapter();
                 if (adapter != null) {
                     adapter.notifyDataSetChanged();

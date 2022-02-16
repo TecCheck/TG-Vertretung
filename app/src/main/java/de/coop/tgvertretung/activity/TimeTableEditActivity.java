@@ -35,7 +35,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
     private EditText editRoomA;
 
     private ConstraintLayout layoutB;
-    private ConstraintLayout dividerB;
     private ImageView expander;
 
     private Spinner spinnerB;
@@ -45,8 +44,6 @@ public class TimeTableEditActivity extends AppCompatActivity {
     private EditText editRoomB;
 
     private CheckBox checkBoxDouble;
-    private Button button;
-    private Button removeButton;
 
     private int entryIndex;
     private int dayIndex;
@@ -75,11 +72,11 @@ public class TimeTableEditActivity extends AppCompatActivity {
         editRoomB = findViewById(R.id.editTextRoomB);
 
         checkBoxDouble = findViewById(R.id.checkBoxDouble);
-        button = findViewById(R.id.buttonAdd);
-        removeButton = findViewById(R.id.buttonRemove);
+        Button button = findViewById(R.id.buttonAdd);
+        Button removeButton = findViewById(R.id.buttonRemove);
 
         layoutB = findViewById(R.id.layoutB);
-        dividerB = findViewById(R.id.headerB);
+        ConstraintLayout dividerB = findViewById(R.id.headerB);
         expander = findViewById(R.id.imageView3);
         layoutB.setVisibility(View.GONE);
         dividerB.setOnClickListener(v -> {

@@ -30,7 +30,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/class_and_hour"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -67,7 +66,7 @@
             <TextView
                 android:id="@+id/info_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
 
                 android:textSize="@dimen/text_size_secondary" />

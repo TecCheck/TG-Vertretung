@@ -168,9 +168,9 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         return true;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public View view;
+        public final View view;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -178,7 +178,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         }
     }
 
-    class Adapter extends RecyclerView.Adapter<ViewHolder> {
+    static class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         @NonNull
         @Override

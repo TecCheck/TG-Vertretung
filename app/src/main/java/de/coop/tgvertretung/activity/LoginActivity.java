@@ -21,7 +21,7 @@ import de.sematre.dsbmobile.DSBMobile;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static String EXTRA_RE_LOGIN = "re_login";
+    public static final String EXTRA_RE_LOGIN = "re_login";
 
     private Button btn;
     private EditText pwText;

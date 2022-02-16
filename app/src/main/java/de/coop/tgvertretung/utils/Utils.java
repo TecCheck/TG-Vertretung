@@ -23,8 +23,26 @@ public class Utils {
 
     private static ArgbEvaluator evaluator = null;
 
+    public static int getDayOfWeek(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public static int getMonth(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c.get(Calendar.MONTH);
+    }
+
+    public static int getYear(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c.get(Calendar.YEAR);
+    }
+
     public static int getColor(Context context, Date date) {
-        int dayOfWeek = date.getDay() - 1;
+        int dayOfWeek = getDayOfWeek(date) - 1;
         return context.getResources().getIntArray(R.array.day_of_week_color)[Math.min(dayOfWeek, 5)];
     }
 
@@ -84,7 +102,7 @@ public class Utils {
         } else if (difference < (2L * 60L * 1000L)) { // 2 Minutes
             return App.getAppResources().getString(R.string.time_aMinuteAgo);
         } else if (difference < (60L * 60L * 1000L)) { // 60 Minutes
-            return String.format(App.getAppResources().getString(R.string.time_nMinutesAgo), String.valueOf((difference / 1000L / 60L)));
+            return String.format(App.getAppResources().getString(R.string.time_nMinutesAgo), String.valueOf(difference / 1000L / 60L));
         }
 
         Calendar calendar = Calendar.getInstance();
@@ -100,7 +118,7 @@ public class Utils {
         calendarYesterday.add(Calendar.DAY_OF_YEAR, -1);
         calendarWeekAgo.add(Calendar.DAY_OF_YEAR, -6);
 
-        String prefix = null;
+        String prefix;
         if ((calendar.get(Calendar.YEAR) == calendarToday.get(Calendar.YEAR)) && (calendar.get(Calendar.DAY_OF_YEAR) == calendarToday.get(Calendar.DAY_OF_YEAR))) {
             prefix = App.getAppResources().getString(R.string.time_today);
         } else if ((calendar.get(Calendar.YEAR) == calendarYesterday.get(Calendar.YEAR)) && (calendar.get(Calendar.DAY_OF_YEAR) == calendarYesterday.get(Calendar.DAY_OF_YEAR))) {
@@ -119,7 +137,7 @@ public class Utils {
         for (Table table : timeTable.getTables()) {
             Date today = new Date(System.currentTimeMillis());
             Date tableDate = table.getDate();
-            if (today.getDay() == tableDate.getDay() && today.getMonth() == tableDate.getMonth() && today.getYear() == tableDate.getYear()) {
+            if (getDayOfWeek(today) == getDayOfWeek(tableDate) && getMonth(today) == getMonth(tableDate) && getYear(today) == getYear(tableDate)) {
                 return i;
             }
             i++;
