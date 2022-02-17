@@ -46,11 +46,11 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     public void onCreate() {
         Settings.load(this);
         SettingsWrapper settings = new SettingsWrapper(this);
-        downloader = new Downloader(this, settings);
+        downloader = new Downloader(this);
 
         handler = new Handler();
         runnable = () -> {
-            downloader.download(Settings.settings.timeTable.getDate());
+            downloader.download(Settings.settings.timeTable.getDate(), settings.getUsername(), settings.getPassword());
             handler.postDelayed(runnable, !TEST ? 600000 : 10000);
         };
 

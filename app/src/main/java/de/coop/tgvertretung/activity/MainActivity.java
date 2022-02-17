@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         String time;
         if (relativeTime)
-            time = Utils.getRelativeFormattedTime(date, new Date(System.currentTimeMillis()));
+            time = Utils.getRelativeFormattedTime(this, date, new Date(System.currentTimeMillis()));
         else
             time = Utils.getFormattedDate(date, false, true);
 
