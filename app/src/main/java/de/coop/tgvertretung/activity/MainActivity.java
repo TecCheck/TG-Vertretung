@@ -28,6 +28,7 @@ import java.util.Date;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.ScreenSlidePagerAdapter;
 import de.coop.tgvertretung.service.BackgroundService;
+import de.coop.tgvertretung.storage.JsonStorageProvider;
 import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.SettingsWrapper;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SettingsWrapper settings;
     private SettingsWrapper.SettingsWriter settingsWriter;
     private Downloader downloader;
+    private JsonStorageProvider storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Settings.load(this);
         settingsWriter = new SettingsWrapper.SettingsWriter(this);
         downloader = new Downloader(this, settings);
+        storage = new JsonStorageProvider(this);
 
         refreshLayout = findViewById(R.id.refresh_layout);
         drawer = findViewById(R.id.drawer_layout);
@@ -69,41 +72,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setNightMode(settings.getThemeMode());
         setSupportActionBar(toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                TextView lastClientReload = findViewById(R.id.lastClientReload);
-                TextView lastServerReload = findViewById(R.id.lastServerReload);
-
-                try {
-                    boolean relativeTime = settings.getShowRelativeTime();
-                    showTime(lastClientReload, new Date(settings.getLastClientRefresh()), R.string.last_client_refresh, relativeTime, settings.getShowClientRefresh());
-                    showTime(lastServerReload, Settings.settings.timeTable.getDate(), R.string.last_server_refresh, relativeTime, settings.getShowServerRefresh());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    lastClientReload.setText(getString(R.string.last_reload_none));
-                    lastServerReload.setText(getString(R.string.last_reload_none));
-                }
-                super.onDrawerOpened(drawerView);
-            }
-        };
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-
-        pager.setAdapter(new ScreenSlidePagerAdapter(this, settings));
-        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                int color = Utils.getColor(MainActivity.this, Settings.settings.timeTable.getTables().get(position).getDate());
-                refreshLayout.setColorSchemeColors(color);
-            }
-        });
-
-        setPage(Utils.getView(Settings.settings.timeTable));
+        setupDrawer(toolbar, navigationView);
         refreshLayout.setOnRefreshListener(this::load);
+
+        storage.readTimeTable().observe(this, timeTable -> {
+            setupPager();
+        });
 
         load();
         startBackgroundService();
@@ -150,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             settingsWriter.setLastClientRefresh(System.currentTimeMillis());
             settingsWriter.writeEditsAsync();
             Settings.settings.timeTable = timeTable;
+            storage.saveTimeTable(timeTable);
         }
 
         refreshLayout.setRefreshing(false);
@@ -179,6 +154,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AppCompatDelegate.setDefaultNightMode(mode);
     }
 
+    private void setupDrawer(Toolbar toolbar, NavigationView navigationView) {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                TextView lastClientReload = findViewById(R.id.lastClientReload);
+                TextView lastServerReload = findViewById(R.id.lastServerReload);
+
+                try {
+                    boolean relativeTime = settings.getShowRelativeTime();
+                    showTime(lastClientReload, new Date(settings.getLastClientRefresh()), R.string.last_client_refresh, relativeTime, settings.getShowClientRefresh());
+                    showTime(lastServerReload, Settings.settings.timeTable.getDate(), R.string.last_server_refresh, relativeTime, settings.getShowServerRefresh());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    lastClientReload.setText(getString(R.string.last_reload_none));
+                    lastServerReload.setText(getString(R.string.last_reload_none));
+                }
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
     private void showTime(TextView textView, Date date, int resId, boolean relativeTime, boolean visible) {
         textView.setVisibility(visible ? View.VISIBLE : View.GONE);
         if (!visible)
@@ -191,6 +190,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             time = Utils.getFormattedDate(date, false, true);
 
         textView.setText(getString(resId, time));
+    }
+
+    private void setupPager() {
+        pager.setAdapter(new ScreenSlidePagerAdapter(this, settings));
+        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                int color = Utils.getColor(MainActivity.this, Settings.settings.timeTable.getTables().get(position).getDate());
+                refreshLayout.setColorSchemeColors(color);
+            }
+        });
+
+        setPage(Utils.getView(Settings.settings.timeTable));
     }
 
     private void startBackgroundService() {
