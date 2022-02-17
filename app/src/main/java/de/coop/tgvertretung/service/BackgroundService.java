@@ -50,7 +50,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
 
         handler = new Handler();
         runnable = () -> {
-            downloader.download(Settings.settings.timeTable.getDate(), settings.getUsername(), settings.getPassword());
+            downloader.download(Settings.settings.timeTable.getDate(), settings.getUsername(), settings.getPassword(), null);
             handler.postDelayed(runnable, !TEST ? 600000 : 10000);
         };
 

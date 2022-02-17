@@ -28,7 +28,8 @@ import java.util.Date;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.ScreenSlidePagerAdapter;
 import de.coop.tgvertretung.service.BackgroundService;
-import de.coop.tgvertretung.storage.JsonStorageProvider;
+import de.coop.tgvertretung.storage.DataManager;
+import de.coop.tgvertretung.utils.App;
 import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.SettingsWrapper;
@@ -36,7 +37,7 @@ import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TimeTable;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.LoadFinishedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Downloader.ResultListener {
 
     private ViewPager2 pager;
     private DrawerLayout drawer;
@@ -44,8 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SettingsWrapper settings;
     private SettingsWrapper.SettingsWriter settingsWriter;
-    private Downloader downloader;
-    private JsonStorageProvider storage;
+    private DataManager dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Settings.load(this);
         settingsWriter = new SettingsWrapper.SettingsWriter(this);
-        downloader = new Downloader(this);
-        storage = new JsonStorageProvider(this);
+        dataManager = ((App) getApplication()).getDataManager();
 
         refreshLayout = findViewById(R.id.refresh_layout);
         drawer = findViewById(R.id.drawer_layout);
@@ -74,10 +73,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         setupDrawer(toolbar, navigationView);
         refreshLayout.setOnRefreshListener(this::load);
-
-        storage.readTimeTable().observe(this, timeTable -> {
-            setupPager();
+        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                int color = Utils.getColor(MainActivity.this, Settings.settings.timeTable.getTables().get(position).getDate());
+                refreshLayout.setColorSchemeColors(color);
+            }
         });
+
+        dataManager.getTimeTable(this).observe(this, this::setupPager);
 
         load();
         startBackgroundService();
@@ -119,23 +124,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void loadFinished(Downloader.DownloadResult result, TimeTable timeTable) {
-        if (result != Downloader.DownloadResult.FAILED){
-            settingsWriter.setLastClientRefresh(System.currentTimeMillis());
-            settingsWriter.writeEditsAsync();
-            Settings.settings.timeTable = timeTable;
-            storage.saveTimeTable(timeTable);
-        }
-
+    public void onStatus(Downloader.DownloadResult result) {
         refreshLayout.setRefreshing(false);
 
         if (result == Downloader.DownloadResult.SUCCESS) {
             showSnack(getString(R.string.connected));
-            pager.getAdapter().notifyDataSetChanged();
+            settingsWriter.setLastClientRefresh(System.currentTimeMillis());
+            settingsWriter.writeEditsAsync();
         } else if (result == Downloader.DownloadResult.FAILED) {
             showSnack(getString(R.string.no_connection));
         } else if (result == Downloader.DownloadResult.NOTHING_NEW) {
             showSnack(getString(R.string.nothing_new));
+            settingsWriter.setLastClientRefresh(System.currentTimeMillis());
+            settingsWriter.writeEditsAsync();
         }
     }
 
@@ -192,20 +193,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textView.setText(getString(resId, time));
     }
 
-    private void setupPager() {
-        pager.setAdapter(new ScreenSlidePagerAdapter(this, settings));
-        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                int color = Utils.getColor(MainActivity.this, Settings.settings.timeTable.getTables().get(position).getDate());
-                refreshLayout.setColorSchemeColors(color);
-            }
-        });
-
-        setPage(Utils.getView(Settings.settings.timeTable));
-    }
-
     private void startBackgroundService() {
         // TODO: Better implementation
         if (!BackgroundService.isRunning(this)) {
@@ -214,11 +201,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void load() {
-        refreshLayout.setRefreshing(downloader.download(Settings.settings.timeTable.getDate(), settings.getUsername(), settings.getPassword()));
+        refreshLayout.setRefreshing(dataManager.downloadTimeTable(settings.getUsername(), settings.getPassword(), this));
     }
 
-    private void setPage(int index) {
-        ArrayList<Table> tables = Settings.settings.timeTable.getTables();
+    private void setupPager(TimeTable timeTable) {
+        Settings.settings.timeTable = timeTable; // TODO: Fix
+        pager.setAdapter(new ScreenSlidePagerAdapter(this, settings));
+        setPage(timeTable, Utils.getView(timeTable));
+    }
+
+    private void setPage(TimeTable timeTable, int index) {
+        ArrayList<Table> tables = timeTable.getTables();
         if (0 > index || index >= tables.size())
             return;
 

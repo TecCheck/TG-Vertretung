@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.util.Date;
 
+import de.coop.tgvertretung.storage.DataManager;
 import de.sematre.tg.TG;
 import de.sematre.tg.TimeTable;
 
@@ -19,7 +20,7 @@ public class Downloader {
         this.listener = listener;
     }
 
-    public boolean download(Date currentNewestDate, String username, String password) {
+    public boolean download(Date currentNewestDate, String username, String password, ResultListener resultListener) {
         if (downloadThread != null && downloadThread.isAlive())
             return false;
 
@@ -43,7 +44,10 @@ public class Downloader {
                 final DownloadResult finalResult = result;
                 final TimeTable finalTimeTable = timeTable;
                 Handler mainHandler = new Handler(Looper.getMainLooper());
-                mainHandler.post(() -> listener.loadFinished(finalResult, finalTimeTable));
+                mainHandler.post(() -> {
+                    listener.loadFinished(finalResult, finalTimeTable);
+                    if (resultListener != null) resultListener.onStatus(finalResult);
+                });
             }
         };
 
@@ -53,6 +57,10 @@ public class Downloader {
 
     public interface LoadFinishedListener {
         void loadFinished(DownloadResult result, TimeTable timeTable);
+    }
+
+    public interface ResultListener {
+        void onStatus(DownloadResult result);
     }
 
     public enum DownloadResult {

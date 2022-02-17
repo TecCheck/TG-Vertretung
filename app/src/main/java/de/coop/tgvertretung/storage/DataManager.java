@@ -16,7 +16,6 @@ import de.sematre.tg.TimeTable;
 public class DataManager implements Downloader.LoadFinishedListener {
 
     private final Context context;
-    private final LifecycleOwner lifecycleOwner;
     private final StorageProvider storage;
     private final Downloader downloader;
 
@@ -24,9 +23,8 @@ public class DataManager implements Downloader.LoadFinishedListener {
     private final MutableLiveData<NewTimeTable> newTimeTable;
     private final MutableLiveData<SubjectSymbols> subjectSymbols;
 
-    public DataManager(Context context, LifecycleOwner lifecycleOwner) {
+    public DataManager(Context context) {
         this.context = context;
-        this.lifecycleOwner = lifecycleOwner;
         this.storage = new JsonStorageProvider(context);
         this.downloader = new Downloader(this);
 
@@ -35,7 +33,7 @@ public class DataManager implements Downloader.LoadFinishedListener {
         this.subjectSymbols = new MutableLiveData<>();
     }
 
-    public LiveData<TimeTable> getTimeTable() {
+    public LiveData<TimeTable> getTimeTable(LifecycleOwner lifecycleOwner) {
         storage.readTimeTable().observe(lifecycleOwner, timeTable::postValue);
         return timeTable;
     }
@@ -48,10 +46,10 @@ public class DataManager implements Downloader.LoadFinishedListener {
         return storage.readSubjectSymbols();
     }
 
-    public void downloadTimeTable(String username, String password) {
+    public boolean downloadTimeTable(String username, String password, Downloader.ResultListener listener) {
         TimeTable timeTable = this.timeTable.getValue();
         Date currentNewest = timeTable == null ? new Date() : timeTable.getDate();
-        downloader.download(currentNewest, username, password);
+        return downloader.download(currentNewest, username, password, listener);
     }
 
     @Override
