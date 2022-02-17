@@ -28,10 +28,12 @@ public class TableFragment extends Fragment {
 
     private final int index;
     private final SettingsWrapper settings;
+    private final Table table;
 
-    public TableFragment(int index, SettingsWrapper settings) {
+    public TableFragment(int index, SettingsWrapper settings, Table table) {
         this.index = index;
         this.settings = settings;
+        this.table = table;
     }
 
     @Override
@@ -46,8 +48,7 @@ public class TableFragment extends Fragment {
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
 
         // Filer the table if needed
-        Table table = Settings.settings.timeTable.getTables().get(index);
-
+        Table table = this.table;
         if (settings.getFilterEnabled())
             table = Utils.filterTable(table, settings.getFilter());
 

@@ -31,7 +31,6 @@ import de.coop.tgvertretung.service.BackgroundService;
 import de.coop.tgvertretung.storage.DataManager;
 import de.coop.tgvertretung.utils.App;
 import de.coop.tgvertretung.utils.Downloader;
-import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.SettingsWrapper;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_main);
 
-        Settings.load(this);
         settingsWriter = new SettingsWrapper.SettingsWriter(this);
         dataManager = ((App) getApplication()).getDataManager();
 
@@ -77,8 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                int color = Utils.getColor(MainActivity.this, Settings.settings.timeTable.getTables().get(position).getDate());
-                refreshLayout.setColorSchemeColors(color);
+                //int color = Utils.getColor(MainActivity.this, Settings.settings.timeTable.getTables().get(position).getDate());
+                //refreshLayout.setColorSchemeColors(color);
+                // TODO: Reimplement
             }
         });
 
@@ -86,12 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         load();
         startBackgroundService();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Settings.save();
-        super.onDestroy();
     }
 
     @Override
@@ -165,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     boolean relativeTime = settings.getShowRelativeTime();
                     showTime(lastClientReload, new Date(settings.getLastClientRefresh()), R.string.last_client_refresh, relativeTime, settings.getShowClientRefresh());
-                    showTime(lastServerReload, Settings.settings.timeTable.getDate(), R.string.last_server_refresh, relativeTime, settings.getShowServerRefresh());
+                    showTime(lastServerReload, new Date() /* TODO: Fix */, R.string.last_server_refresh, relativeTime, settings.getShowServerRefresh());
                 } catch (Exception e) {
                     e.printStackTrace();
                     lastClientReload.setText(getString(R.string.last_reload_none));
@@ -205,8 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupPager(TimeTable timeTable) {
-        Settings.settings.timeTable = timeTable; // TODO: Fix
-        pager.setAdapter(new ScreenSlidePagerAdapter(this, settings));
+        pager.setAdapter(new ScreenSlidePagerAdapter(this, settings, timeTable));
         setPage(timeTable, Utils.getView(timeTable));
     }
 

@@ -5,10 +5,6 @@ import android.content.SharedPreferences;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-
-import de.sematre.tg.TimeTable;
 
 public class Settings implements Serializable {
 
@@ -18,7 +14,6 @@ public class Settings implements Serializable {
     public static Settings settings = new Settings();
     public static SharedPreferences prefs = null;
 
-    public TimeTable timeTable = new TimeTable(new Date(0), new ArrayList<>());
     public SubjectSymbols symbols = new SubjectSymbols();
     public NewTimeTable myNewTimeTable = new NewTimeTable();
 

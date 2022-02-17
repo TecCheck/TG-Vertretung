@@ -126,6 +126,9 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     private boolean isAWeek() {
+        return true;
+        // TODO: Reimplement
+        /*
         int i = Utils.getView(Settings.settings.timeTable, Settings.settings.timeTable.getTables().size() - 1);
         try {
             return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
@@ -133,5 +136,6 @@ public class TimeTableActivity extends AppCompatActivity {
             e.printStackTrace();
             return true;
         }
+        */
     }
 }
