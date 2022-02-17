@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager2 pager;
     private DrawerLayout drawer;
     private SwipeRefreshLayout refreshLayout;
+    private ScreenSlidePagerAdapter adapter;
 
     private SettingsWrapper settings;
     private SettingsWrapper.SettingsWriter settingsWriter;
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         setupDrawer(toolbar, navigationView);
         refreshLayout.setOnRefreshListener(this::load);
+
+        adapter = new ScreenSlidePagerAdapter(this, settings, null, null);
+        pager.setAdapter(adapter);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -81,7 +85,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        dataManager.getTimeTable(this).observe(this, this::setupPager);
+        dataManager.getSubjectSymbols().observe(this, symbols -> {
+            adapter.setSymbols(symbols);
+        });
+
+        dataManager.getTimeTable(this).observe(this, timeTable -> {
+            adapter.setTimeTable(timeTable);
+            setPage(timeTable, Utils.getView(timeTable));
+        });
 
         load();
     }
@@ -197,8 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupPager(TimeTable timeTable) {
-        pager.setAdapter(new ScreenSlidePagerAdapter(this, settings, timeTable));
-        setPage(timeTable, Utils.getView(timeTable));
+
     }
 
     private void setPage(TimeTable timeTable, int index) {

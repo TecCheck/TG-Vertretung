@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.SettingsWrapper;
+import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
@@ -23,11 +23,13 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
     private final Table table;
     private final Context context;
     private final SettingsWrapper settings;
+    private final SubjectSymbols symbols;
 
-    TableEntryAdapter(Table table, Context context, SettingsWrapper settings) {
+    TableEntryAdapter(Table table, Context context, SettingsWrapper settings, SubjectSymbols symbols) {
         this.table = table;
         this.context = context;
         this.settings = settings;
+        this.symbols = symbols;
     }
 
     @Override
@@ -70,10 +72,10 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
     }
 
     private String getEntryText(TableEntry entry, boolean extended) {
-        String subject = Settings.settings.symbols.getSymbolName(entry.getSubject());
+        String subject = symbols.getSymbolName(entry.getSubject());
         subject = Utils.checkEmptyString(context, subject);
 
-        String replacementSubject = Settings.settings.symbols.getSymbolName(entry.getReplacementSubject());
+        String replacementSubject = symbols.getSymbolName(entry.getReplacementSubject());
         replacementSubject = Utils.checkEmptyString(context, replacementSubject);
 
         if (entry.getType().equals("Entfall") || entry.getReplacementRoom().equals("---") || entry.getReplacementSubject().equals("---")) {

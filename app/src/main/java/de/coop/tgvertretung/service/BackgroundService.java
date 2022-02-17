@@ -18,10 +18,8 @@ import androidx.core.app.NotificationManagerCompat;
 import android.util.Log;
 
 import java.util.Random;
-import java.util.Set;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.activity.MainActivity;
 import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.SettingsWrapper;
@@ -44,7 +42,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
 
     @Override
     public void onCreate() {
-        Settings.load(this);
+        //Settings.load(this);
         SettingsWrapper settings = new SettingsWrapper(this);
         downloader = new Downloader(this);
 
@@ -106,7 +104,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
         if (result == Downloader.DownloadResult.SUCCESS || TEST) {
             Log.d("BackgroundService", "DownloadResult: " + result);
             //Settings.settings.timeTable = timeTable;
-            Settings.save();
+            //Settings.save();
             makeNotification();
         }
     }

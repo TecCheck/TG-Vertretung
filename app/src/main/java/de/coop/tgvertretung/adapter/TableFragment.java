@@ -17,8 +17,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.Settings;
 import de.coop.tgvertretung.utils.SettingsWrapper;
+import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 
@@ -29,11 +29,13 @@ public class TableFragment extends Fragment {
     private final int index;
     private final SettingsWrapper settings;
     private final Table table;
+    private final SubjectSymbols symbols;
 
-    public TableFragment(int index, SettingsWrapper settings, Table table) {
+    public TableFragment(int index, SettingsWrapper settings, Table table, SubjectSymbols symbols) {
         this.index = index;
         this.settings = settings;
         this.table = table;
+        this.symbols = symbols;
     }
 
     @Override
@@ -66,7 +68,7 @@ public class TableFragment extends Fragment {
                 nothing.setTextColor(Utils.getColor(getContext(), table.getDate()));
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(new TableEntryAdapter(table, getContext(), settings));
+            recyclerView.setAdapter(new TableEntryAdapter(table, getContext(), settings, symbols));
         }
 
         // Add a rainbow effect to the label
