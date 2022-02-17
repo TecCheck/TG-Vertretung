@@ -13,15 +13,16 @@ import com.google.gson.JsonParser;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import de.coop.tgvertretung.utils.NewTimeTable;
+import de.coop.tgvertretung.utils.NewTimeTableSerializer;
+import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 import de.sematre.tg.TimeTable;
@@ -29,9 +30,9 @@ import de.sematre.tg.Week;
 
 public class JsonStorageProvider implements StorageProvider {
 
-    private static final String SUBFOLDER = "storage";
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final String METADATA_FILE = "metadata.json";
+    private static final String FILE_TIMETABLE = "timetable.json";
+    private static final String FILE_NEW_TIMETABLE = "new_timetable.json";
+    private static final String FILE_SUBJECT_SYMBOLS = "subject_symbols.json";
 
     private static final String KEY_DATE = "date";
     private static final String KEY_WEEK = "week";
@@ -56,31 +57,20 @@ public class JsonStorageProvider implements StorageProvider {
     public LiveData<TimeTable> readTimeTable() {
         MutableLiveData<TimeTable> liveData = new MutableLiveData<>();
         executor.schedule(() -> {
-            File folder = new File(getStorageFolder());
-            File[] files = folder.listFiles();
+            try {
+                JsonObject jsonTimeTable = readJsonFile(FILE_TIMETABLE).getAsJsonObject();
+                Date date = new Date(jsonTimeTable.get(KEY_DATE).getAsLong());
+                JsonArray jsonEntries = jsonTimeTable.getAsJsonArray(KEY_ENTRIES);
 
-            if (files == null)
-                return;
+                ArrayList<Table> tables = new ArrayList<>(jsonEntries.size());
+                for (JsonElement element : jsonEntries)
+                    tables.add(getTable(element.getAsJsonObject()));
 
-            JsonParser parser = new JsonParser();
-            ArrayList<Table> tables = new ArrayList<>(files.length - 1);
-            Date date = null;
-
-            for (File file : files) {
-                try {
-                    JsonObject jsonObject = parser.parse(readFile(file)).getAsJsonObject();
-                    if (file.getName().equals(METADATA_FILE)) {
-                        date = new Date(jsonObject.get(KEY_DATE).getAsLong());
-                    } else {
-                        tables.add(getTable(jsonObject));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (!tables.isEmpty())
+                    liveData.postValue(new TimeTable(date, tables));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            if (date != null && !tables.isEmpty())
-                liveData.postValue(new TimeTable(date, tables));
         }, 0, TimeUnit.NANOSECONDS);
 
         return liveData;
@@ -88,22 +78,68 @@ public class JsonStorageProvider implements StorageProvider {
 
     public void saveTimeTable(TimeTable timeTable) {
         executor.schedule(() -> {
+            JsonObject jsonTimeTable = new JsonObject();
+            jsonTimeTable.addProperty(KEY_DATE, timeTable.getDate().getTime());
+
+            JsonArray jsonEntries = new JsonArray();
+            for (Table table : timeTable.getTables())
+                jsonEntries.add(getJsonTable(table));
+
+            jsonTimeTable.add(KEY_ENTRIES, jsonEntries);
+
             try {
-                JsonObject metadata = new JsonObject();
-                metadata.addProperty(KEY_DATE, timeTable.getDate().getTime());
-                writeFile(createFile(METADATA_FILE), metadata.toString());
+                writeJsonFile(jsonTimeTable, FILE_TIMETABLE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }, 0, TimeUnit.NANOSECONDS);
+    }
 
-            for (Table table : timeTable.getTables()) {
-                try {
-                    JsonObject jsonTable = getJsonTable(table);
-                    File output = createFile(table.getDate());
-                    writeFile(output, jsonTable.toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public LiveData<NewTimeTable> readNewTimeTable() {
+        MutableLiveData<NewTimeTable> liveData = new MutableLiveData<>();
+        executor.schedule(() -> {
+            try {
+                JsonArray jsonNewTimeTable = readJsonFile(FILE_NEW_TIMETABLE).getAsJsonArray();
+                NewTimeTable newTimeTable = NewTimeTableSerializer.getTimeTable(jsonNewTimeTable);
+                liveData.postValue(newTimeTable);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, 0, TimeUnit.NANOSECONDS);
+        return liveData;
+    }
+
+    public void saveNewTimeTable(NewTimeTable newTimeTable) {
+        executor.schedule(() -> {
+            try {
+                JsonArray jsonNewTimeTable = newTimeTable.getJson();
+                writeJsonFile(jsonNewTimeTable, FILE_NEW_TIMETABLE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, 0, TimeUnit.NANOSECONDS);
+    }
+
+    public LiveData<SubjectSymbols> readSubjectSymbols() {
+        MutableLiveData<SubjectSymbols> liveData = new MutableLiveData<>();
+        executor.schedule(() -> {
+            try {
+                SubjectSymbols subjectSymbols = new SubjectSymbols();
+                subjectSymbols.readJson(readJson(FILE_SUBJECT_SYMBOLS));
+                liveData.postValue(subjectSymbols);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, 0, TimeUnit.NANOSECONDS);
+        return liveData;
+    }
+
+    public void saveSubjectSymbols(SubjectSymbols subjectSymbols) {
+        executor.schedule(() -> {
+            try {
+                writeJsonFile(subjectSymbols.getJson(), FILE_SUBJECT_SYMBOLS);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }, 0, TimeUnit.NANOSECONDS);
     }
@@ -156,25 +192,38 @@ public class JsonStorageProvider implements StorageProvider {
         return table;
     }
 
-    private File createFile(Date date) throws IOException {
-        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.GERMAN);
-        String name = format.format(date) + ".json";
-        return createFile(name);
+    private void writeJsonFile(JsonElement jsonElement, String filename) throws IOException {
+        writeJsonFile(jsonElement.toString(), filename);
     }
 
-    private File createFile(String name) throws IOException {
-        String folder = getStorageFolder();
-        File dir = new File(folder);
+    private void writeJsonFile(String json, String filename) throws IOException {
+        String path = context.getFilesDir().getAbsolutePath();
+        File dir = new File(path);
         dir.mkdirs();
-        File file = new File(folder + File.separator + name);
+
+        File file = new File(path + File.separator + filename);
         file.createNewFile();
-        return file;
+        writeFile(file, json);
     }
 
     private void writeFile(File file, String text) throws IOException {
         FileWriter myWriter = new FileWriter(file);
         myWriter.write(text);
         myWriter.close();
+    }
+
+    private JsonElement readJsonFile(String filename) throws IOException {
+        JsonParser parser = new JsonParser();
+        return parser.parse(readJson(filename));
+    }
+
+    private String readJson(String filename) throws IOException {
+        String path = context.getFilesDir().getAbsolutePath() + File.separator + filename;
+        File file = new File(path);
+        if (!file.exists())
+            return null;
+
+        return readFile(file);
     }
 
     private String readFile(File file) throws IOException {
@@ -186,9 +235,5 @@ public class JsonStorageProvider implements StorageProvider {
 
         scanner.close();
         return stringBuilder.toString();
-    }
-
-    private String getStorageFolder() {
-        return context.getFilesDir().getAbsolutePath() + File.separator + SUBFOLDER;
     }
 }

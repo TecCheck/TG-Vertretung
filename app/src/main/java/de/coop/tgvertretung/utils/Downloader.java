@@ -12,16 +12,14 @@ import de.sematre.tg.TimeTable;
 public class Downloader {
 
     private final LoadFinishedListener listener;
-    private final SettingsWrapper settings;
 
     private Thread downloadThread = null;
 
-    public Downloader(LoadFinishedListener listener, SettingsWrapper settings) {
+    public Downloader(LoadFinishedListener listener) {
         this.listener = listener;
-        this.settings = settings;
     }
 
-    public boolean download(Date currentNewestDate) {
+    public boolean download(Date currentNewestDate, String username, String password) {
         if (downloadThread != null && downloadThread.isAlive())
             return false;
 
@@ -32,7 +30,7 @@ public class Downloader {
                 TimeTable timeTable = null;
 
                 try {
-                    TG tgv = new TG(settings.getUsername(), settings.getPassword());
+                    TG tgv = new TG(username, password);
                     timeTable = tgv.getTimeTable().summarize().sort();
                     result = DownloadResult.SUCCESS;
 

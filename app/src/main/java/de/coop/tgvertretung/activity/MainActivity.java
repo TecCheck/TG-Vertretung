@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Settings.load(this);
         settingsWriter = new SettingsWrapper.SettingsWriter(this);
-        downloader = new Downloader(this, settings);
+        downloader = new Downloader(this);
         storage = new JsonStorageProvider(this);
 
         refreshLayout = findViewById(R.id.refresh_layout);
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void load() {
-        refreshLayout.setRefreshing(downloader.download(Settings.settings.timeTable.getDate()));
+        refreshLayout.setRefreshing(downloader.download(Settings.settings.timeTable.getDate(), settings.getUsername(), settings.getPassword()));
     }
 
     private void setPage(int index) {
