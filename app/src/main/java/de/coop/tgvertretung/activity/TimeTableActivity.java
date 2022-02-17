@@ -1,11 +1,12 @@
 package de.coop.tgvertretung.activity;
 
 import android.os.Bundle;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.Menu;
@@ -21,38 +22,53 @@ import java.util.Calendar;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.TimeTableFragment;
 import de.coop.tgvertretung.adapter.TimeTablePagerAdapter;
+import de.coop.tgvertretung.storage.DataManager;
+import de.coop.tgvertretung.utils.App;
 import de.coop.tgvertretung.utils.NewTimeTableSerializer;
-import de.coop.tgvertretung.utils.Settings;
-import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Week;
 
 public class TimeTableActivity extends AppCompatActivity {
 
-    private ViewPager mPager;
+    private ViewPager2 pager;
+    private DataManager dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
+
+        dataManager = ((App) getApplication()).getDataManager();
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if (TimeTableFragment.week == null) {
+        if (TimeTableFragment.week == null)
             TimeTableFragment.week = isAWeek() ? Week.A : Week.B;
-        }
 
-        mPager = findViewById(R.id.container);
-        PagerAdapter mPagerAdapter = new TimeTablePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
+        pager = findViewById(R.id.container);
+        pager.setAdapter(new TimeTablePagerAdapter(this, null, null));
 
-        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
-        mPager.setCurrentItem((day >= 0 && day <= 4) ? day : 0);
+        dataManager.getNewTimeTable().observe(this, newTimeTable ->  {
+            TimeTablePagerAdapter adapter = (TimeTablePagerAdapter) pager.getAdapter();
+            adapter.setNewTimeTable(newTimeTable);
+            setDayIndex(adapter);
+        });
+
+        dataManager.getSubjectSymbols().observe(this, symbols -> {
+            TimeTablePagerAdapter adapter = (TimeTablePagerAdapter) pager.getAdapter();
+            adapter.setSymbols(symbols);
+            setDayIndex(adapter);
+        });
     }
 
-    @Override
-    public void onResume() {
-        //mPager.setAdapter(new TimeTablePagerAdapter(getSupportFragmentManager()));
-        super.onResume();
+    private void setDayIndex(TimeTablePagerAdapter adapter) {
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
+        trySetCurrentItem(adapter, (day >= 0 && day <= 4) ? day : 0);
+    }
+
+    private void trySetCurrentItem(TimeTablePagerAdapter adapter, int index) {
+        if (adapter.getItemCount() > index)
+            pager.setCurrentItem(index);
     }
 
     @Override
@@ -80,7 +96,7 @@ public class TimeTableActivity extends AppCompatActivity {
         Button ok = dialog.findViewById(R.id.button);
         ok.setOnClickListener(v -> dialog.dismiss());
         EditText editText = dialog.findViewById(R.id.editText);
-        editText.setText(Settings.settings.myNewTimeTable.getJson().toString());
+        dataManager.getNewTimeTable().observe(this, newTimeTable -> editText.setText(newTimeTable.getJson().toString()));
         dialog.show();
     }
 
@@ -98,8 +114,8 @@ public class TimeTableActivity extends AppCompatActivity {
             JsonParser parser = new JsonParser();
             try {
                 JsonArray jsonArray = parser.parse(s).getAsJsonArray();
-                Settings.settings.myNewTimeTable = NewTimeTableSerializer.getTimeTable(jsonArray);
-                PagerAdapter adapter = mPager.getAdapter();
+                dataManager.setNewTimeTable(NewTimeTableSerializer.getTimeTable(jsonArray));
+                RecyclerView.Adapter adapter = pager.getAdapter();
                 if (adapter != null) {
                     adapter.notifyDataSetChanged();
                 }
@@ -117,12 +133,6 @@ public class TimeTableActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_time_table_menu, menu);
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Settings.save();
-        super.onBackPressed();
     }
 
     private boolean isAWeek() {

@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.activity.TimeTableEditActivity;
+import de.coop.tgvertretung.utils.NewTimeTable;
+import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.sematre.tg.Week;
 
 public class TimeTableFragment extends Fragment implements RecyclerItemClickListener.OnItemClickListener {
@@ -22,18 +24,19 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
     public static final String INDEX = "index";
 
     public static Week week = null;
-    public int index;
+
+    private final int index;
+    private final SubjectSymbols symbols;
+    private final NewTimeTable newTimeTable;
 
     private RecyclerView recyclerView;
     private TextView label;
 
-    public static TimeTableFragment newInstance(int sectionNumber) {
-        Bundle args = new Bundle();
-        args.putInt(INDEX, sectionNumber);
-
-        TimeTableFragment fragment = new TimeTableFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public TimeTableFragment(NewTimeTable newTimeTable, SubjectSymbols symbols, int index) {
+        super();
+        this.index = index;
+        this.symbols = symbols;
+        this.newTimeTable = newTimeTable;
     }
 
     @Override
@@ -62,11 +65,6 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
             adapter.notifyDataSetChanged();
         });
 
-        // Get index
-        index = getArguments().getInt(INDEX);
-
-        Log.d("Week", "A: " + week);
-
         label.setText(getResources().getStringArray(R.array.days)[index] + " " + week.getLetter());
         label.setTextColor(getResources().getIntArray(R.array.day_of_week_color)[Math.min(index, 5)]);
         label2.setVisibility(View.INVISIBLE);
@@ -74,7 +72,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         nothing.setVisibility(View.GONE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        TimeTableEntryAdapter adapter = new TimeTableEntryAdapter(index, getContext());
+        TimeTableEntryAdapter adapter = new TimeTableEntryAdapter(index, getContext(), newTimeTable, symbols);
         RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(getContext(), recyclerView, this);
 
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);

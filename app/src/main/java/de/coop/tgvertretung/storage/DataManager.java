@@ -52,6 +52,14 @@ public class DataManager implements Downloader.LoadFinishedListener {
         return downloader.download(currentNewest, username, password, listener);
     }
 
+    public void setNewTimeTable(NewTimeTable newTimeTable) {
+        storage.saveNewTimeTable(newTimeTable);
+    }
+
+    public void setSubjectSymbols(SubjectSymbols symbols) {
+        storage.saveSubjectSymbols(symbols);
+    }
+
     @Override
     public void loadFinished(Downloader.DownloadResult result, TimeTable timeTable) {
         if (result != Downloader.DownloadResult.SUCCESS)
