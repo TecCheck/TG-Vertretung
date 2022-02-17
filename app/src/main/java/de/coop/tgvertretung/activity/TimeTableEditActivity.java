@@ -3,10 +3,11 @@ package de.coop.tgvertretung.activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +22,11 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.TimeTableFragment;
+import de.coop.tgvertretung.storage.DataManager;
+import de.coop.tgvertretung.utils.App;
 import de.coop.tgvertretung.utils.NewTimeTable;
 import de.coop.tgvertretung.utils.NewTimeTableSerializer;
-import de.coop.tgvertretung.utils.Settings;
+import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.sematre.tg.Week;
 
 public class TimeTableEditActivity extends AppCompatActivity {
@@ -47,17 +50,23 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
     private int entryIndex;
     private int dayIndex;
+    private DataManager dataManager;
+
+    private SubjectSymbols symbols;
+    private NewTimeTable newTimeTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table_edit);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         entryIndex = intent.getIntExtra(TimeTableFragment.ENTRY_INDEX, 0);
         dayIndex = intent.getIntExtra(TimeTableFragment.INDEX, 0);
+        dataManager = ((App) getApplication()).getDataManager();
 
         spinnerA = findViewById(R.id.spinner);
         editSubjectA = findViewById(R.id.editTextSubject);
@@ -71,13 +80,14 @@ public class TimeTableEditActivity extends AppCompatActivity {
         editTeacherB = findViewById(R.id.editTextTeacherB);
         editRoomB = findViewById(R.id.editTextRoomB);
 
+        layoutB = findViewById(R.id.layoutB);
+        expander = findViewById(R.id.imageView3);
+        ConstraintLayout dividerB = findViewById(R.id.headerB);
+
         checkBoxDouble = findViewById(R.id.checkBoxDouble);
-        Button button = findViewById(R.id.buttonAdd);
+        Button addButton = findViewById(R.id.buttonAdd);
         Button removeButton = findViewById(R.id.buttonRemove);
 
-        layoutB = findViewById(R.id.layoutB);
-        ConstraintLayout dividerB = findViewById(R.id.headerB);
-        expander = findViewById(R.id.imageView3);
         layoutB.setVisibility(View.GONE);
         dividerB.setOnClickListener(v -> {
             if (layoutB.getVisibility() == View.GONE) {
@@ -88,6 +98,57 @@ public class TimeTableEditActivity extends AppCompatActivity {
                 expander.setRotation(0);
             }
         });
+
+        addButton.setOnClickListener(v -> {
+            save();
+            onBackPressed();
+        });
+
+        removeButton.setOnClickListener(v -> {
+            delete();
+            onBackPressed();
+        });
+
+        dataManager.getNewTimeTable().observe(this, newTimeTable -> {
+            this.newTimeTable = newTimeTable;
+            tryInit();
+        });
+
+        dataManager.getSubjectSymbols().observe(this, symbols -> {
+            this.symbols = symbols;
+            tryInit();
+        });
+    }
+
+    public void tryInit() {
+        if (newTimeTable != null && symbols != null)
+            init();
+    }
+
+    public void init() {
+        // Set Values
+        // New
+        NewTimeTable.TimeTableDayEntry entryA = newTimeTable.getEntry(Week.A, dayIndex, entryIndex);
+        NewTimeTable.TimeTableDayEntry entryB = newTimeTable.getEntry(Week.B, dayIndex, entryIndex);
+
+        if (entryA == null) {
+            checkBoxDouble.setChecked(true);
+            return;
+        }
+
+        boolean emptyA = !NewTimeTableSerializer.notEmpty(entryA.subject);
+        spinnerA.setSelection(emptyA ? 0 : (symbols.getSymbolIndex(entryA.subject) + 1));
+
+        editRoomA.setText(entryA.room);
+        editTeacherA.setText(entryA.teacher);
+
+        if (entryB == null) return;
+
+        boolean emptyB = !NewTimeTableSerializer.notEmpty(entryB.subject);
+        spinnerB.setSelection(emptyB ? 0 : (symbols.getSymbolIndex(entryB.subject) + 1));
+
+        editRoomB.setText(entryB.room);
+        editTeacherB.setText(entryB.teacher);
 
         spinnerA.setAdapter(new SpinnerAdapter());
         spinnerA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -102,7 +163,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         spinnerB.setAdapter(new SpinnerAdapter());
@@ -117,54 +179,9 @@ public class TimeTableEditActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
-
-        button.setOnClickListener(v -> {
-            save();
-            onBackPressed();
-        });
-
-        removeButton.setOnClickListener(v -> {
-            Settings.settings.myNewTimeTable.removeEntry(Week.A, dayIndex, entryIndex);
-            Settings.settings.myNewTimeTable.removeEntry(Week.B, dayIndex, entryIndex);
-            onBackPressed();
-        });
-
-        init();
-    }
-
-    public void init() {
-        // Set Values
-        // New
-        NewTimeTable.TimeTableDayEntry entryA = Settings.settings.myNewTimeTable.getEntry(Week.A, dayIndex, entryIndex);
-        NewTimeTable.TimeTableDayEntry entryB = Settings.settings.myNewTimeTable.getEntry(Week.B, dayIndex, entryIndex);
-
-        if (entryA == null) {
-            checkBoxDouble.setChecked(true);
-            return;
-        }
-
-        boolean emptyA = !NewTimeTableSerializer.notEmpty(entryA.subject);
-        spinnerA.setSelection(emptyA ? 0 : (Settings.settings.symbols.getSymbolIndex(entryA.subject) + 1));
-
-        editRoomA.setText(entryA.room);
-        editTeacherA.setText(entryA.teacher);
-
-        if (entryB == null) return;
-
-        boolean emptyB = !NewTimeTableSerializer.notEmpty(entryB.subject);
-        spinnerB.setSelection(emptyB ? 0 : (Settings.settings.symbols.getSymbolIndex(entryB.subject) + 1));
-
-        editRoomB.setText(entryB.room);
-        editTeacherB.setText(entryB.teacher);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Log.d("test", "back");
-        Settings.save();
-        super.onBackPressed();
     }
 
     @Override
@@ -178,47 +195,52 @@ public class TimeTableEditActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void delete() {
+        // TODO: implement
+    }
+
     public void save() {
         String subjectA;
         if (editSubjectA.getVisibility() == View.VISIBLE) {
             subjectA = editSubjectA.getText().toString();
-            Settings.settings.symbols.setSymbol(subjectA, editSubjectNameA.getText().toString());
+            symbols.setSymbol(subjectA, editSubjectNameA.getText().toString());
         } else if (spinnerA.getSelectedItemPosition() == 0) {
             subjectA = "";
         } else {
-            subjectA = Settings.settings.symbols.getSymbol(spinnerA.getSelectedItemPosition() - 1);
+            subjectA = symbols.getSymbol(spinnerA.getSelectedItemPosition() - 1);
         }
 
         String subjectB;
         if (editSubjectB.getVisibility() == View.VISIBLE) {
             subjectB = editSubjectB.getText().toString();
-            Settings.settings.symbols.setSymbol(subjectB, editSubjectNameB.getText().toString());
+            symbols.setSymbol(subjectB, editSubjectNameB.getText().toString());
         } else if (spinnerB.getSelectedItemPosition() == 0) {
             subjectB = "";
         } else {
-            subjectB = Settings.settings.symbols.getSymbol(spinnerB.getSelectedItemPosition() - 1);
+            subjectB = symbols.getSymbol(spinnerB.getSelectedItemPosition() - 1);
         }
 
-        NewTimeTable.TimeTableDayEntry entryA = new NewTimeTable.TimeTableDayEntry();
+        NewTimeTable.TimeTableDayEntry entryA = newTimeTable.getEntry(Week.A, dayIndex, entryIndex);
         entryA.subject = subjectA;
         entryA.room = editRoomA.getText().toString();
         entryA.teacher = editTeacherA.getText().toString();
 
-        NewTimeTable.TimeTableDayEntry entryB = new NewTimeTable.TimeTableDayEntry();
-        if (layoutB.getVisibility() == View.GONE) {
-            entryB = entryA;
-        } else {
+        NewTimeTable.TimeTableDayEntry entryB = newTimeTable.getEntry(Week.A, dayIndex, entryIndex);
+        if (layoutB.getVisibility() != View.GONE) {
             entryB.subject = subjectB;
             entryB.room = editRoomB.getText().toString();
             entryB.teacher = editTeacherB.getText().toString();
         }
 
-        Settings.settings.myNewTimeTable.setEntry(Week.A, dayIndex, entryIndex, entryA);
-        Settings.settings.myNewTimeTable.setEntry(Week.B, dayIndex, entryIndex, entryB);
+        newTimeTable.setEntry(Week.A, dayIndex, entryIndex, entryA);
+        newTimeTable.setEntry(Week.B, dayIndex, entryIndex, entryB);
         if (checkBoxDouble.isChecked()) {
-            Settings.settings.myNewTimeTable.setEntry(Week.A, dayIndex, entryIndex + 1, entryA);
-            Settings.settings.myNewTimeTable.setEntry(Week.B, dayIndex, entryIndex + 1, entryB);
+            newTimeTable.setEntry(Week.A, dayIndex, entryIndex + 1, entryA);
+            newTimeTable.setEntry(Week.B, dayIndex, entryIndex + 1, entryB);
         }
+
+        dataManager.setSubjectSymbols(symbols);
+        dataManager.setNewTimeTable(newTimeTable);
     }
 
     private class SpinnerAdapter implements android.widget.SpinnerAdapter {
@@ -240,21 +262,23 @@ public class TimeTableEditActivity extends AppCompatActivity {
                 textView.setText(R.string.add);
             } else {
                 view.findViewById(R.id.imageView).setVisibility(View.GONE);
-                textView.setText(Settings.settings.symbols.getSymbolName(realPos));
+                textView.setText(symbols.getSymbolName(realPos));
             }
 
             return view;
         }
 
         @Override
-        public void registerDataSetObserver(DataSetObserver observer) {}
+        public void registerDataSetObserver(DataSetObserver observer) {
+        }
 
         @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {}
+        public void unregisterDataSetObserver(DataSetObserver observer) {
+        }
 
         @Override
         public int getCount() {
-            return Settings.settings.symbols.getCount() + 2;
+            return symbols.getCount() + 2;
         }
 
         @Override
