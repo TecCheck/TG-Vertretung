@@ -12,12 +12,6 @@ The modern solution of substitution plan app.
 * Get all information at a glance, through adjustable filters
 * Low memory usage
 
-## Versionen
-| Branch | Description | Build status |
-|:-:|:-:|:-:|
-| [Master](https://github.com/TecCheck/TG-Vertretung/tree/master) | Stable and faultless version. | [![MasterBuildStatus](https://img.shields.io/travis/com/TecCheck/TG-Vertretung/master?style=flat-square)](https://travis-ci.com/TecCheck/TG-Vertretung/branches) |
-| [Development](https://github.com/TecCheck/TG-Vertretung/tree/development) | Always be up to date with the latest state of development. | [![DevelopmentBuildStatus](https://img.shields.io/travis/com/TecCheck/TG-Vertretung/development?style=flat-square)](https://travis-ci.com/TecCheck/TG-Vertretung/branches) |
-
 ## Libraries
 - [Google Gson](https://github.com/google/gson) ([Apache 2 license](https://github.com/google/gson/blob/master/LICENSE)).
 - [Jsoup](https://jsoup.org/) ([MIT license](https://jsoup.org/license)).
