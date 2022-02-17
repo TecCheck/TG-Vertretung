@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataManager.getTimeTable(this).observe(this, this::setupPager);
 
         load();
-        startBackgroundService();
     }
 
     @Override

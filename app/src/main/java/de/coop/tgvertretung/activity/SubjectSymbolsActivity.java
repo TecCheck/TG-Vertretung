@@ -1,14 +1,17 @@
 package de.coop.tgvertretung.activity;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,73 +24,77 @@ import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.RecyclerItemClickListener;
+import de.coop.tgvertretung.storage.DataManager;
+import de.coop.tgvertretung.utils.App;
 import de.coop.tgvertretung.utils.SubjectSymbols;
-import de.coop.tgvertretung.utils.Settings;
 
-public class SubjectSymbolsActivity extends AppCompatActivity implements View.OnClickListener, RecyclerItemClickListener.OnItemClickListener {
+public class SubjectSymbolsActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
 
-    private RecyclerView recyclerView = null;
     private AppCompatDialog dialog = null;
-    private Button button = null;
     private Button removeButton = null;
+    private SubjectSymbolsAdapter adapter;
+
+    private SubjectSymbols symbols = null;
+    private DataManager dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_symbols);
-        recyclerView = findViewById(R.id.recyclerView);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if (Settings.settings.symbols == null) {
-            Settings.settings.symbols = new SubjectSymbols();
-        }
+        dataManager = ((App) getApplication()).getDataManager();
 
-        Adapter adapter = new Adapter();
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        adapter = new SubjectSymbolsAdapter(symbols);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
         RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(getApplicationContext(), recyclerView, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);
-        
+
         dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_symbol_add);
         dialog.setTitle(R.string.add_symbol);
         dialog.setCancelable(true);
-
-        button = dialog.findViewById(R.id.buttonAdd);
+        Button addButton = dialog.findViewById(R.id.buttonAdd);
         removeButton = dialog.findViewById(R.id.buttonRemove);
-        button.setOnClickListener(this);
-        removeButton.setOnClickListener(this);
+        addButton.setOnClickListener(this::addClick);
+        removeButton.setOnClickListener(this::removeClick);
+
+        dataManager.getSubjectSymbols().observe(this, symbols -> {
+            this.symbols = symbols;
+            adapter.setSymbols(symbols);
+        });
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.equals(button)) {
-            EditText name = dialog.findViewById(R.id.editTextName);
-            EditText symbol = dialog.findViewById(R.id.editTextSymbol);
-            if (name.getText().toString().equals("") || symbol.getText().toString().equals("")) {
-                Snackbar.make(v, R.string.please_add_text, Snackbar.LENGTH_SHORT).show();
-            } else {
-                Settings.settings.symbols.setSymbol(symbol.getText().toString(), name.getText().toString());
-                recyclerView.getAdapter().notifyDataSetChanged();
-                name.setText("");
-                symbol.setText("");
-                dialog.dismiss();
-            }
-        } else if (v.equals(removeButton)) {
-            EditText name = dialog.findViewById(R.id.editTextName);
-            EditText symbol = dialog.findViewById(R.id.editTextSymbol);
-            if (name.getText().toString().isEmpty() || symbol.getText().toString().isEmpty()) {
-                Snackbar.make(v, R.string.please_add_text, Snackbar.LENGTH_SHORT).show();
-            } else {
-                Settings.settings.symbols.removeSymbol(symbol.getText().toString());
-                recyclerView.getAdapter().notifyDataSetChanged();
-                name.setText("");
-                symbol.setText("");
-                dialog.dismiss();
-            }
+    private void addClick(View v) {
+        EditText name = dialog.findViewById(R.id.editTextName);
+        EditText symbol = dialog.findViewById(R.id.editTextSymbol);
+        if (name.getText().toString().equals("") || symbol.getText().toString().equals("")) {
+            Snackbar.make(v, R.string.please_add_text, Snackbar.LENGTH_SHORT).show();
+        } else {
+            symbols.setSymbol(symbol.getText().toString(), name.getText().toString());
+            adapter.setSymbols(symbols);
+            name.setText("");
+            symbol.setText("");
+            dialog.dismiss();
+        }
+    }
+
+    private void removeClick(View v) {
+        EditText name = dialog.findViewById(R.id.editTextName);
+        EditText symbol = dialog.findViewById(R.id.editTextSymbol);
+        if (name.getText().toString().isEmpty() || symbol.getText().toString().isEmpty()) {
+            Snackbar.make(v, R.string.please_add_text, Snackbar.LENGTH_SHORT).show();
+        } else {
+            symbols.removeSymbol(symbol.getText().toString());
+            adapter.setSymbols(symbols);
+            name.setText("");
+            symbol.setText("");
+            dialog.dismiss();
         }
     }
 
@@ -99,14 +106,14 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
             return true;
         } else if (id == R.id.share) {
             share();
-        } else if(id == R.id.receive) {
+        } else if (id == R.id.receive) {
             receive();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void share(){
+    public void share() {
         AppCompatDialog dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_share_time_table);
         dialog.setTitle(R.string.share);
@@ -114,11 +121,11 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         Button ok = dialog.findViewById(R.id.button);
         ok.setOnClickListener(v -> dialog.dismiss());
         EditText editText = dialog.findViewById(R.id.editText);
-        editText.setText(Settings.settings.symbols.getJson());
+        editText.setText(symbols.getJson());
         dialog.show();
     }
 
-    public void receive(){
+    public void receive() {
         AppCompatDialog dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_receive_time_table);
         dialog.setTitle(R.string.receive);
@@ -129,9 +136,10 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         cancel.setOnClickListener(v -> dialog.dismiss());
         button.setOnClickListener(v -> {
             String s = editText.getText().toString();
-            if(Settings.settings.symbols.readJson(s))
+            if (symbols.readJson(s)) {
                 dialog.dismiss();
-            else
+                dataManager.setSubjectSymbols(symbols);
+            } else
                 editText.setError(getString(R.string.wrong_json));
         });
         dialog.show();
@@ -139,27 +147,21 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onItemClick(View view, int position) {
-        if (Settings.settings.symbols.getCount() == position) {
+        if (symbols.getCount() == position) {
             dialog.show();
             removeButton.setVisibility(View.GONE);
         } else {
             EditText name = dialog.findViewById(R.id.editTextName);
             EditText symbol = dialog.findViewById(R.id.editTextSymbol);
-            name.setText(Settings.settings.symbols.getSymbolName(position));
-            symbol.setText(Settings.settings.symbols.getSymbol(position));
+            name.setText(symbols.getSymbolName(position));
+            symbol.setText(symbols.getSymbol(position));
             removeButton.setVisibility(View.VISIBLE);
             dialog.show();
         }
     }
 
     @Override
-    public void onLongItemClick(View view, int position) {}
-
-    @Override
-    public void onBackPressed() {
-        Log.d("test", "back");
-        Settings.save();
-        super.onBackPressed();
+    public void onLongItemClick(View view, int position) {
     }
 
     @Override
@@ -178,7 +180,13 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         }
     }
 
-    static class Adapter extends RecyclerView.Adapter<ViewHolder> {
+    static class SubjectSymbolsAdapter extends RecyclerView.Adapter<ViewHolder> {
+
+        private SubjectSymbols symbols;
+
+        public SubjectSymbolsAdapter(SubjectSymbols symbols) {
+            this.symbols = symbols;
+        }
 
         @NonNull
         @Override
@@ -191,8 +199,11 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
             TextView textView = viewHolder.view.findViewById(R.id.textView);
             ImageView imageView = viewHolder.view.findViewById(R.id.imageView);
-            if (i != Settings.settings.symbols.getCount()) {
-                textView.setText(Settings.settings.symbols.getSymbol(i) + ": " + Settings.settings.symbols.getSymbolName(i));
+
+            if (i != getItemCount() - 1) {
+                String symbol = symbols.getSymbol(i);
+                String symbolName = symbols.getSymbolName(i);
+                textView.setText(symbol + ": " + symbolName);
                 imageView.setVisibility(View.GONE);
             } else {
                 imageView.setVisibility(View.VISIBLE);
@@ -202,7 +213,13 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements View.On
 
         @Override
         public int getItemCount() {
-            return Settings.settings.symbols.getCount() + 1;
+            int count = symbols == null ? 0 : symbols.getCount();
+            return count + 1;
+        }
+
+        public void setSymbols(SubjectSymbols symbols) {
+            this.symbols = symbols;
+            notifyDataSetChanged();
         }
     }
 }
