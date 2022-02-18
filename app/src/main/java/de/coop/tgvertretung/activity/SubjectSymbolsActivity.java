@@ -48,26 +48,24 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements Recycle
         dataManager = ((App) getApplication()).getDataManager();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        adapter = new SubjectSymbolsAdapter(symbols);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
-        RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(getApplicationContext(), recyclerView, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, this));
+        adapter = new SubjectSymbolsAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.addOnItemTouchListener(recyclerItemClickListener);
+
+        dataManager.getSubjectSymbols(this, false).observe(this, symbols -> {
+            this.symbols = symbols;
+            adapter.setSymbols(symbols);
+        });
 
         dialog = new AppCompatDialog(this);
         dialog.setContentView(R.layout.dialog_symbol_add);
         dialog.setTitle(R.string.add_symbol);
         dialog.setCancelable(true);
-        Button addButton = dialog.findViewById(R.id.buttonAdd);
         removeButton = dialog.findViewById(R.id.buttonRemove);
-        addButton.setOnClickListener(this::addClick);
         removeButton.setOnClickListener(this::removeClick);
-
-        dataManager.getSubjectSymbols().observe(this, symbols -> {
-            this.symbols = symbols;
-            adapter.setSymbols(symbols);
-        });
+        Button addButton = dialog.findViewById(R.id.buttonAdd);
+        addButton.setOnClickListener(this::addClick);
     }
 
     private void addClick(View v) {
@@ -183,10 +181,6 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements Recycle
     static class SubjectSymbolsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private SubjectSymbols symbols;
-
-        public SubjectSymbolsAdapter(SubjectSymbols symbols) {
-            this.symbols = symbols;
-        }
 
         @NonNull
         @Override

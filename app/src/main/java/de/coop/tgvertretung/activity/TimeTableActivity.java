@@ -45,17 +45,16 @@ public class TimeTableActivity extends AppCompatActivity {
         if (TimeTableFragment.week == null)
             TimeTableFragment.week = isAWeek() ? Week.A : Week.B;
 
+        TimeTablePagerAdapter adapter = new TimeTablePagerAdapter(this);
         pager = findViewById(R.id.container);
-        pager.setAdapter(new TimeTablePagerAdapter(this, null, null));
+        pager.setAdapter(adapter);
 
-        dataManager.getNewTimeTable().observe(this, newTimeTable ->  {
-            TimeTablePagerAdapter adapter = (TimeTablePagerAdapter) pager.getAdapter();
+        dataManager.getNewTimeTable(this, false).observe(this, newTimeTable ->  {
             adapter.setNewTimeTable(newTimeTable);
             setDayIndex(adapter);
         });
 
-        dataManager.getSubjectSymbols().observe(this, symbols -> {
-            TimeTablePagerAdapter adapter = (TimeTablePagerAdapter) pager.getAdapter();
+        dataManager.getSubjectSymbols(this, false).observe(this, symbols -> {
             adapter.setSymbols(symbols);
             setDayIndex(adapter);
         });
@@ -93,10 +92,13 @@ public class TimeTableActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_share_time_table);
         dialog.setTitle(R.string.share);
         dialog.setCancelable(true);
+
         Button ok = dialog.findViewById(R.id.button);
         ok.setOnClickListener(v -> dialog.dismiss());
+
         EditText editText = dialog.findViewById(R.id.editText);
-        dataManager.getNewTimeTable().observe(this, newTimeTable -> editText.setText(newTimeTable.getJson().toString()));
+        dataManager.getNewTimeTable(this, false).observe(this, newTimeTable -> editText.setText(newTimeTable.getJson().toString()));
+
         dialog.show();
     }
 

@@ -13,20 +13,22 @@ public class TimeTablePagerAdapter extends FragmentStateAdapter {
     private SubjectSymbols symbols;
     private NewTimeTable newTimeTable;
 
-    public TimeTablePagerAdapter(@NonNull FragmentActivity fragmentActivity, NewTimeTable newTimeTable, SubjectSymbols symbols) {
+    public TimeTablePagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
-        this.symbols = symbols;
-        this.newTimeTable = newTimeTable;
     }
 
     public void setNewTimeTable(NewTimeTable newTimeTable) {
         this.newTimeTable = newTimeTable;
-        this.notifyDataSetChanged();
+
+        if (symbols != null && newTimeTable != null)
+            this.notifyDataSetChanged();
     }
 
     public void setSymbols(SubjectSymbols symbols) {
         this.symbols = symbols;
-        this.notifyDataSetChanged();
+
+        if (symbols != null && newTimeTable != null)
+            this.notifyDataSetChanged();
     }
 
     @NonNull

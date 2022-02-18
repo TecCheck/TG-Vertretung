@@ -1,6 +1,7 @@
 package de.coop.tgvertretung.storage;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -15,7 +16,6 @@ import de.sematre.tg.TimeTable;
 
 public class DataManager implements Downloader.LoadFinishedListener {
 
-    private final Context context;
     private final StorageProvider storage;
     private final Downloader downloader;
 
@@ -24,7 +24,6 @@ public class DataManager implements Downloader.LoadFinishedListener {
     private final MutableLiveData<SubjectSymbols> subjectSymbols;
 
     public DataManager(Context context) {
-        this.context = context;
         this.storage = new JsonStorageProvider(context);
         this.downloader = new Downloader(this);
 
@@ -33,17 +32,28 @@ public class DataManager implements Downloader.LoadFinishedListener {
         this.subjectSymbols = new MutableLiveData<>();
     }
 
-    public LiveData<TimeTable> getTimeTable(LifecycleOwner lifecycleOwner) {
-        storage.readTimeTable().observe(lifecycleOwner, timeTable::postValue);
+    public LiveData<TimeTable> getTimeTable(LifecycleOwner lifecycleOwner, boolean forceReload) {
+        if (forceReload || this.timeTable.getValue() == null)
+            storage.readTimeTable().observe(lifecycleOwner, timeTable::postValue);
+        else
+            Log.d("DataManager", "TimeTable cached");
         return timeTable;
     }
 
-    public LiveData<NewTimeTable> getNewTimeTable() {
-        return storage.readNewTimeTable();
+    public LiveData<NewTimeTable> getNewTimeTable(LifecycleOwner lifecycleOwner, boolean forceReload) {
+        if (forceReload || this.newTimeTable.getValue() == null)
+            storage.readNewTimeTable().observe(lifecycleOwner, newTimeTable::postValue);
+        else
+            Log.d("DataManager", "NewTimeTable cached");
+        return newTimeTable;
     }
 
-    public LiveData<SubjectSymbols> getSubjectSymbols() {
-        return storage.readSubjectSymbols();
+    public LiveData<SubjectSymbols> getSubjectSymbols(LifecycleOwner lifecycleOwner, boolean forceReload) {
+        if (forceReload || this.subjectSymbols.getValue() == null)
+            storage.readSubjectSymbols().observe(lifecycleOwner, subjectSymbols::postValue);
+        else
+            Log.d("DataManager", "SubjectSymbols cached");
+        return subjectSymbols;
     }
 
     public boolean downloadTimeTable(String username, String password, Downloader.ResultListener listener) {

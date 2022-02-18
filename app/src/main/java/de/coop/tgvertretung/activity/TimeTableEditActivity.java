@@ -109,12 +109,12 @@ public class TimeTableEditActivity extends AppCompatActivity {
             onBackPressed();
         });
 
-        dataManager.getNewTimeTable().observe(this, newTimeTable -> {
+        dataManager.getNewTimeTable(this, false).observe(this, newTimeTable -> {
             this.newTimeTable = newTimeTable;
             tryInit();
         });
 
-        dataManager.getSubjectSymbols().observe(this, symbols -> {
+        dataManager.getSubjectSymbols(this, false).observe(this, symbols -> {
             this.symbols = symbols;
             tryInit();
         });

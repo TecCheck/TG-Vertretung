@@ -85,14 +85,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        dataManager.getSubjectSymbols().observe(this, symbols -> {
+        dataManager.getSubjectSymbols(this, false).observe(this, symbols -> {
             adapter.setSymbols(symbols);
         });
 
-        dataManager.getTimeTable(this).observe(this, timeTable -> {
+        dataManager.getTimeTable(this, false).observe(this, timeTable -> {
             adapter.setTimeTable(timeTable);
             setPage(timeTable, Utils.getView(timeTable));
         });
+
+        // Load into cache
+        dataManager.getNewTimeTable(this, false);
 
         load();
     }
@@ -205,10 +208,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void load() {
         refreshLayout.setRefreshing(dataManager.downloadTimeTable(settings.getUsername(), settings.getPassword(), this));
-    }
-
-    private void setupPager(TimeTable timeTable) {
-
     }
 
     private void setPage(TimeTable timeTable, int index) {
