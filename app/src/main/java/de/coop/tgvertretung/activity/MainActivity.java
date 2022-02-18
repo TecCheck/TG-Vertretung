@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.adapter.ScreenSlidePagerAdapter;
+import de.coop.tgvertretung.adapter.TablePagerAdapter;
 import de.coop.tgvertretung.service.BackgroundService;
 import de.coop.tgvertretung.storage.DataManager;
 import de.coop.tgvertretung.utils.TgvApp;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager2 pager;
     private DrawerLayout drawer;
     private SwipeRefreshLayout refreshLayout;
-    private ScreenSlidePagerAdapter adapter;
+    private TablePagerAdapter adapter;
 
     private SettingsWrapper settings;
     private SettingsWrapper.SettingsWriter settingsWriter;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupDrawer(toolbar, navigationView);
         refreshLayout.setOnRefreshListener(this::load);
 
-        adapter = new ScreenSlidePagerAdapter(this);
+        adapter = new TablePagerAdapter(this);
         pager.setAdapter(adapter);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

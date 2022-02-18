@@ -7,11 +7,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import de.sematre.tg.TimeTable;
 
-public class ScreenSlidePagerAdapter extends FragmentStateAdapter {
+public class TablePagerAdapter extends FragmentStateAdapter {
 
     private TimeTable timeTable;
 
-    public ScreenSlidePagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public TablePagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
