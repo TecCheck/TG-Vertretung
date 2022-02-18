@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,40 +18,67 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import de.coop.tgvertretung.R;
+import de.coop.tgvertretung.storage.DataManager;
 import de.coop.tgvertretung.utils.SettingsWrapper;
 import de.coop.tgvertretung.utils.SubjectSymbols;
+import de.coop.tgvertretung.utils.TgvApp;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 
 public class TableFragment extends Fragment {
 
     public static ArgbEvaluator evaluator = null;
+    private static String ARG_INDEX = "index";
 
-    private final int index;
-    private final SettingsWrapper settings;
-    private final Table table;
-    private final SubjectSymbols symbols;
+    private Table table;
+    private SubjectSymbols symbols;
 
-    public TableFragment(int index, SettingsWrapper settings, Table table, SubjectSymbols symbols) {
-        this.index = index;
-        this.settings = settings;
-        this.table = table;
-        this.symbols = symbols;
+    public static TableFragment create(int index) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_INDEX, index);
+
+        TableFragment fragment = new TableFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        int index = getArguments().getInt(ARG_INDEX);
+        TgvApp app = (TgvApp) getActivity().getApplication();
+        SettingsWrapper settings = app.getAppSettings();
+        DataManager dataManager = app.getDataManager();
+
         // Get the Views
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_table, container, false);
+        LifecycleOwner owner = getViewLifecycleOwner();
+
+        dataManager.getTimeTable(owner, false).observe(owner, timeTable -> {
+            if (timeTable != null)
+                this.table = timeTable.getTables().get(index);
+            trySetup(rootView, settings);
+        });
+
+        dataManager.getSubjectSymbols(owner, false).observe(owner, symbols -> {
+            this.symbols = symbols;
+            trySetup(rootView, settings);
+        });
+
+        return rootView;
+    }
+
+    private void trySetup(ViewGroup rootView, SettingsWrapper settings) {
+        if (table == null || symbols == null)
+            return;
+
         TextView label = rootView.findViewById(R.id.label);
         TextView label2 = rootView.findViewById(R.id.label2);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
 
         // Filer the table if needed
-        Table table = this.table;
         if (settings.getFilterEnabled())
             table = Utils.filterTable(table, settings.getFilter());
 
@@ -85,18 +113,16 @@ public class TableFragment extends Fragment {
         if (settings.getTwoLineLabel()) {
             label.setText(getLabelTextPrim(table));
             label2.setVisibility(View.VISIBLE);
-            label2.setText(getLabelTextSec(table));
+            label2.setText(getLabelTextSec(table, settings.getShowAb()));
         } else {
-            label.setText(getLabelText(table));
+            label.setText(getLabelText(table, settings.getShowAb()));
             label2.setVisibility(View.INVISIBLE);
             label2.setHeight(14);
         }
-
-        return rootView;
     }
 
-    private String getLabelText(Table table) {
-        String abcd = settings.getShowAb() ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
+    private String getLabelText(Table table, boolean showAb) {
+        String abcd = showAb ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
         String week = getContext().getString(R.string.week, abcd);
         return Utils.getFormattedDate(table.getDate(), true, false) + " " + week;
     }
@@ -105,8 +131,8 @@ public class TableFragment extends Fragment {
         return new SimpleDateFormat("EEEE", Locale.getDefault()).format(table.getDate());
     }
 
-    private String getLabelTextSec(Table table) {
-        String week = settings.getShowAb() ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
+    private String getLabelTextSec(Table table, boolean showAb) {
+        String week = showAb ? table.getWeek().getSimplifiedLetter() : table.getWeek().getLetter();
 
         String pattern = "dd.MM.yyyy";
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());

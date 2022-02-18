@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupDrawer(toolbar, navigationView);
         refreshLayout.setOnRefreshListener(this::load);
 
-        adapter = new ScreenSlidePagerAdapter(this, settings, null, null);
+        adapter = new ScreenSlidePagerAdapter(this);
         pager.setAdapter(adapter);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -87,10 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        dataManager.getSubjectSymbols(this, false).observe(this, symbols -> {
-            adapter.setSymbols(symbols);
-        });
-
         dataManager.getTimeTable(this, false).observe(this, timeTable -> {
             adapter.setTimeTable(timeTable);
             setPage(timeTable, Utils.getView(timeTable));
@@ -98,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Load into cache
         dataManager.getNewTimeTable(this, false);
+        dataManager.getSubjectSymbols(this, false);
 
         load();
     }
