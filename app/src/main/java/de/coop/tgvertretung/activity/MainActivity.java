@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // Load into cache
-        dataManager.getNewTimeTable(this, false);
+        dataManager.getSchedule(this, false);
         dataManager.getSubjectSymbols(this, false);
 
         load();
@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_time_table) {
-            startActivity(new Intent(this, TimeTableActivity.class));
+        if (id == R.id.nav_schedule) {
+            startActivity(new Intent(this, ScheduleActivity.class));
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_login) {

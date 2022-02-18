@@ -21,15 +21,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.adapter.TimeTableFragment;
+import de.coop.tgvertretung.adapter.ScheduleFragment;
 import de.coop.tgvertretung.storage.DataManager;
 import de.coop.tgvertretung.utils.TgvApp;
-import de.coop.tgvertretung.utils.NewTimeTable;
-import de.coop.tgvertretung.utils.NewTimeTableSerializer;
+import de.coop.tgvertretung.utils.Schedule;
+import de.coop.tgvertretung.utils.ScheduleSerializer;
 import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.sematre.tg.Week;
 
-public class TimeTableEditActivity extends AppCompatActivity {
+public class ScheduleEditActivity extends AppCompatActivity {
 
     private Spinner spinnerA;
     private EditText editSubjectA;
@@ -53,19 +53,19 @@ public class TimeTableEditActivity extends AppCompatActivity {
     private DataManager dataManager;
 
     private SubjectSymbols symbols;
-    private NewTimeTable newTimeTable;
+    private Schedule schedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_time_table_edit);
+        setContentView(R.layout.activity_schedule_edit);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        entryIndex = intent.getIntExtra(TimeTableFragment.ARG_ENTRY, 0);
-        dayIndex = intent.getIntExtra(TimeTableFragment.ARG_INDEX, 0);
+        entryIndex = intent.getIntExtra(ScheduleFragment.ARG_ENTRY, 0);
+        dayIndex = intent.getIntExtra(ScheduleFragment.ARG_INDEX, 0);
         dataManager = ((TgvApp) getApplication()).getDataManager();
 
         spinnerA = findViewById(R.id.spinner);
@@ -109,8 +109,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
             onBackPressed();
         });
 
-        dataManager.getNewTimeTable(this, false).observe(this, newTimeTable -> {
-            this.newTimeTable = newTimeTable;
+        dataManager.getSchedule(this, false).observe(this, newTimeTable -> {
+            this.schedule = newTimeTable;
             tryInit();
         });
 
@@ -121,22 +121,22 @@ public class TimeTableEditActivity extends AppCompatActivity {
     }
 
     public void tryInit() {
-        if (newTimeTable != null && symbols != null)
+        if (schedule != null && symbols != null)
             init();
     }
 
     public void init() {
         // Set Values
         // New
-        NewTimeTable.TimeTableDayEntry entryA = newTimeTable.getEntry(Week.A, dayIndex, entryIndex);
-        NewTimeTable.TimeTableDayEntry entryB = newTimeTable.getEntry(Week.B, dayIndex, entryIndex);
+        Schedule.ScheduleDayEntry entryA = schedule.getEntry(Week.A, dayIndex, entryIndex);
+        Schedule.ScheduleDayEntry entryB = schedule.getEntry(Week.B, dayIndex, entryIndex);
 
         if (entryA == null) {
             checkBoxDouble.setChecked(true);
             return;
         }
 
-        boolean emptyA = !NewTimeTableSerializer.notEmpty(entryA.subject);
+        boolean emptyA = !ScheduleSerializer.notEmpty(entryA.subject);
         spinnerA.setSelection(emptyA ? 0 : (symbols.getSymbolIndex(entryA.subject) + 1));
 
         editRoomA.setText(entryA.room);
@@ -144,7 +144,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
 
         if (entryB == null) return;
 
-        boolean emptyB = !NewTimeTableSerializer.notEmpty(entryB.subject);
+        boolean emptyB = !ScheduleSerializer.notEmpty(entryB.subject);
         spinnerB.setSelection(emptyB ? 0 : (symbols.getSymbolIndex(entryB.subject) + 1));
 
         editRoomB.setText(entryB.room);
@@ -220,27 +220,27 @@ public class TimeTableEditActivity extends AppCompatActivity {
             subjectB = symbols.getSymbol(spinnerB.getSelectedItemPosition() - 1);
         }
 
-        NewTimeTable.TimeTableDayEntry entryA = newTimeTable.getEntry(Week.A, dayIndex, entryIndex);
+        Schedule.ScheduleDayEntry entryA = schedule.getEntry(Week.A, dayIndex, entryIndex);
         entryA.subject = subjectA;
         entryA.room = editRoomA.getText().toString();
         entryA.teacher = editTeacherA.getText().toString();
 
-        NewTimeTable.TimeTableDayEntry entryB = newTimeTable.getEntry(Week.A, dayIndex, entryIndex);
+        Schedule.ScheduleDayEntry entryB = schedule.getEntry(Week.A, dayIndex, entryIndex);
         if (layoutB.getVisibility() != View.GONE) {
             entryB.subject = subjectB;
             entryB.room = editRoomB.getText().toString();
             entryB.teacher = editTeacherB.getText().toString();
         }
 
-        newTimeTable.setEntry(Week.A, dayIndex, entryIndex, entryA);
-        newTimeTable.setEntry(Week.B, dayIndex, entryIndex, entryB);
+        schedule.setEntry(Week.A, dayIndex, entryIndex, entryA);
+        schedule.setEntry(Week.B, dayIndex, entryIndex, entryB);
         if (checkBoxDouble.isChecked()) {
-            newTimeTable.setEntry(Week.A, dayIndex, entryIndex + 1, entryA);
-            newTimeTable.setEntry(Week.B, dayIndex, entryIndex + 1, entryB);
+            schedule.setEntry(Week.A, dayIndex, entryIndex + 1, entryA);
+            schedule.setEntry(Week.B, dayIndex, entryIndex + 1, entryB);
         }
 
         dataManager.setSubjectSymbols(symbols);
-        dataManager.setNewTimeTable(newTimeTable);
+        dataManager.setSchedule(schedule);
     }
 
     private class SpinnerAdapter implements android.widget.SpinnerAdapter {

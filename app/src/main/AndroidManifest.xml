@@ -49,11 +49,11 @@
             android:label="@string/title_activity_symbols"
             android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name=".activity.TimeTableActivity"
-            android:label="@string/title_activity_time_table" />
+            android:name=".activity.ScheduleActivity"
+            android:label="@string/title_activity_schedule" />
         <activity
-            android:name=".activity.TimeTableEditActivity"
-            android:label="@string/title_activity_time_table_edit" />
+            android:name=".activity.ScheduleEditActivity"
+            android:label="@string/title_activity_schedule_edit" />
 
         <receiver
             android:name=".service.AutoStart"

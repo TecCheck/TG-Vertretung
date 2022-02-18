@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.Date;
 
 import de.coop.tgvertretung.utils.Downloader;
-import de.coop.tgvertretung.utils.NewTimeTable;
+import de.coop.tgvertretung.utils.Schedule;
 import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.sematre.tg.TimeTable;
 
@@ -20,7 +20,7 @@ public class DataManager implements Downloader.LoadFinishedListener {
     private final Downloader downloader;
 
     private final MutableLiveData<TimeTable> timeTable;
-    private final MutableLiveData<NewTimeTable> newTimeTable;
+    private final MutableLiveData<Schedule> schedule;
     private final MutableLiveData<SubjectSymbols> subjectSymbols;
 
     public DataManager(Context context) {
@@ -28,7 +28,7 @@ public class DataManager implements Downloader.LoadFinishedListener {
         this.downloader = new Downloader(this);
 
         this.timeTable = new MutableLiveData<>();
-        this.newTimeTable = new MutableLiveData<>();
+        this.schedule = new MutableLiveData<>();
         this.subjectSymbols = new MutableLiveData<>();
     }
 
@@ -40,12 +40,12 @@ public class DataManager implements Downloader.LoadFinishedListener {
         return timeTable;
     }
 
-    public LiveData<NewTimeTable> getNewTimeTable(LifecycleOwner lifecycleOwner, boolean forceReload) {
-        if (forceReload || this.newTimeTable.getValue() == null)
-            storage.readNewTimeTable().observe(lifecycleOwner, newTimeTable::postValue);
+    public LiveData<Schedule> getSchedule(LifecycleOwner lifecycleOwner, boolean forceReload) {
+        if (forceReload || this.schedule.getValue() == null)
+            storage.readSchedule().observe(lifecycleOwner, schedule::postValue);
         else
             Log.d("DataManager", "NewTimeTable cached");
-        return newTimeTable;
+        return schedule;
     }
 
     public LiveData<SubjectSymbols> getSubjectSymbols(LifecycleOwner lifecycleOwner, boolean forceReload) {
@@ -62,9 +62,9 @@ public class DataManager implements Downloader.LoadFinishedListener {
         return downloader.download(currentNewest, username, password, listener);
     }
 
-    public void setNewTimeTable(NewTimeTable newTimeTable) {
-        storage.saveNewTimeTable(newTimeTable);
-        this.newTimeTable.postValue(newTimeTable);
+    public void setSchedule(Schedule schedule) {
+        storage.saveSchedule(schedule);
+        this.schedule.postValue(schedule);
     }
 
     public void setSubjectSymbols(SubjectSymbols symbols) {

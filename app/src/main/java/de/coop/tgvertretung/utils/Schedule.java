@@ -8,21 +8,21 @@ import java.util.HashMap;
 
 import de.sematre.tg.Week;
 
-public class NewTimeTable implements Serializable {
+public class Schedule implements Serializable {
 
     private static final long serialVersionUID = 7172123053432181952L;
-    private  HashMap<Week, ArrayList<ArrayList<TimeTableDayEntry>>> weeks = new HashMap<>();
+    private  HashMap<Week, ArrayList<ArrayList<ScheduleDayEntry>>> weeks = new HashMap<>();
 
-    public NewTimeTable() {
+    public Schedule() {
         init();
     }
 
-    public NewTimeTable(HashMap<Week, ArrayList<ArrayList<TimeTableDayEntry>>> weeks){
+    public Schedule(HashMap<Week, ArrayList<ArrayList<ScheduleDayEntry>>> weeks){
         this.weeks = weeks;
     }
 
     private void init() {
-        ArrayList<ArrayList<TimeTableDayEntry>> arrayList = new ArrayList<>();
+        ArrayList<ArrayList<ScheduleDayEntry>> arrayList = new ArrayList<>();
         arrayList.add(new ArrayList<>());
         arrayList.add(new ArrayList<>());
         arrayList.add(new ArrayList<>());
@@ -39,7 +39,7 @@ public class NewTimeTable implements Serializable {
         weeks.put(Week.B, arrayList);
     }
 
-    public TimeTableDayEntry getEntry(Week week, int day, int hour) {
+    public ScheduleDayEntry getEntry(Week week, int day, int hour) {
         if (weeks.containsKey(week) && weeks.get(week).size() > day && weeks.get(week).get(day).size() > hour) {
             return weeks.get(week).get(day).get(hour);
         }
@@ -47,7 +47,7 @@ public class NewTimeTable implements Serializable {
         return null;
     }
 
-    public void setEntry(Week week, int day, int hour, TimeTableDayEntry entry) {
+    public void setEntry(Week week, int day, int hour, ScheduleDayEntry entry) {
         if (weeks.get(week).get(day).size() <= hour) {
             weeks.get(week).get(day).add(entry);
         } else {
@@ -70,16 +70,16 @@ public class NewTimeTable implements Serializable {
     }
 
     public JsonArray getJson() {
-        return NewTimeTableSerializer.getJsonTimeTable(weeks.get(Week.A), weeks.get(Week.B));
+        return ScheduleSerializer.getJsonSchedule(weeks.get(Week.A), weeks.get(Week.B));
     }
 
-    public static class TimeTableDayEntry implements Serializable {
+    public static class ScheduleDayEntry implements Serializable {
         private static final long serialVersionUID = 1235523053432181952L;
         public String subject;
         public String room;
         public String teacher;
 
-        public boolean equals(TimeTableDayEntry entry) {
+        public boolean equals(ScheduleDayEntry entry) {
             if (entry.subject != null) {
                 if (!entry.subject.equals(subject))
                     return false;

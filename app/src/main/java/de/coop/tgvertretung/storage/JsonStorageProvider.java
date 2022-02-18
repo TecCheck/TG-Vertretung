@@ -20,8 +20,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import de.coop.tgvertretung.utils.NewTimeTable;
-import de.coop.tgvertretung.utils.NewTimeTableSerializer;
+import de.coop.tgvertretung.utils.Schedule;
+import de.coop.tgvertretung.utils.ScheduleSerializer;
 import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
@@ -31,7 +31,7 @@ import de.sematre.tg.Week;
 public class JsonStorageProvider implements StorageProvider {
 
     private static final String FILE_TIMETABLE = "timetable.json";
-    private static final String FILE_NEW_TIMETABLE = "new_timetable.json";
+    private static final String FILE_SCHEDULE = "schedule.json";
     private static final String FILE_SUBJECT_SYMBOLS = "subject_symbols.json";
 
     private static final String KEY_DATE = "date";
@@ -95,13 +95,13 @@ public class JsonStorageProvider implements StorageProvider {
         }, 0, TimeUnit.NANOSECONDS);
     }
 
-    public LiveData<NewTimeTable> readNewTimeTable() {
-        MutableLiveData<NewTimeTable> liveData = new MutableLiveData<>();
+    public LiveData<Schedule> readSchedule() {
+        MutableLiveData<Schedule> liveData = new MutableLiveData<>();
         executor.schedule(() -> {
             try {
-                JsonArray jsonNewTimeTable = readJsonFile(FILE_NEW_TIMETABLE).getAsJsonArray();
-                NewTimeTable newTimeTable = NewTimeTableSerializer.getTimeTable(jsonNewTimeTable);
-                liveData.postValue(newTimeTable);
+                JsonArray jsonNewTimeTable = readJsonFile(FILE_SCHEDULE).getAsJsonArray();
+                Schedule schedule = ScheduleSerializer.getSchedule(jsonNewTimeTable);
+                liveData.postValue(schedule);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -109,11 +109,11 @@ public class JsonStorageProvider implements StorageProvider {
         return liveData;
     }
 
-    public void saveNewTimeTable(NewTimeTable newTimeTable) {
+    public void saveSchedule(Schedule schedule) {
         executor.schedule(() -> {
             try {
-                JsonArray jsonNewTimeTable = newTimeTable.getJson();
-                writeJsonFile(jsonNewTimeTable, FILE_NEW_TIMETABLE);
+                JsonArray jsonNewTimeTable = schedule.getJson();
+                writeJsonFile(jsonNewTimeTable, FILE_SCHEDULE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

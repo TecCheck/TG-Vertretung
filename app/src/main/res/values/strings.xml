@@ -7,8 +7,8 @@
     <string name="title_activity_update">Update</string>
     <string name="title_activity_info">Über</string>
     <string name="title_activity_symbols">Kürzel</string>
-    <string name="title_activity_time_table">Stundenplan</string>
-    <string name="title_activity_time_table_edit">Stunde bearbeiten</string>
+    <string name="title_activity_schedule">Stundenplan</string>
+    <string name="title_activity_schedule_edit">Stunde bearbeiten</string>
 
     <!-- Snack Strings -->
     <string name="nothing_new">Nichts neues gefunden</string>
@@ -37,7 +37,7 @@
     <string name="nav_symbols">Kürzel</string>
 
     <!-- Main Activity content -->
-    <string name="nav_time_table">Stundenplan</string>
+    <string name="nav_schedule">Stundenplan</string>
     <string name="no_class">Entfall</string>
     <string name="week">%s Woche</string>
 
@@ -117,13 +117,13 @@
     <string name="add_symbol">Kürzel Hinzufügen</string>
     <string name="please_add_text">Bitte gib etwas in beide Felder ein.</string>
 
-    <!-- Timetable Activity-->
+    <!-- Schedule Activity-->
     <string name="item_empty">Frei</string>
     <string name="share">Teilen</string>
     <string name="receive">Empfangen</string>
     <string name="wrong_json">Text ist fehlerhaft</string>
 
-    <!-- TimeTableEdit Activity -->
+    <!-- ScheduleEdit Activity -->
     <string name="week_a">Woche A</string>
     <string name="week_b">Woche B</string>
     <string name="empty">Frei</string>

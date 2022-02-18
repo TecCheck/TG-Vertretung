@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_assignment_black_24dp"
             android:title="@string/nav_main" />
         <item
-            android:id="@+id/nav_time_table"
+            android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_list_black_24dp"
-            android:title="@string/nav_time_table" />
+            android:title="@string/nav_schedule" />
     </group>
     <group
         android:id="@+id/menu_middle"

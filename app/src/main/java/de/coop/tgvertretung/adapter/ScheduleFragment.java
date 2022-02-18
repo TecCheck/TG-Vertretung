@@ -13,15 +13,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.activity.TimeTableEditActivity;
+import de.coop.tgvertretung.activity.ScheduleEditActivity;
 import de.coop.tgvertretung.storage.DataManager;
-import de.coop.tgvertretung.utils.NewTimeTable;
+import de.coop.tgvertretung.utils.Schedule;
 import de.coop.tgvertretung.utils.SettingsWrapper;
 import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.coop.tgvertretung.utils.TgvApp;
 import de.sematre.tg.Week;
 
-public class TimeTableFragment extends Fragment implements RecyclerItemClickListener.OnItemClickListener {
+public class ScheduleFragment extends Fragment implements RecyclerItemClickListener.OnItemClickListener {
 
     public static final String ARG_ENTRY = "entry";
     public static final String ARG_INDEX = "index";
@@ -32,14 +32,14 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
     private TextView label;
 
     private int index;
-    private NewTimeTable newTimeTable;
+    private Schedule schedule;
     private SubjectSymbols symbols;
 
-    public static TimeTableFragment create(int index) {
+    public static ScheduleFragment create(int index) {
         Bundle args = new Bundle();
         args.putInt(ARG_INDEX, index);
 
-        TimeTableFragment fragment = new TimeTableFragment();
+        ScheduleFragment fragment = new ScheduleFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,8 +58,8 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_table, container, false);
         LifecycleOwner owner = getViewLifecycleOwner();
 
-        dataManager.getNewTimeTable(owner, false).observe(owner, newTimeTable -> {
-            this.newTimeTable = newTimeTable;
+        dataManager.getSchedule(owner, false).observe(owner, newTimeTable -> {
+            this.schedule = newTimeTable;
             trySetup(rootView);
         });
 
@@ -72,7 +72,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
     }
 
     private void trySetup(ViewGroup rootView) {
-        if (symbols == null || newTimeTable == null)
+        if (symbols == null || schedule == null)
             return;
 
         label = rootView.findViewById(R.id.label);
@@ -91,7 +91,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
             }
 
             label.setText(getResources().getStringArray(R.array.days)[index] + " " + week.getLetter());
-            TimeTableEntryAdapter adapter = (TimeTableEntryAdapter) recyclerView.getAdapter();
+            ScheduleEntryAdapter adapter = (ScheduleEntryAdapter) recyclerView.getAdapter();
             adapter.notifyDataSetChanged();
         });
 
@@ -102,7 +102,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
         nothing.setVisibility(View.GONE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        TimeTableEntryAdapter adapter = new TimeTableEntryAdapter(index, getContext(), newTimeTable, symbols);
+        ScheduleEntryAdapter adapter = new ScheduleEntryAdapter(index, getContext(), schedule, symbols);
         RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(getContext(), recyclerView, this);
 
         recyclerView.addOnItemTouchListener(recyclerItemClickListener);
@@ -133,7 +133,7 @@ public class TimeTableFragment extends Fragment implements RecyclerItemClickList
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getContext(), TimeTableEditActivity.class);
+        Intent intent = new Intent(getContext(), ScheduleEditActivity.class);
         intent.putExtra(ARG_ENTRY, position);
         intent.putExtra(ARG_INDEX, index);
 

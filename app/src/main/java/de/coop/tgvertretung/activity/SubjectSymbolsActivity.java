@@ -113,7 +113,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements Recycle
 
     public void share() {
         AppCompatDialog dialog = new AppCompatDialog(this);
-        dialog.setContentView(R.layout.dialog_share_time_table);
+        dialog.setContentView(R.layout.dialog_share_schedule);
         dialog.setTitle(R.string.share);
         dialog.setCancelable(true);
         Button ok = dialog.findViewById(R.id.button);
@@ -125,7 +125,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements Recycle
 
     public void receive() {
         AppCompatDialog dialog = new AppCompatDialog(this);
-        dialog.setContentView(R.layout.dialog_receive_time_table);
+        dialog.setContentView(R.layout.dialog_receive_schedule);
         dialog.setTitle(R.string.receive);
         dialog.setCancelable(true);
         EditText editText = dialog.findViewById(R.id.editText);
@@ -164,7 +164,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements Recycle
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_time_table_menu, menu);
+        getMenuInflater().inflate(R.menu.activity_schedule_menu, menu);
         return true;
     }
 

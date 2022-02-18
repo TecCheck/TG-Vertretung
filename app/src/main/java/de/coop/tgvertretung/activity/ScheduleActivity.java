@@ -20,14 +20,14 @@ import com.google.gson.JsonParser;
 import java.util.Calendar;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.adapter.TimeTableFragment;
-import de.coop.tgvertretung.adapter.TimeTablePagerAdapter;
+import de.coop.tgvertretung.adapter.ScheduleFragment;
+import de.coop.tgvertretung.adapter.SchedulePagerAdapter;
 import de.coop.tgvertretung.storage.DataManager;
 import de.coop.tgvertretung.utils.TgvApp;
-import de.coop.tgvertretung.utils.NewTimeTableSerializer;
+import de.coop.tgvertretung.utils.ScheduleSerializer;
 import de.sematre.tg.Week;
 
-public class TimeTableActivity extends AppCompatActivity {
+public class ScheduleActivity extends AppCompatActivity {
 
     private ViewPager2 pager;
     private DataManager dataManager;
@@ -35,32 +35,32 @@ public class TimeTableActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_time_table);
+        setContentView(R.layout.activity_schedule);
 
         dataManager = ((TgvApp) getApplication()).getDataManager();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if (TimeTableFragment.week == null)
-            TimeTableFragment.week = isAWeek() ? Week.A : Week.B;
+        if (ScheduleFragment.week == null)
+            ScheduleFragment.week = isAWeek() ? Week.A : Week.B;
 
-        TimeTablePagerAdapter adapter = new TimeTablePagerAdapter(this);
+        SchedulePagerAdapter adapter = new SchedulePagerAdapter(this);
         pager = findViewById(R.id.container);
         pager.setAdapter(adapter);
 
-        dataManager.getNewTimeTable(this, false).observe(this, newTimeTable ->  {
-            adapter.setNewTimeTable(newTimeTable);
+        dataManager.getSchedule(this, false).observe(this, newTimeTable ->  {
+            adapter.setSchedule(newTimeTable);
             setDayIndex(adapter);
         });
     }
 
-    private void setDayIndex(TimeTablePagerAdapter adapter) {
+    private void setDayIndex(SchedulePagerAdapter adapter) {
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
         trySetCurrentItem(adapter, (day >= 0 && day <= 4) ? day : 0);
     }
 
-    private void trySetCurrentItem(TimeTablePagerAdapter adapter, int index) {
+    private void trySetCurrentItem(SchedulePagerAdapter adapter, int index) {
         if (adapter.getItemCount() > index)
             pager.setCurrentItem(index);
     }
@@ -84,7 +84,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     public void share() {
         AppCompatDialog dialog = new AppCompatDialog(this);
-        dialog.setContentView(R.layout.dialog_share_time_table);
+        dialog.setContentView(R.layout.dialog_share_schedule);
         dialog.setTitle(R.string.share);
         dialog.setCancelable(true);
 
@@ -92,14 +92,14 @@ public class TimeTableActivity extends AppCompatActivity {
         ok.setOnClickListener(v -> dialog.dismiss());
 
         EditText editText = dialog.findViewById(R.id.editText);
-        dataManager.getNewTimeTable(this, false).observe(this, newTimeTable -> editText.setText(newTimeTable.getJson().toString()));
+        dataManager.getSchedule(this, false).observe(this, newTimeTable -> editText.setText(newTimeTable.getJson().toString()));
 
         dialog.show();
     }
 
     public void receive() {
         AppCompatDialog dialog = new AppCompatDialog(this);
-        dialog.setContentView(R.layout.dialog_receive_time_table);
+        dialog.setContentView(R.layout.dialog_receive_schedule);
         dialog.setTitle(R.string.receive);
         dialog.setCancelable(true);
         EditText editText = dialog.findViewById(R.id.editText);
@@ -111,7 +111,7 @@ public class TimeTableActivity extends AppCompatActivity {
             JsonParser parser = new JsonParser();
             try {
                 JsonArray jsonArray = parser.parse(s).getAsJsonArray();
-                dataManager.setNewTimeTable(NewTimeTableSerializer.getTimeTable(jsonArray));
+                dataManager.setSchedule(ScheduleSerializer.getSchedule(jsonArray));
                 RecyclerView.Adapter adapter = pager.getAdapter();
                 if (adapter != null) {
                     adapter.notifyDataSetChanged();
@@ -128,7 +128,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_time_table_menu, menu);
+        getMenuInflater().inflate(R.menu.activity_schedule_menu, menu);
         return true;
     }
 

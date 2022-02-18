@@ -11,9 +11,9 @@ import java.util.HashMap;
 
 import de.sematre.tg.Week;
 
-public class NewTimeTableSerializer {
+public class ScheduleSerializer {
 
-    public static JsonObject getJsonEntry(NewTimeTable.TimeTableDayEntry entry, NewTimeTable.TimeTableDayEntry entryB) {
+    public static JsonObject getJsonEntry(Schedule.ScheduleDayEntry entry, Schedule.ScheduleDayEntry entryB) {
         JsonObject jsonObject = new JsonObject();
         if (notEmpty(entry.subject)) {
             jsonObject.addProperty("s", entry.subject);
@@ -35,7 +35,7 @@ public class NewTimeTableSerializer {
         return jsonObject;
     }
 
-    public static JsonArray getJsonDay(ArrayList<NewTimeTable.TimeTableDayEntry> day, ArrayList<NewTimeTable.TimeTableDayEntry> dayB) {
+    public static JsonArray getJsonDay(ArrayList<Schedule.ScheduleDayEntry> day, ArrayList<Schedule.ScheduleDayEntry> dayB) {
         JsonArray jsonArray = new JsonArray();
         ArrayList<JsonObject> objects = new ArrayList<>();
         for (int i = 0; i < day.size(); i++) {
@@ -67,16 +67,16 @@ public class NewTimeTableSerializer {
         return jsonArray;
     }
 
-    public static JsonArray getJsonTimeTable(ArrayList<ArrayList<NewTimeTable.TimeTableDayEntry>> timeTable, ArrayList<ArrayList<NewTimeTable.TimeTableDayEntry>> timeTableB) {
-        Log.d("getJsonTimeTable", "Size: " + timeTable.size());
+    public static JsonArray getJsonSchedule(ArrayList<ArrayList<Schedule.ScheduleDayEntry>> timeTable, ArrayList<ArrayList<Schedule.ScheduleDayEntry>> timeTableB) {
+        Log.d("getJsonSchedule", "Size: " + timeTable.size());
 
         JsonArray jsonArray = new JsonArray();
         for (int i = 0; i < timeTable.size(); i++) {
-            Log.d("getJsonTimeTable", "Index: " + i);
+            Log.d("getJsonSchedule", "Index: " + i);
             jsonArray.add(getJsonDay(timeTable.get(i), timeTableB.get(i)));
         }
 
-        Log.d("getJsonTimeTable", jsonArray.toString());
+        Log.d("getJsonSchedule", jsonArray.toString());
         return jsonArray;
     }
 
@@ -94,9 +94,9 @@ public class NewTimeTableSerializer {
         return false;
     }
 
-    public static NewTimeTable.TimeTableDayEntry[] getTimeTableDayEntries (JsonObject jsonObject){
-        NewTimeTable.TimeTableDayEntry entryA = new NewTimeTable.TimeTableDayEntry();
-        NewTimeTable.TimeTableDayEntry entryB = new NewTimeTable.TimeTableDayEntry();
+    public static Schedule.ScheduleDayEntry[] getScheduleDayEntries(JsonObject jsonObject){
+        Schedule.ScheduleDayEntry entryA = new Schedule.ScheduleDayEntry();
+        Schedule.ScheduleDayEntry entryB = new Schedule.ScheduleDayEntry();
 
         if(jsonObject.has("s")) entryA.subject = jsonObject.get("s").getAsString();
         else entryA.subject = "";
@@ -116,44 +116,44 @@ public class NewTimeTableSerializer {
         if(jsonObject.has("tB")) entryB.teacher = jsonObject.get("tB").getAsString();
         else entryB.teacher = entryA.teacher;
 
-        return new NewTimeTable.TimeTableDayEntry[]{entryA, entryB};
+        return new Schedule.ScheduleDayEntry[]{entryA, entryB};
     }
 
-    public static ArrayList<NewTimeTable.TimeTableDayEntry>[] getTimeTableDay(JsonArray jsonArray){
-        ArrayList<NewTimeTable.TimeTableDayEntry> tableA = new ArrayList<>();
-        ArrayList<NewTimeTable.TimeTableDayEntry> tableB = new ArrayList<>();
+    public static ArrayList<Schedule.ScheduleDayEntry>[] getScheduleDay(JsonArray jsonArray){
+        ArrayList<Schedule.ScheduleDayEntry> tableA = new ArrayList<>();
+        ArrayList<Schedule.ScheduleDayEntry> tableB = new ArrayList<>();
 
         for(JsonElement element : jsonArray){
             JsonObject jsonObject = element.getAsJsonObject();
 
-            tableA.add(getTimeTableDayEntries(jsonObject)[0]);
-            tableB.add(getTimeTableDayEntries(jsonObject)[1]);
+            tableA.add(getScheduleDayEntries(jsonObject)[0]);
+            tableB.add(getScheduleDayEntries(jsonObject)[1]);
 
             if((!jsonObject.has("d")) || jsonObject.get("d").getAsBoolean()){
                 //double
-                tableA.add(getTimeTableDayEntries(jsonObject)[0]);
-                tableB.add(getTimeTableDayEntries(jsonObject)[1]);
+                tableA.add(getScheduleDayEntries(jsonObject)[0]);
+                tableB.add(getScheduleDayEntries(jsonObject)[1]);
             }
         }
 
         return new ArrayList[]{tableA, tableB};
     }
 
-    public static NewTimeTable getTimeTable(JsonArray jsonArray){
-        ArrayList<ArrayList<NewTimeTable.TimeTableDayEntry>> weekA = new ArrayList<>();
-        ArrayList<ArrayList<NewTimeTable.TimeTableDayEntry>> weekB = new ArrayList<>();
+    public static Schedule getSchedule(JsonArray jsonArray){
+        ArrayList<ArrayList<Schedule.ScheduleDayEntry>> weekA = new ArrayList<>();
+        ArrayList<ArrayList<Schedule.ScheduleDayEntry>> weekB = new ArrayList<>();
 
         for(JsonElement element : jsonArray) {
             JsonArray jsonArray1 = element.getAsJsonArray();
 
-            weekA.add(getTimeTableDay(jsonArray1)[0]);
-            weekB.add(getTimeTableDay(jsonArray1)[1]);
+            weekA.add(getScheduleDay(jsonArray1)[0]);
+            weekB.add(getScheduleDay(jsonArray1)[1]);
         }
 
-        HashMap<Week, ArrayList<ArrayList<NewTimeTable.TimeTableDayEntry>>> weeks = new HashMap<>();
+        HashMap<Week, ArrayList<ArrayList<Schedule.ScheduleDayEntry>>> weeks = new HashMap<>();
         weeks.put(Week.A, weekA);
         weeks.put(Week.B, weekB);
 
-        return new NewTimeTable(weeks);
+        return new Schedule(weeks);
     }
 }

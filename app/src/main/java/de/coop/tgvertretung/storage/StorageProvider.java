@@ -2,7 +2,7 @@ package de.coop.tgvertretung.storage;
 
 import androidx.lifecycle.LiveData;
 
-import de.coop.tgvertretung.utils.NewTimeTable;
+import de.coop.tgvertretung.utils.Schedule;
 import de.coop.tgvertretung.utils.SubjectSymbols;
 import de.sematre.tg.TimeTable;
 
@@ -12,9 +12,9 @@ public interface StorageProvider {
 
     void saveTimeTable(TimeTable timeTable);
 
-    LiveData<NewTimeTable> readNewTimeTable();
+    LiveData<Schedule> readSchedule();
 
-    void saveNewTimeTable(NewTimeTable newTimeTable);
+    void saveSchedule(Schedule schedule);
 
     LiveData<SubjectSymbols> readSubjectSymbols();
 

@@ -11,25 +11,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.NewTimeTable;
+import de.coop.tgvertretung.utils.Schedule;
 import de.coop.tgvertretung.utils.SubjectSymbols;
 
-class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.ViewHolder> {
+class ScheduleEntryAdapter extends RecyclerView.Adapter<ScheduleEntryAdapter.ViewHolder> {
 
     private final Context context;
     private final int dayOfWeek;
-    private NewTimeTable newTimeTable;
+    private Schedule schedule;
     private SubjectSymbols symbols;
 
-    public TimeTableEntryAdapter(int dayOfWeek, Context context, NewTimeTable newTimeTable, SubjectSymbols symbols) {
+    public ScheduleEntryAdapter(int dayOfWeek, Context context, Schedule schedule, SubjectSymbols symbols) {
         this.dayOfWeek = dayOfWeek;
         this.context = context;
-        this.newTimeTable = newTimeTable;
+        this.schedule = schedule;
         this.symbols = symbols;
     }
 
     @Override
-    public TimeTableEntryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ScheduleEntryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_table_entry, parent, false);
         return new ViewHolder(cardView);
     }
@@ -47,7 +47,7 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
         ImageView imageView = cardView.findViewById(R.id.icon);
 
 
-        if (position == newTimeTable.getDaySize(TimeTableFragment.week, dayOfWeek)) {
+        if (position == schedule.getDaySize(ScheduleFragment.week, dayOfWeek)) {
             imageView.setVisibility(View.VISIBLE);
             entryText.setVisibility(View.VISIBLE);
             entryText.setText(R.string.add);
@@ -66,7 +66,7 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
         schoolClass.setVisibility(View.VISIBLE);
         info.setVisibility(View.VISIBLE);
 
-        NewTimeTable.TimeTableDayEntry entry = newTimeTable.getEntry(TimeTableFragment.week, dayOfWeek, position);
+        Schedule.ScheduleDayEntry entry = schedule.getEntry(ScheduleFragment.week, dayOfWeek, position);
 
         if (entry.subject == null || entry.subject.isEmpty()) {
             schoolClass.setText(R.string.item_empty);
@@ -87,8 +87,8 @@ class TimeTableEntryAdapter extends RecyclerView.Adapter<TimeTableEntryAdapter.V
 
     @Override
     public int getItemCount() {
-        Log.d("getDaySize", "" + newTimeTable.getDaySize(TimeTableFragment.week, dayOfWeek));
-        return newTimeTable.getDaySize(TimeTableFragment.week, dayOfWeek) + 1;
+        Log.d("getDaySize", "" + schedule.getDaySize(ScheduleFragment.week, dayOfWeek));
+        return schedule.getDaySize(ScheduleFragment.week, dayOfWeek) + 1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
