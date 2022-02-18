@@ -35,24 +35,18 @@ public class DataManager implements Downloader.LoadFinishedListener {
     public LiveData<TimeTable> getTimeTable(LifecycleOwner lifecycleOwner, boolean forceReload) {
         if (forceReload || this.timeTable.getValue() == null)
             storage.readTimeTable().observe(lifecycleOwner, timeTable::postValue);
-        else
-            Log.d("DataManager", "TimeTable cached");
         return timeTable;
     }
 
     public LiveData<Schedule> getSchedule(LifecycleOwner lifecycleOwner, boolean forceReload) {
         if (forceReload || this.schedule.getValue() == null)
             storage.readSchedule().observe(lifecycleOwner, schedule::postValue);
-        else
-            Log.d("DataManager", "NewTimeTable cached");
         return schedule;
     }
 
     public LiveData<SubjectSymbols> getSubjectSymbols(LifecycleOwner lifecycleOwner, boolean forceReload) {
         if (forceReload || this.subjectSymbols.getValue() == null)
             storage.readSubjectSymbols().observe(lifecycleOwner, subjectSymbols::postValue);
-        else
-            Log.d("DataManager", "SubjectSymbols cached");
         return subjectSymbols;
     }
 

@@ -87,7 +87,6 @@ class ScheduleEntryAdapter extends RecyclerView.Adapter<ScheduleEntryAdapter.Vie
 
     @Override
     public int getItemCount() {
-        Log.d("getDaySize", "" + schedule.getDaySize(ScheduleFragment.week, dayOfWeek));
         return schedule.getDaySize(ScheduleFragment.week, dayOfWeek) + 1;
     }
 

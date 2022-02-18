@@ -31,7 +31,6 @@ public class ScheduleSerializer {
                 jsonObject.addProperty("tB", entryB.teacher);
         }
 
-        Log.d("getJsonEntry", jsonObject.toString());
         return jsonObject;
     }
 
@@ -49,11 +48,8 @@ public class ScheduleSerializer {
                 JsonObject jsonObject2 = objects.get(i + 1);
                 if (equalJson(jsonObject1, jsonObject2)) {
                     jsonArray.add(jsonObject1);
-                    Log.d("Equals", jsonObject1 + ", " + jsonObject2);
                     i++;
                 } else {
-                    Log.d("Not Equals", jsonObject1 + ", " + jsonObject2);
-
                     jsonObject1.addProperty("d", false);
                     jsonArray.add(jsonObject1);
                 }
@@ -63,20 +59,15 @@ public class ScheduleSerializer {
             }
         }
 
-        Log.d("getJsonDay", jsonArray.toString());
         return jsonArray;
     }
 
     public static JsonArray getJsonSchedule(ArrayList<ArrayList<Schedule.ScheduleDayEntry>> timeTable, ArrayList<ArrayList<Schedule.ScheduleDayEntry>> timeTableB) {
-        Log.d("getJsonSchedule", "Size: " + timeTable.size());
-
         JsonArray jsonArray = new JsonArray();
         for (int i = 0; i < timeTable.size(); i++) {
-            Log.d("getJsonSchedule", "Index: " + i);
             jsonArray.add(getJsonDay(timeTable.get(i), timeTableB.get(i)));
         }
 
-        Log.d("getJsonSchedule", jsonArray.toString());
         return jsonArray;
     }
 
