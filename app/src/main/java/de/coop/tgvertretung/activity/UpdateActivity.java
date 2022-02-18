@@ -1,38 +1,35 @@
 package de.coop.tgvertretung.activity;
 
+import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
-import androidx.core.content.FileProvider;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.utils.Utils;
 
-public class UpdateActivity extends AppCompatActivity implements View.OnClickListener {
+public class UpdateActivity extends AppCompatActivity {
 
-    private static String PATH = "";
+    private static final String FILENAME = "update.apk";
 
     private TextView updateStatus = null;
     private Button updateButton = null;
@@ -40,6 +37,9 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
 
     private boolean updateAvailable = false;
     private String updateUrl = "";
+
+    private ScheduledExecutorService executor;
+    private DownloadManager downloadManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,36 +49,76 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
+        executor = Executors.newSingleThreadScheduledExecutor();
+        downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
         updateStatus = findViewById(R.id.update_status);
         updateButton = findViewById(R.id.update_button);
         updateProgress = findViewById(R.id.update_progress);
 
-        updateButton.setOnClickListener(this);
         updateButton.setEnabled(false);
+        updateButton.setOnClickListener(view -> {
+            if (updateAvailable)
+                downloadUpdate();
+            else
+                searchForUpdate();
+        });
 
-        PATH = Utils.getUpdateDownloadFile(this);
+        File file = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + FILENAME);
+        if (file.exists())
+            file.delete();
+
         searchForUpdate();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.shutdown();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void searchForUpdate() {
         updateButton.setEnabled(false);
         updateStatus.setText(R.string.update_status_checking);
         updateProgress.setIndeterminate(true);
-        DownloadInfoTask downloadInfoTask = new DownloadInfoTask(this);
-        downloadInfoTask.execute(getString(R.string.update_url));
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+
+        executor.schedule(() -> {
+            try {
+                URL url = new URL(getString(R.string.update_url));
+                Scanner scanner = new Scanner(url.openStream());
+                String version = scanner.nextLine();
+                String updateUrl = scanner.nextLine();
+                mainHandler.post(() -> searchForUpdateFinished(version, updateUrl));
+            } catch (IOException e) {
+                e.printStackTrace();
+                mainHandler.post(this::searchForUpdateFinished);
+            }
+        }, 0, TimeUnit.NANOSECONDS);
     }
 
-    private void searchForUpdateFinished(int status, String version, String link) {
+    private void searchForUpdateFinished() {
         updateProgress.setIndeterminate(false);
-        if (status == 0 || version == null) {
-            updateStatus.setText(R.string.update_status_failed);
-            updateButton.setText(R.string.update_button_try_again);
-            updateButton.setEnabled(true);
-            updateAvailable = false;
-            return;
-        }
+        updateStatus.setText(R.string.update_status_failed);
+        updateButton.setText(R.string.update_button_try_again);
+        updateButton.setEnabled(true);
+        updateAvailable = false;
+    }
 
-        updateUrl = link;
+    private void searchForUpdateFinished(String version, String updateUrl) {
+        updateProgress.setIndeterminate(false);
+        this.updateUrl = updateUrl;
         int versionCode = Integer.parseInt(version);
         int currentVersion = getAppVersion();
 
@@ -95,48 +135,15 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void downloadUpdate() {
-        updateButton.setEnabled(false);
-        updateStatus.setText(R.string.update_status_downloading);
-        DownloadApkTask downloadApkTask = new DownloadApkTask(getApplicationContext(), this);
-        downloadApkTask.execute(updateUrl);
-    }
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(updateUrl));
+        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, FILENAME);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        request.setVisibleInDownloadsUi(true);
+        request.setTitle(getString(R.string.download_title));
+        request.setDescription(getString(R.string.download_description));
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
-    private Uri getFileUri(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-            return FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", new File(PATH));
-        }
-        return Uri.fromFile(new File(PATH));
-    }
-
-    private void downloadUpdateFinished(int status) {
-        if (status == 0) return;
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(getFileUri(), "application/vnd.android.package-archive");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            super.onBackPressed();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == updateButton.getId()) {
-            if (updateAvailable) {
-                downloadUpdate();
-            } else {
-                searchForUpdate();
-            }
-        }
+        downloadManager.enqueue(request);
     }
 
     private int getAppVersion() {
@@ -145,139 +152,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return -1;
-        }
-    }
-
-    private static class DownloadInfoTask extends AsyncTask<String, Integer, String> {
-
-        private String version;
-        private String link;
-        private final UpdateActivity activity;
-
-        DownloadInfoTask(UpdateActivity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        protected String doInBackground(String... sUrl) {
-            try {
-                URL url = new URL(sUrl[0]);
-                Scanner s = new Scanner(url.openStream());
-                version = s.nextLine();
-                link = s.nextLine();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-            activity.searchForUpdateFinished(1, version, link);
-        }
-    }
-
-    private static class DownloadApkTask extends AsyncTask<String, Integer, String> {
-
-        private final UpdateActivity activity;
-        private final Context context;
-        private PowerManager.WakeLock mWakeLock;
-
-        DownloadApkTask(Context context, UpdateActivity activity) {
-            this.context = context;
-            this.activity = activity;
-        }
-
-        @Override
-        protected String doInBackground(String... sUrl) {
-            InputStream input = null;
-            OutputStream output = null;
-            HttpURLConnection connection = null;
-
-            try {
-                URL url = new URL(sUrl[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                // Expect HTTP 200 OK, so we don't mistakenly save error report
-                // instead of the file
-                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return "Server returned HTTP " + connection.getResponseCode() + " " + connection.getResponseMessage();
-                }
-
-                // This will be useful to display download percentage
-                // might be -1: server did not report the length
-                int fileLength = connection.getContentLength();
-
-                // Download the file
-                input = connection.getInputStream();
-                output = new FileOutputStream(PATH);
-
-                byte[] data = new byte[4096];
-                long total = 0;
-                int count;
-                while ((count = input.read(data)) != -1) {
-                    // allow canceling with back button
-                    if (isCancelled()) {
-                        input.close();
-                        return null;
-                    }
-                    total += count;
-                    // publishing the progress....
-                    if (fileLength > 0) // only if total length is known
-                        publishProgress((int) (total * 100 / fileLength));
-                    output.write(data, 0, count);
-                }
-            } catch (Exception e) {
-                return e.toString();
-            } finally {
-                try {
-                    if (output != null)
-                        output.close();
-                    if (input != null)
-                        input.close();
-                } catch (IOException ignored) {
-                }
-
-                if (connection != null)
-                    connection.disconnect();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            // Take CPU lock to prevent CPU from going off if the user
-            // presses the power button during download
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
-            mWakeLock.acquire(12000);
-            activity.updateProgress.setIndeterminate(false);
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            super.onProgressUpdate(progress);
-
-            // If we get here, length is known, now set indeterminate to false
-            activity.updateProgress.setIndeterminate(false);
-            activity.updateProgress.setMax(100);
-            activity.updateProgress.setProgress(progress[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            mWakeLock.release();
-            activity.downloadUpdateFinished(1);
-            if (result != null) {
-                Toast.makeText(context, "Download error: " + result, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 }

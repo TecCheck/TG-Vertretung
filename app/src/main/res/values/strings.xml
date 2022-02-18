@@ -109,6 +109,8 @@
     <string name="update_status_failed">Suche nach Update fehlgeschlagen</string>
     <string name="update_status_downloading">Update wird herruntergeladen</string>
     <string name="update_button_try_again">Erneut suchen</string>
+    <string name="download_title">Update</string>
+    <string name="download_description">Downloading update</string>
 
     <!-- Login Activity content -->
     <string name="prompt_username">Kennung</string>
