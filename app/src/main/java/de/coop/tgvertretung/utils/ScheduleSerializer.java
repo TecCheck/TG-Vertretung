@@ -1,7 +1,5 @@
 package de.coop.tgvertretung.utils;
 
-import android.util.Log;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

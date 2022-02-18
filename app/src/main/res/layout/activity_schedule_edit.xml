@@ -155,7 +155,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_expand_more_black_24dp" />
+                app:srcCompat="@drawable/ic_expand_more_black_24dp"
+                android:contentDescription="@string/desc_expand_icon" />
 
             <TextView
                 android:id="@+id/textView4"

@@ -2,11 +2,9 @@ package de.coop.tgvertretung.utils;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import java.util.Date;
 
-import de.coop.tgvertretung.storage.DataManager;
 import de.sematre.tg.TG;
 import de.sematre.tg.TimeTable;
 

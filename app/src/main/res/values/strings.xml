@@ -85,6 +85,11 @@
     <string name="christoph" translatable="false">Christoph</string>
     <string name="licenses_name">Lizenzen</string>
 
+    <string name="desc_app_icon">Logo</string>
+    <string name="desc_dev_icon">Entwickler icon</string>
+    <string name="desc_github_icon">Github Logo</string>
+    <string name="desc_licenses_icon">Lizenzen icon</string>
+
     <array name="licenses">
         <item>Gson</item>
         <item>Jsoup</item>
@@ -130,6 +135,7 @@
     <string name="subject">Fach</string>
     <string name="room">Raum</string>
     <string name="teacher">Lehrer/in</string>
+    <string name="desc_expand_icon">Erweitern</string>
 
     <!-- Time formatting -->
     <string name="time_future">In der Zukunft</string>

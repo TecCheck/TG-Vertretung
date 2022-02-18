@@ -20,7 +20,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="24dp"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher"
+            android:contentDescription="@string/desc_app_icon" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -67,7 +68,8 @@
             android:layout_marginEnd="32dp"
             android:tintMode="multiply"
             app:srcCompat="@drawable/ic_person_black_24dp"
-            app:tint="?attr/colorControlNormal" />
+            app:tint="?attr/colorControlNormal"
+            android:contentDescription="@string/desc_dev_icon" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -119,7 +121,8 @@
             android:layout_marginEnd="32dp"
             android:tintMode="multiply"
             app:srcCompat="@drawable/ic_github"
-            app:tint="?attr/colorControlNormal" />
+            app:tint="?attr/colorControlNormal"
+            android:contentDescription="@string/desc_github_icon" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -159,7 +162,8 @@
             android:layout_marginEnd="32dp"
             android:tintMode="multiply"
             app:srcCompat="@drawable/ic_outline_description_24"
-            app:tint="?attr/colorControlNormal" />
+            app:tint="?attr/colorControlNormal"
+            android:contentDescription="@string/desc_github_icon" />
 
         <LinearLayout
             android:layout_width="0dp"

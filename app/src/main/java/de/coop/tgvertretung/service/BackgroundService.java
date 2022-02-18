@@ -30,7 +30,6 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     private static final String CHANNEL_ID = "TGV";
     private static final boolean TEST = false;
 
-    private Downloader downloader;
     private Runnable runnable;
     private Handler handler;
     private int notificationId = 0;
@@ -44,7 +43,7 @@ public class BackgroundService extends Service implements Downloader.LoadFinishe
     public void onCreate() {
         //Settings.load(this);
         SettingsWrapper settings = new SettingsWrapper(this);
-        downloader = new Downloader(this);
+        Downloader downloader = new Downloader(this);
 
         handler = new Handler();
         runnable = () -> {
