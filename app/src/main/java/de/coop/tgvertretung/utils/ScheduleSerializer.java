@@ -78,11 +78,7 @@ public class ScheduleSerializer {
     public static boolean equalJson(JsonObject jsonObject1, JsonObject jsonObject2) {
         if (!(jsonObject1 == null || jsonObject2 == null)) {
             return (jsonObject1.toString().equals(jsonObject2.toString()));
-        } else if (jsonObject1 == null && jsonObject2 == null) {
-            return true;
-        }
-
-        return false;
+        } else return jsonObject1 == null && jsonObject2 == null;
     }
 
     public static Schedule.ScheduleDayEntry[] getScheduleDayEntries(JsonObject jsonObject){

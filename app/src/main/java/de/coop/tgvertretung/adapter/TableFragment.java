@@ -28,7 +28,7 @@ import de.sematre.tg.Table;
 public class TableFragment extends Fragment {
 
     public static ArgbEvaluator evaluator = null;
-    private static String ARG_INDEX = "index";
+    private static final String ARG_INDEX = "index";
 
     private Table table;
     private SubjectSymbols symbols;

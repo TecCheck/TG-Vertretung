@@ -102,7 +102,7 @@ public class Utils {
         } else if (difference < (2L * 60L * 1000L)) { // 2 Minutes
             return context.getString(R.string.time_aMinuteAgo);
         } else if (difference < (60L * 60L * 1000L)) { // 60 Minutes
-            return String.format(context.getString(R.string.time_nMinutesAgo), String.valueOf(difference / 1000L / 60L));
+            return String.format(context.getString(R.string.time_nMinutesAgo), difference / 1000L / 60L);
         }
 
         Calendar calendar = Calendar.getInstance();

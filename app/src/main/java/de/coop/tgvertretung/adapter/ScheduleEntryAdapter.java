@@ -18,8 +18,8 @@ class ScheduleEntryAdapter extends RecyclerView.Adapter<ScheduleEntryAdapter.Vie
 
     private final Context context;
     private final int dayOfWeek;
-    private Schedule schedule;
-    private SubjectSymbols symbols;
+    private final Schedule schedule;
+    private final SubjectSymbols symbols;
 
     public ScheduleEntryAdapter(int dayOfWeek, Context context, Schedule schedule, SubjectSymbols symbols) {
         this.dayOfWeek = dayOfWeek;
