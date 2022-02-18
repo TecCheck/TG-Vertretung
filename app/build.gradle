@@ -9,8 +9,8 @@ android {
         minSdkVersion 22
         targetSdkVersion 32
 
-        versionCode 250
-        versionName "v1.0.0"
+        versionCode 251
+        versionName "v1.1.0"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
