@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,11 @@ public class TableFragment extends Fragment {
         TextView nothing = rootView.findViewById(R.id.nothing_to_show);
 
         // Filer the table if needed
+        Log.d("TableFragment" + getArguments().getInt(ARG_INDEX), "Filter: " + settings.getFilterEnabled() + " " + settings.getFilter());
+
+        Table table = this.table;
         if (settings.getFilterEnabled())
-            table = Utils.filterTable(table, settings.getFilter());
+            table = Utils.filterTable(this.table, settings.getFilter());
 
         if (evaluator == null) evaluator = new ArgbEvaluator();
 

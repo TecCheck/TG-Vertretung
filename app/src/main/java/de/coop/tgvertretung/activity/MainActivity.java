@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         refreshLayout.setOnRefreshListener(this::load);
 
         adapter = new TablePagerAdapter(this);
-        pager.setAdapter(adapter);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -97,6 +97,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataManager.getSubjectSymbols(this, false);
 
         load();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // TODO: Find a better way to reload
+        pager.setAdapter(adapter);
     }
 
     @Override
