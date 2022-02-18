@@ -23,7 +23,7 @@ import android.widget.TextView;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.TimeTableFragment;
 import de.coop.tgvertretung.storage.DataManager;
-import de.coop.tgvertretung.utils.App;
+import de.coop.tgvertretung.utils.TgvApp;
 import de.coop.tgvertretung.utils.NewTimeTable;
 import de.coop.tgvertretung.utils.NewTimeTableSerializer;
 import de.coop.tgvertretung.utils.SubjectSymbols;
@@ -66,7 +66,7 @@ public class TimeTableEditActivity extends AppCompatActivity {
         Intent intent = getIntent();
         entryIndex = intent.getIntExtra(TimeTableFragment.ENTRY_INDEX, 0);
         dayIndex = intent.getIntExtra(TimeTableFragment.INDEX, 0);
-        dataManager = ((App) getApplication()).getDataManager();
+        dataManager = ((TgvApp) getApplication()).getDataManager();
 
         spinnerA = findViewById(R.id.spinner);
         editSubjectA = findViewById(R.id.editTextSubject);

@@ -23,7 +23,7 @@ import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.TimeTableFragment;
 import de.coop.tgvertretung.adapter.TimeTablePagerAdapter;
 import de.coop.tgvertretung.storage.DataManager;
-import de.coop.tgvertretung.utils.App;
+import de.coop.tgvertretung.utils.TgvApp;
 import de.coop.tgvertretung.utils.NewTimeTableSerializer;
 import de.sematre.tg.Week;
 
@@ -37,7 +37,7 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
 
-        dataManager = ((App) getApplication()).getDataManager();
+        dataManager = ((TgvApp) getApplication()).getDataManager();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);

@@ -25,7 +25,7 @@ import android.widget.TextView;
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.RecyclerItemClickListener;
 import de.coop.tgvertretung.storage.DataManager;
-import de.coop.tgvertretung.utils.App;
+import de.coop.tgvertretung.utils.TgvApp;
 import de.coop.tgvertretung.utils.SubjectSymbols;
 
 public class SubjectSymbolsActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
@@ -45,7 +45,7 @@ public class SubjectSymbolsActivity extends AppCompatActivity implements Recycle
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
-        dataManager = ((App) getApplication()).getDataManager();
+        dataManager = ((TgvApp) getApplication()).getDataManager();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

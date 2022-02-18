@@ -29,7 +29,7 @@ import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.ScreenSlidePagerAdapter;
 import de.coop.tgvertretung.service.BackgroundService;
 import de.coop.tgvertretung.storage.DataManager;
-import de.coop.tgvertretung.utils.App;
+import de.coop.tgvertretung.utils.TgvApp;
 import de.coop.tgvertretung.utils.Downloader;
 import de.coop.tgvertretung.utils.SettingsWrapper;
 import de.coop.tgvertretung.utils.Utils;
@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        settings = new SettingsWrapper(this);
+        TgvApp app = (TgvApp) getApplication();
+
+        settings = app.getAppSettings();
         if (!settings.isLoggedIn()) {
             startLoginActivity(false);
             return;
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         settingsWriter = new SettingsWrapper.SettingsWriter(this);
-        dataManager = ((App) getApplication()).getDataManager();
+        dataManager = app.getDataManager();
 
         refreshLayout = findViewById(R.id.refresh_layout);
         drawer = findViewById(R.id.drawer_layout);
