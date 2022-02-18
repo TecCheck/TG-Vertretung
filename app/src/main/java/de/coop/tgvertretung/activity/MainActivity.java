@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -28,7 +27,6 @@ import java.util.Date;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.adapter.TablePagerAdapter;
-import de.coop.tgvertretung.service.BackgroundService;
 import de.coop.tgvertretung.storage.DataManager;
 import de.coop.tgvertretung.utils.TgvApp;
 import de.coop.tgvertretung.utils.Downloader;
@@ -205,13 +203,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             time = Utils.getFormattedDate(date, false, true);
 
         textView.setText(getString(resId, time));
-    }
-
-    private void startBackgroundService() {
-        // TODO: Better implementation
-        if (!BackgroundService.isRunning(this)) {
-            startService(new Intent(getApplicationContext(), BackgroundService.class));
-        }
     }
 
     private void load() {

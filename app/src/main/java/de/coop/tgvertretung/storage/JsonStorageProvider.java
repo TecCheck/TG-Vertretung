@@ -54,6 +54,25 @@ public class JsonStorageProvider implements StorageProvider {
         this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
+    public TimeTable readTimeTableSync() {
+        try {
+            JsonObject jsonTimeTable = readJsonFile(FILE_TIMETABLE).getAsJsonObject();
+            Date date = new Date(jsonTimeTable.get(KEY_DATE).getAsLong());
+            JsonArray jsonEntries = jsonTimeTable.getAsJsonArray(KEY_ENTRIES);
+
+            ArrayList<Table> tables = new ArrayList<>(jsonEntries.size());
+            for (JsonElement element : jsonEntries)
+                tables.add(getTable(element.getAsJsonObject()));
+
+            if (!tables.isEmpty())
+                return new TimeTable(date, tables);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public LiveData<TimeTable> readTimeTable() {
         MutableLiveData<TimeTable> liveData = new MutableLiveData<>();
         executor.schedule(() -> {

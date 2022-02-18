@@ -64,10 +64,6 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".service.BackgroundService"
-            android:enabled="true" />
-
         <provider
             android:name=".utils.UpdateFileProvider"
             android:authorities="${applicationId}.fileprovider"
