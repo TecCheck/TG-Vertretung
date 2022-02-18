@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                //int color = Utils.getColor(MainActivity.this, Settings.settings.timeTable.getTables().get(position).getDate());
-                //refreshLayout.setColorSchemeColors(color);
-                // TODO: Reimplement
+                TimeTable timeTable = adapter.getTimeTable();
+                int color = Utils.getColor(MainActivity.this, timeTable.getTables().get(position).getDate());
+                refreshLayout.setColorSchemeColors(color);
             }
         });
 
@@ -170,7 +170,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     boolean relativeTime = settings.getShowRelativeTime();
                     showTime(lastClientReload, new Date(settings.getLastClientRefresh()), R.string.last_client_refresh, relativeTime, settings.getShowClientRefresh());
-                    showTime(lastServerReload, new Date() /* TODO: Fix */, R.string.last_server_refresh, relativeTime, settings.getShowServerRefresh());
+                    TimeTable timeTable = dataManager.getTimeTable(MainActivity.this, false).getValue();
+                    showTime(lastServerReload, timeTable.getDate(), R.string.last_server_refresh, relativeTime, settings.getShowServerRefresh());
                 } catch (Exception e) {
                     e.printStackTrace();
                     lastClientReload.setText(getString(R.string.last_reload_none));

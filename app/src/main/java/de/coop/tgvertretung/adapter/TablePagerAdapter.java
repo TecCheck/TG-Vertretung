@@ -33,4 +33,8 @@ public class TablePagerAdapter extends FragmentStateAdapter {
         this.timeTable = timeTable;
         notifyDataSetChanged();
     }
+
+    public TimeTable getTimeTable() {
+        return timeTable;
+    }
 }

@@ -196,7 +196,9 @@ public class ScheduleEditActivity extends AppCompatActivity {
     }
 
     public void delete() {
-        // TODO: implement
+        schedule.removeEntry(Week.A, dayIndex, entryIndex);
+        schedule.removeEntry(Week.B, dayIndex, entryIndex);
+        dataManager.setSchedule(schedule);
     }
 
     public void save() {

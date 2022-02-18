@@ -25,6 +25,8 @@ import de.coop.tgvertretung.adapter.SchedulePagerAdapter;
 import de.coop.tgvertretung.storage.DataManager;
 import de.coop.tgvertretung.utils.TgvApp;
 import de.coop.tgvertretung.utils.ScheduleSerializer;
+import de.coop.tgvertretung.utils.Utils;
+import de.sematre.tg.TimeTable;
 import de.sematre.tg.Week;
 
 public class ScheduleActivity extends AppCompatActivity {
@@ -43,14 +45,16 @@ public class ScheduleActivity extends AppCompatActivity {
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         if (ScheduleFragment.week == null)
-            ScheduleFragment.week = isAWeek() ? Week.A : Week.B;
+            dataManager.getTimeTable(this, false).observe(this, timeTable -> {
+                ScheduleFragment.week = isAWeek(timeTable) ? Week.A : Week.B;
+            });
 
         SchedulePagerAdapter adapter = new SchedulePagerAdapter(this);
         pager = findViewById(R.id.container);
         pager.setAdapter(adapter);
 
-        dataManager.getSchedule(this, false).observe(this, newTimeTable ->  {
-            adapter.setSchedule(newTimeTable);
+        dataManager.getSchedule(this, false).observe(this, schedule -> {
+            adapter.setSchedule(schedule);
             setDayIndex(adapter);
         });
     }
@@ -132,17 +136,13 @@ public class ScheduleActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean isAWeek() {
-        return true;
-        // TODO: Reimplement
-        /*
-        int i = Utils.getView(Settings.settings.timeTable, Settings.settings.timeTable.getTables().size() - 1);
+    private boolean isAWeek(TimeTable timeTable) {
+        int i = Utils.getView(timeTable, timeTable.getTables().size() - 1);
         try {
-            return Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || Settings.settings.timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
+            return timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("A") || timeTable.getTables().get(i).getWeek().getLetter().equalsIgnoreCase("C");
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
             return true;
         }
-        */
     }
 }
