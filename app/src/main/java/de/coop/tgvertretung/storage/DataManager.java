@@ -64,10 +64,12 @@ public class DataManager implements Downloader.LoadFinishedListener {
 
     public void setNewTimeTable(NewTimeTable newTimeTable) {
         storage.saveNewTimeTable(newTimeTable);
+        this.newTimeTable.postValue(newTimeTable);
     }
 
     public void setSubjectSymbols(SubjectSymbols symbols) {
         storage.saveSubjectSymbols(symbols);
+        this.subjectSymbols.postValue(symbols);
     }
 
     @Override
