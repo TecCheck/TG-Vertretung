@@ -53,11 +53,6 @@ public class TimeTableActivity extends AppCompatActivity {
             adapter.setNewTimeTable(newTimeTable);
             setDayIndex(adapter);
         });
-
-        dataManager.getSubjectSymbols(this, false).observe(this, symbols -> {
-            adapter.setSymbols(symbols);
-            setDayIndex(adapter);
-        });
     }
 
     private void setDayIndex(TimeTablePagerAdapter adapter) {

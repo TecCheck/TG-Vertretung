@@ -64,8 +64,8 @@ public class TimeTableEditActivity extends AppCompatActivity {
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        entryIndex = intent.getIntExtra(TimeTableFragment.ENTRY_INDEX, 0);
-        dayIndex = intent.getIntExtra(TimeTableFragment.INDEX, 0);
+        entryIndex = intent.getIntExtra(TimeTableFragment.ARG_ENTRY, 0);
+        dayIndex = intent.getIntExtra(TimeTableFragment.ARG_INDEX, 0);
         dataManager = ((TgvApp) getApplication()).getDataManager();
 
         spinnerA = findViewById(R.id.spinner);
