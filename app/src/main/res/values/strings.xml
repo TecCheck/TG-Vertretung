@@ -18,10 +18,8 @@
     <string name="no_connection">Keine Verbindung!</string>
 
     <!-- Notification -->
-    <string name="title_notification">TG-Vertretung</string>
-    <string name="channel_name">TG-Vertretung</string>
-    <string name="channel_description">Neue Vertretungspläne</string>
-    <string name="new_content">Neuer Vertretungsplan verfügbar</string>
+    <string name="title_notification">Neuer Vertretungsplan verfügbar</string>
+    <string name="channel_name">Neue Vertretungspläne</string>
 
     <!-- Main Activity Menu -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

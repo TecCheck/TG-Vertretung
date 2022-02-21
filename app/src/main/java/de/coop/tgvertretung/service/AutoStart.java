@@ -19,12 +19,9 @@ public class AutoStart extends BroadcastReceiver {
             return;
 
         SettingsWrapper settings = new SettingsWrapper(context);
-
         if (settings.isLoggedIn()) {
-            PeriodicWorkRequest request =
-                    new PeriodicWorkRequest.Builder(BackgroundWorker.class, 15, TimeUnit.MINUTES)
-                            .build();
-
+            PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(BackgroundWorker.class,
+                    15, TimeUnit.MINUTES).build();
             WorkManager.getInstance(context).enqueue(request);
         }
     }

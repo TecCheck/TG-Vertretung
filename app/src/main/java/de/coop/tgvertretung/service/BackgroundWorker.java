@@ -1,6 +1,5 @@
 package de.coop.tgvertretung.service;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,14 +10,10 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.util.Date;
-import java.util.Random;
 
 import de.coop.tgvertretung.R;
 import de.coop.tgvertretung.activity.MainActivity;
@@ -31,11 +26,11 @@ import de.sematre.tg.TimeTable;
 public class BackgroundWorker extends Worker implements Downloader.LoadFinishedListener {
 
     private static final String CHANNEL_ID = "TGV";
+    private static final int NOTIFICATION_ID = 0;
 
-    private int notificationId = 0;
-    private StorageProvider provider;
-    private SettingsWrapper settings;
-    private Downloader downloader;
+    private final StorageProvider provider;
+    private final SettingsWrapper settings;
+    private final Downloader downloader;
     private Date currentNewest;
 
     public BackgroundWorker(Context context, WorkerParameters params) {
@@ -65,11 +60,11 @@ public class BackgroundWorker extends Worker implements Downloader.LoadFinishedL
 
     private void makeNotification() {
         Context context = getApplicationContext();
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_icon_small);
         builder.setContentTitle(context.getString(R.string.title_notification));
-        builder.setContentText(context.getString(R.string.new_content));
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         builder.setColorized(true);
         builder.setColor(context.getResources().getColor(R.color.colorAccent));
@@ -77,23 +72,13 @@ public class BackgroundWorker extends Worker implements Downloader.LoadFinishedL
         builder.setAutoCancel(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = context.getString(R.string.channel_name);
-            String description = context.getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, context.getString(R.string.channel_name), NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
+            builder.setChannelId(channel.getId());
         }
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.cancel(notificationId);
-
-        notificationId = new Random().nextInt();
-        Notification notification = builder.build();
-        notificationManager.notify(notificationId, notification);
+        notificationManager.cancel(NOTIFICATION_ID);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
     private PendingIntent getPendingIntent(Context context) {
