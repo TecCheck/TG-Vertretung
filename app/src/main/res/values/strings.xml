@@ -1,6 +1,6 @@
 <resources>
     <!-- Titles -->
-    <string name="app_name" translatable="false">TGVertretung</string>
+    <string name="app_name" translatable="false">TG-Vertretung</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_login">Anmelden</string>
     <string name="title_activity_license">OpenSource-License</string>
