@@ -1,9 +1,7 @@
 package de.coop.tgvertretung.adapter;
 
-import android.animation.ArgbEvaluator;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -26,10 +23,7 @@ import de.coop.tgvertretung.utils.TgvApp;
 import de.coop.tgvertretung.utils.Utils;
 import de.sematre.tg.Table;
 
-public class TableFragment extends Fragment {
-
-    public static ArgbEvaluator evaluator = null;
-    private static final String ARG_INDEX = "index";
+public class TableFragment extends BaseTableFragment {
 
     private Table table;
     private SubjectSymbols symbols;
@@ -45,16 +39,12 @@ public class TableFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        LifecycleOwner owner = getViewLifecycleOwner();
 
-        int index = getArguments().getInt(ARG_INDEX);
         TgvApp app = (TgvApp) getActivity().getApplication();
         SettingsWrapper settings = app.getAppSettings();
         DataManager dataManager = app.getDataManager();
-
-        // Get the Views
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_table, container, false);
-        LifecycleOwner owner = getViewLifecycleOwner();
 
         dataManager.getTimeTable(owner, false).observe(owner, timeTable -> {
             if (timeTable != null)
@@ -70,59 +60,37 @@ public class TableFragment extends Fragment {
         return rootView;
     }
 
-    private void trySetup(ViewGroup rootView, SettingsWrapper settings) {
+    private void trySetup(View rootView, SettingsWrapper settings) {
         if (table == null || symbols == null)
             return;
 
-        TextView label = rootView.findViewById(R.id.label);
-        TextView label2 = rootView.findViewById(R.id.label2);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
-        TextView nothing = rootView.findViewById(R.id.nothing_to_show);
-
-        // Filer the table if needed
-        Log.d("TableFragment" + getArguments().getInt(ARG_INDEX), "Filter: " + settings.getFilterEnabled() + " " + settings.getFilter());
+        Log.d("TableFragment" + index, "Filter: " + settings.getFilterEnabled() + " " + settings.getFilter());
 
         Table table = this.table;
         if (settings.getFilterEnabled())
             table = Utils.filterTable(this.table, settings.getFilter());
 
-        if (evaluator == null) evaluator = new ArgbEvaluator();
-
         boolean isEmpty = table.getTableEntries().isEmpty();
-        nothing.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
-
-        // Show nothing if table is empty
         if (isEmpty) {
-            if (settings.getRainbow())
-                Utils.addRainbow(nothing);
-            else
-                nothing.setTextColor(Utils.getColor(getContext(), table.getDate()));
+            recyclerView.setVisibility(View.GONE);
         } else {
+            recyclerView.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(new TableEntryAdapter(table, getContext(), settings, symbols));
         }
 
-        // Add a rainbow effect to the label
-        if (settings.getRainbow()) {
-            Utils.addRainbow(label);
-            if (settings.getTwoLineLabel()) Utils.addRainbow(label2);
+        String labelText;
+        String labelText2 = null;
+        if (settings.getTwoLineLabel()) {
+            labelText = getLabelTextPrim(table);
+            labelText2 = getLabelTextSec(table, settings.getShowAb());
         } else {
-            label.setTextColor(Utils.getColor(getContext(), table.getDate()));
-            if (settings.getTwoLineLabel())
-                label2.setTextColor(Utils.getColor(getContext(), table.getDate()));
+            labelText = getLabelText(table, settings.getShowAb());
         }
 
-        // Show the label
-        if (settings.getTwoLineLabel()) {
-            label.setText(getLabelTextPrim(table));
-            label2.setVisibility(View.VISIBLE);
-            label2.setText(getLabelTextSec(table, settings.getShowAb()));
-        } else {
-            label.setText(getLabelText(table, settings.getShowAb()));
-            label2.setVisibility(View.INVISIBLE);
-            label2.setHeight(14);
-        }
+        int colorIndex = Utils.getDayIndexOfDate(table.getDate());
+        setupUi(rootView, colorIndex, settings.getRainbow(), labelText, labelText2, isEmpty);
     }
 
     private String getLabelText(Table table, boolean showAb) {

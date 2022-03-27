@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 TimeTable timeTable = adapter.getTimeTable();
-                int color = Utils.getColor(MainActivity.this, timeTable.getTables().get(position).getDate());
+                int color = Utils.getDayColor(MainActivity.this, timeTable.getTables().get(position).getDate());
                 refreshLayout.setColorSchemeColors(color);
             }
         });
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return;
 
         pager.setCurrentItem(index);
-        refreshLayout.setColorSchemeColors(Utils.getColor(this, tables.get(index).getDate()));
+        refreshLayout.setColorSchemeColors(Utils.getDayColor(this, tables.get(index).getDate()));
     }
 
     private void showSnack(String text) {

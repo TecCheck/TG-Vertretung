@@ -65,7 +65,7 @@ class TableEntryAdapter extends RecyclerView.Adapter<TableEntryAdapter.ViewHolde
             Utils.addRainbow(schoolClass);
             Utils.addRainbow(hour);
         } else {
-            int color = Utils.getColor(context, table.getDate());
+            int color = Utils.getDayColor(context, table.getDate());
             schoolClass.setTextColor(color);
             hour.setTextColor(color);
         }

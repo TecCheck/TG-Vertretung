@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import de.coop.tgvertretung.R;
-import de.coop.tgvertretung.adapter.TableFragment;
 import de.sematre.tg.Table;
 import de.sematre.tg.TableEntry;
 import de.sematre.tg.TimeTable;
@@ -41,9 +40,19 @@ public class Utils {
         return c.get(Calendar.YEAR);
     }
 
-    public static int getColor(Context context, Date date) {
-        int dayOfWeek = getDayOfWeek(date) - 1;
-        return context.getResources().getIntArray(R.array.day_of_week_color)[Math.min(dayOfWeek, 5)];
+    public static int getDayIndexOfDate(Date date) {
+        return getDayOfWeek(date) - 2;
+    }
+
+    public static int getDayColor(Context context, Date date) {
+        return getDayColor(context, getDayIndexOfDate(date));
+    }
+
+    public static int getDayColor(Context context, int index) {
+        int[] colors = context.getResources().getIntArray(R.array.day_of_week_color);
+        index = Math.max(0, index);
+        index = Math.min(index, colors.length - 1);
+        return colors[index];
     }
 
     public static ArrayList<TableEntry> filterTable(ArrayList<TableEntry> entries, String filter) {
@@ -76,7 +85,7 @@ public class Utils {
     public static void addRainbow(View view) {
         if (evaluator == null) evaluator = new ArgbEvaluator();
 
-        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "textColor", TableFragment.evaluator, 0xff0000ff, 0xffff0000, 0xff00ff00);
+        ObjectAnimator colorFade = ObjectAnimator.ofObject(view, "textColor", evaluator, 0xff0000ff, 0xffff0000, 0xff00ff00);
         colorFade.setRepeatMode(ObjectAnimator.REVERSE);
         colorFade.setRepeatCount(ObjectAnimator.INFINITE);
         colorFade.setDuration(1200);

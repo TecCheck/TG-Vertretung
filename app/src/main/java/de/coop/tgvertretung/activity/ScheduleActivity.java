@@ -44,9 +44,9 @@ public class ScheduleActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if (ScheduleFragment.week == null)
+        if (ScheduleFragment.globalWeek == null)
             dataManager.getTimeTable(this, false).observe(this, timeTable -> {
-                ScheduleFragment.week = isAWeek(timeTable) ? Week.A : Week.B;
+                ScheduleFragment.globalWeek = isAWeek(timeTable) ? Week.A : Week.B;
             });
 
         SchedulePagerAdapter adapter = new SchedulePagerAdapter(this);

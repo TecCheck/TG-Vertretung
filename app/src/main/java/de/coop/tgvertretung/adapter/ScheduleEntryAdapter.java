@@ -47,7 +47,7 @@ class ScheduleEntryAdapter extends RecyclerView.Adapter<ScheduleEntryAdapter.Vie
         ImageView imageView = cardView.findViewById(R.id.icon);
 
 
-        if (position == schedule.getDaySize(ScheduleFragment.week, dayOfWeek)) {
+        if (position == schedule.getDaySize(ScheduleFragment.globalWeek, dayOfWeek)) {
             imageView.setVisibility(View.VISIBLE);
             entryText.setVisibility(View.VISIBLE);
             entryText.setText(R.string.add);
@@ -66,7 +66,7 @@ class ScheduleEntryAdapter extends RecyclerView.Adapter<ScheduleEntryAdapter.Vie
         schoolClass.setVisibility(View.VISIBLE);
         info.setVisibility(View.VISIBLE);
 
-        Schedule.ScheduleDayEntry entry = schedule.getEntry(ScheduleFragment.week, dayOfWeek, position);
+        Schedule.ScheduleDayEntry entry = schedule.getEntry(ScheduleFragment.globalWeek, dayOfWeek, position);
 
         if (entry.subject == null || entry.subject.isEmpty()) {
             schoolClass.setText(R.string.item_empty);
@@ -87,7 +87,7 @@ class ScheduleEntryAdapter extends RecyclerView.Adapter<ScheduleEntryAdapter.Vie
 
     @Override
     public int getItemCount() {
-        return schedule.getDaySize(ScheduleFragment.week, dayOfWeek) + 1;
+        return schedule.getDaySize(ScheduleFragment.globalWeek, dayOfWeek) + 1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
