@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -136,20 +137,6 @@ public class ScheduleEditActivity extends AppCompatActivity {
             return;
         }
 
-        boolean emptyA = !ScheduleSerializer.notEmpty(entryA.subject);
-        spinnerA.setSelection(emptyA ? 0 : (symbols.getSymbolIndex(entryA.subject) + 1));
-
-        editRoomA.setText(entryA.room);
-        editTeacherA.setText(entryA.teacher);
-
-        if (entryB == null) return;
-
-        boolean emptyB = !ScheduleSerializer.notEmpty(entryB.subject);
-        spinnerB.setSelection(emptyB ? 0 : (symbols.getSymbolIndex(entryB.subject) + 1));
-
-        editRoomB.setText(entryB.room);
-        editTeacherB.setText(entryB.teacher);
-
         spinnerA.setAdapter(new SpinnerAdapter());
         spinnerA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -167,6 +154,15 @@ public class ScheduleEditActivity extends AppCompatActivity {
             }
         });
 
+        boolean emptyA = !ScheduleSerializer.notEmpty(entryA.subject);
+        spinnerA.setSelection(emptyA ? 0 : (symbols.getSymbolIndex(entryA.subject) + 1));
+
+        editRoomA.setText(entryA.room);
+        editTeacherA.setText(entryA.teacher);
+
+
+        if (entryB == null) return;
+
         spinnerB.setAdapter(new SpinnerAdapter());
         spinnerB.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -182,6 +178,12 @@ public class ScheduleEditActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        boolean emptyB = !ScheduleSerializer.notEmpty(entryB.subject);
+        spinnerB.setSelection(emptyB ? 0 : (symbols.getSymbolIndex(entryB.subject) + 1));
+
+        editRoomB.setText(entryB.room);
+        editTeacherB.setText(entryB.teacher);
     }
 
     @Override

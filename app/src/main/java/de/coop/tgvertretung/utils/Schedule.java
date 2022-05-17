@@ -11,7 +11,7 @@ import de.sematre.tg.Week;
 public class Schedule implements Serializable {
 
     private static final long serialVersionUID = 7172123053432181952L;
-    private  HashMap<Week, ArrayList<ArrayList<ScheduleDayEntry>>> weeks = new HashMap<>();
+    private HashMap<Week, ArrayList<ArrayList<ScheduleDayEntry>>> weeks = new HashMap<>();
 
     public Schedule() {
         init();
@@ -97,6 +97,15 @@ public class Schedule implements Serializable {
             if (entry.teacher != null) {
                 return entry.teacher.equals(teacher);
             } else return teacher == null;
+        }
+
+        @Override
+        public String toString() {
+            return "ScheduleDayEntry{" +
+                    "subject='" + subject + '\'' +
+                    ", room='" + room + '\'' +
+                    ", teacher='" + teacher + '\'' +
+                    '}';
         }
     }
 }
